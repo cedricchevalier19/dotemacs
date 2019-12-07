@@ -117,7 +117,6 @@ holding export options."
      ;; photo
      (let* ((photo (plist-get info :photo))
             (photo-style (plist-get info :photostyle))
-            (_ (message "photo=%s photo-style=%s" photo photo-style))
             (style-str (if photo-style (format "[%s]" photo-style) "")))
        (when (org-string-nw-p photo) (format "\\photo%s{%s}\n" style-str photo)))
 
@@ -194,7 +193,7 @@ holding export options."
             (footer-mid  (format-spec (or (plist-get info :cvfooter_middle) "") spec))
             (footer-right (format-spec (or (plist-get info :cvfooter_right) "") spec)))
        (when (not (string= "" (concat footer-left footer-mid footer-right)))
-         (format "\\makecvfooter{%s}{%s}{%s}" footer-left footer-mid footer-right)))
+         (format "\\makecvfooter{%s}{%s}{%s}\n" footer-left footer-mid footer-right)))
 
      ;; Document's body.
      contents
@@ -204,31 +203,78 @@ holding export options."
      ;; Document end.
      "\\end{document}")))
 
+;;;; Produce latex code for a right-float image
+(defun org-awesomecv--cventry-right-img-code (file)
+  (if file
+    (format "\\begin{wrapfigure}{r}{0.15\\textwidth}
+  \\raggedleft\\vspace{-4.0mm}
+  \\includegraphics[width=0.1\\textwidth]{%s}
+\\end{wrapfigure}" file) ""))
 
+;;;; Individual cventry/cvsubentry/cvemployer/cvschool headlines
 (defun org-awesomecv--format-cventry (headline contents info)
   "Format HEADLINE as as cventry.
 CONTENTS holds the contents of the headline.  INFO is a plist used
 as a communication channel."
   (let* ((entrytype (org-element-property :CV_ENV headline))
          (title (org-export-data (org-element-property :title headline) info))
-         (from-date (or (org-element-property :FROM headline) (error "No FROM property provided for cventry %s" title)))
-         (to-date (org-element-property :TO headline))
-         (employer (org-element-property :EMPLOYER headline))
-         (location (or (org-element-property :LOCATION headline) "")))
+         (date (org-element-property :DATE headline))
+         (from-date (or (org-element-property :FROM headline) date))
+         (to-date (or (org-element-property :TO headline) date))
+         (employer (or (org-element-property :ORGANIZATION headline)
+                       (org-element-property :SCHOOL headline)
+                       (org-element-property :EMPLOYER headline)
+                       (org-element-property :EVENT headline)
+                       (org-element-property :POSITION headline)))
+         (location (or (org-element-property :LOCATION headline) ""))
+         (right-img (org-element-property :RIGHT_IMG headline))
+         (label (or (org-element-property :LABEL headline) nil))
+         (label-str (if label (format "%s\\hfill{}" label) "")))
 
     (cond
+     ((string= entrytype "cvemployer")
+      (format "\n\\cventry{%s}{%s}{}{}{}\n%s\n"
+              title
+              (format "%s\\hfill %s" (org-cv-utils--format-time-window from-date to-date) location)
+              contents)
+      )
      ((string= entrytype "cventry")
-      (format "\n\\cventry\n{%s}\n{%s}\n{%s}\n{%s}\n{\n%s}\n"
+      (format "\n\\cventry\n{%s}\n{%s}\n{%s}\n{%s}\n{\n%s%s}\n"
               employer
               location
               title
               (org-cv-utils--format-time-window from-date to-date)
+              (org-awesomecv--cventry-right-img-code right-img)
               contents))
      ((string= entrytype "cvsubentry")
-      (format "\n\\cvsubentry\n{%s}\n{%s}\n{\n%s}\n"
+      (format "\n\\cvsubentry\n{%s}\n{%s}\n{\n%s%s}\n"
               title
+              (format "%s%s" label-str (org-cv-utils--format-time-window from-date to-date))
+              (org-awesomecv--cventry-right-img-code right-img)
+              contents))
+     ((string= entrytype "cvschool")
+      (format "\n\\cventry\n{%s}\n{%s}\n{%s}\n{%s}\n{\n%s%s}\n"
+              title
+              location
+              employer
               (org-cv-utils--format-time-window from-date to-date)
-              contents)))))
+              (org-awesomecv--cventry-right-img-code right-img)
+              contents))
+     ((string= entrytype "cvhonor")
+      (format "\n\\cvhonor\n{%s}\n{%s}\n{%s}\n{%s}\n"
+              title
+              employer
+              location
+              (org-cv-utils--format-time-window from-date to-date))))))
+
+;;;; Headlines of type "cventries"
+(defun org-awesomecv--format-cvenvironment (environment headline contents info)
+  "Format HEADLINE as as a cventries/cvhonors environment.
+CONTENTS holds the contents of the headline.  INFO is a plist used
+as a communication channel."
+  (format "%s\n\\begin{%s}\n%s\\end{%s}\n"
+          (org-export-with-backend 'latex headline nil info)
+          environment contents environment))
 
 ;;;; Headline
 (defun org-awesomecv-headline (headline contents info)
@@ -240,8 +286,14 @@ as a communication channel."
                          (or (org-string-nw-p env) "block"))))
       (cond
        ;; is a cv entry or subentry
-       ((or (string= environment "cventry") (string= environment "cvsubentry"))
+       ((or (string= environment "cventry")
+            (string= environment "cvsubentry")
+            (string= environment "cvemployer")
+            (string= environment "cvschool")
+            (string= environment "cvhonor"))
         (org-awesomecv--format-cventry headline contents info))
+       ((or (string= environment "cventries") (string= environment "cvhonors"))
+        (org-awesomecv--format-cvenvironment environment headline contents info))
        ((org-export-with-backend 'latex headline contents info))))))
 
 ;;;; Plain List, to intercept and transform "cvskills" lists
@@ -250,11 +302,12 @@ as a communication channel."
   "Transcode a PLAIN-LIST element from Org to LaTeX.
 CONTENTS is the contents of the list.  INFO is a plist holding
 contextual information."
-  (let* ((cv-env (org-entry-get (org-element-property :begin plain-list) "CV_ENV" t)))
+  (let* ((cv-env (org-entry-get (org-element-property :begin plain-list) "CV_ENV" nil))
+         (parent-type (car (org-element-property :parent plain-list))))
     (cond
      ((string= cv-env "cvskills")
       (format "\\begin{cvskills}\n%s\\end{cvskills}" contents))
-     ((or (string= cv-env "cventry") (string= cv-env "cvsubentry"))
+     ((and (eq parent-type 'section) (or (string= cv-env "cventry") (string= cv-env "cvsubentry") (string= cv-env "cvschool")))
       (format "\\begin{cvitems}\n%s\\end{cvitems}" contents))
      (t
       (org-latex-plain-list plain-list contents info)))))
