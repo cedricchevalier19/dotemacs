@@ -97,7 +97,30 @@ When exporting you can call the following function to get the latex file.
 ## Using AwesomeCV {#using-awesomecv}
 
 [AwesomeCV](https://github.com/posquit0/Awesome-CV) is another LaTeX template for producing nice-looking
-CVs. AwesomeCV supports a few additional types of environment types in
+CVs. In addition to the regular document attributes, the following are supported:
+
+<div class="ox-hugo-table table table-striped">
+<div></div>
+
+| Field            | Description                                                |
+|------------------|------------------------------------------------------------|
+| PHOTOSTYLE       | Style of photo to use. Values include                      |
+|                  | circle/rectangle,edge/noedge,left/right                    |
+| CVCOLOR          | Color of highlights.                                       |
+| STACKOVERFLOW    | Stack overflow, must be specified as `ID username`         |
+| FONTDIR          | Directory where the fonts can be found, defaults           |
+|                  | to `fonts/` (as in the standard AwesomeCV)                 |
+| CVHIGHLIGHTS     | Whether to colorize highlights. Defaults to true           |
+| QUOTE            | Optional quote to include at the top of the CV             |
+| FIRSTNAME        | Your first name. Must be specified (in addition to AUTHOR) |
+| LASTNAME         | Your last name. Must be specified.                         |
+| CVFOOTER\_LEFT   | Text to include in the left footer.                        |
+| CVFOOTER\_MIDDLE | Text to include in the middle footer.                      |
+| CVFOOTER\_RIGHT  | Text to include in the right footer.                       |
+
+</div>
+
+AwesomeCV supports a few additional types of environment types in
 `CV_ENV`, including `cvemployer`, `cvskills`, `cvhonors` and `cvschool`. Some of
 these support additional property fields:
 
