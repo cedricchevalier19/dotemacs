@@ -31,7 +31,6 @@
 (require 'cl-lib)
 (require 'ox-latex)
 (require 'org-cv-utils)
-(require 'subr)
 
 ;; Install a default set-up for awesomecv export.
 (unless (assoc "awesomecv" org-latex-classes)
@@ -85,8 +84,7 @@
   :translate-alist '((template . org-awesomecv-template)
                      (headline . org-awesomecv-headline)
                      (plain-list . org-awesomecv-plain-list)
-                     (item . org-awesomecv-item))
-  )
+                     (item . org-awesomecv-item)))
 
 ;;;; Template
 ;;
@@ -116,12 +114,6 @@ holding export options."
      (format "\\colorlet{awesome}{%s}\n" (plist-get info :cvcolor))
      (format "\\setbool{acvSectionColorHighlight}{%s}\n" (plist-get info :cvhighlights))
 
-     ;; photo
-     (let* ((photo (plist-get info :photo))
-            (photo-style (plist-get info :photostyle))
-            (style-str (if photo-style (format "[%s]" photo-style) "")))
-       (when (org-string-nw-p photo) (format "\\photo%s{%s}\n" style-str photo)))
-
      ;; Author. If FIRSTNAME or LASTNAME are not given, try to deduct
      ;; their values by splitting AUTHOR on white space.
      (let* ((author (split-string (org-export-data (plist-get info :author) info)))
@@ -134,10 +126,11 @@ holding export options."
      ;; Title
      (format "\\position{%s}\n" title)
 
-     ;; Hyperref options.
-     (let ((template (plist-get info :latex-hyperref-template)))
-       (and (stringp template)
-            (format-spec template spec)))
+     ;; photo
+     (let* ((photo (plist-get info :photo))
+            (photo-style (plist-get info :photostyle))
+            (style-str (if photo-style (format "[%s]" photo-style) "")))
+       (when (org-string-nw-p photo) (format "\\photo%s{%s}\n" style-str photo)))
 
      ;; address
      (let ((address (org-export-data (plist-get info :address) info)))
@@ -150,35 +143,35 @@ holding export options."
                        (org-export-data (plist-get info :email) info))))
        (when (org-string-nw-p email)
          (format "\\email{%s}\n" email)))
-     ;; phone
-     (let ((mobile (org-export-data (plist-get info :mobile) info)))
-       (when (org-string-nw-p mobile)
-         (format "\\mobile{%s}\n" mobile)))
-     ;; homepage
-     (let ((homepage (org-export-data (plist-get info :homepage) info)))
-       (when (org-string-nw-p homepage)
-         (format "\\homepage{%s}\n" homepage)))
-     ;; Other social networks
-     (mapconcat (lambda (social-network)
-                  (let ((command (org-export-data (plist-get info
-                                                             (car social-network))
-                                                  info)))
-                    (when (> (length command) 0) (format "\\%s{%s}\n"
-                                                         (nth 1 social-network)
-                                                         command))))
-                '((:github "github")
-                  (:gitlab "gitlab")
-                  (:linkedin "linkedin")
-                  (:twitter "twitter")
-                  (:skype "skype")
-                  (:reddit "reddit"))
+
+     ;; Other pieces of information
+     (mapconcat (lambda (info-key)
+                  (let ((info (org-export-data (plist-get info info-key) info)))
+                    (when (org-string-nw-p info) (format "\\%s{%s}\n"
+                                                         (substring (symbol-name info-key) 1)
+                                                         info))))
+                '(:mobile
+                  :homepage
+                  :github
+                  :gitlab
+                  :linkedin
+                  :twitter
+                  :skype
+                  :reddit
+                  :extrainfo)
                 "")
+
      ;; Stack overflow requires two values: ID and name
      (let* ((so-list (plist-get info :stackoverflow))
             (so-id (when so-list (first so-list)))
             (so-name (when so-list (second so-list))))
        (when (and (org-string-nw-p so-id) (org-string-nw-p so-name))
          (format "\\stackoverflow{%s}{%s}\n" so-id so-name)))
+
+     ;; Hyperref options.
+     (let ((template (plist-get info :latex-hyperref-template)))
+       (and (stringp template)
+            (format-spec template spec)))
 
      ;; Document start.
      "\\begin{document}\n\n"
