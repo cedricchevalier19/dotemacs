@@ -31,6 +31,7 @@
 (require 'cl-lib)
 (require 'ox-latex)
 (require 'org-cv-utils)
+(require 'subr)
 
 ;; Install a default set-up for awesomecv export.
 (unless (assoc "awesomecv" org-latex-classes)
@@ -70,6 +71,7 @@
     (:linkedin "LINKEDIN" nil nil parse)
     (:twitter "TWITTER" nil nil parse)
     (:stackoverflow "STACKOVERFLOW" nil nil split)
+    (:extrainfo "EXTRAINFO" nil nil parse)
     (:with-email nil "email" t t)
     (:fontdir "FONTDIR" nil "fonts/" t)
     (:latex-title-command nil nil "\\makecvheader" t)
@@ -120,9 +122,13 @@ holding export options."
             (style-str (if photo-style (format "[%s]" photo-style) "")))
        (when (org-string-nw-p photo) (format "\\photo%s{%s}\n" style-str photo)))
 
-     ;; Author.
-     (let ((first-name (org-export-data (plist-get info :firstname) info))
-           (last-name (org-export-data (plist-get info :lastname) info)))
+     ;; Author. If FIRSTNAME or LASTNAME are not given, try to deduct
+     ;; their values by splitting AUTHOR on white space.
+     (let* ((author (split-string (org-export-data (plist-get info :author) info)))
+            (first-name-prop (org-export-data (plist-get info :firstname) info))
+            (last-name-prop (org-export-data (plist-get info :lastname) info))
+            (first-name (or (org-string-nw-p first-name-prop) (first author)))
+            (last-name (or (org-string-nw-p last-name-prop) (second author))))
        (format "\\name{%s}{%s}\n" first-name last-name))
 
      ;; Title
