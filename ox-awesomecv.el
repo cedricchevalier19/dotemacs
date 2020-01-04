@@ -84,7 +84,8 @@
   :translate-alist '((template . org-awesomecv-template)
                      (headline . org-awesomecv-headline)
                      (plain-list . org-awesomecv-plain-list)
-                     (item . org-awesomecv-item)))
+                     (item . org-awesomecv-item)
+                     (property-drawer . org-awesomecv-property-drawer)))
 
 ;;;; Template
 ;;
@@ -238,7 +239,7 @@ as a communication channel."
               contents)
       )
      ((string= entrytype "cventry")
-      (format "\n\\cventry\n{%s}\n{%s}\n{%s}\n{%s}\n{\n%s%s}\n"
+      (format "\n\\cventry\n{%s}\n{%s}\n{%s}\n{%s}\n{%s%s}\n"
               employer
               location
               title
@@ -246,13 +247,13 @@ as a communication channel."
               (org-awesomecv--cventry-right-img-code right-img)
               contents))
      ((string= entrytype "cvsubentry")
-      (format "\n\\cvsubentry\n{%s}\n{%s}\n{\n%s%s}\n"
+      (format "\n\\cvsubentry\n{%s}\n{%s}\n{%s%s}\n"
               title
               (format "%s%s" label-str (org-cv-utils--format-time-window from-date to-date))
               (org-awesomecv--cventry-right-img-code right-img)
               contents))
      ((string= entrytype "cvschool")
-      (format "\n\\cventry\n{%s}\n{%s}\n{%s}\n{%s}\n{\n%s%s}\n"
+      (format "\n\\cventry\n{%s}\n{%s}\n{%s}\n{%s}\n{%s%s}\n"
               title
               location
               employer
@@ -322,6 +323,14 @@ contextual information."
       (org-latex-item item contents info))
     )
   )
+
+;;;; Property Drawer, to avoid exporting them even when the option is set
+
+(defun org-latex-property-drawer (property-drawer contents info)
+  "Transcode a PROPERTY-DRAWER element from Org to AwesomeCV.
+This does not make sense in the AwesomeCV format, so it only
+returns an empty string."
+  nil)
 
 (provide 'ox-awesomecv)
 ;;; ox-awesomecv ends here
