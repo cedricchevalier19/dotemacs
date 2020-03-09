@@ -283,18 +283,21 @@ CONTENTS is the contents of the headline.  INFO is a plist used
 as a communication channel."
   (unless (org-element-property :footnote-section-p headline)
     (let ((environment (let ((env (org-element-property :CV_ENV headline)))
-                         (or (org-string-nw-p env) "block"))))
-      (cond
-       ;; is a cv entry or subentry
-       ((or (string= environment "cventry")
-            (string= environment "cvsubentry")
-            (string= environment "cvemployer")
-            (string= environment "cvschool")
-            (string= environment "cvhonor"))
-        (org-awesomecv--format-cventry headline contents info))
-       ((or (string= environment "cventries") (string= environment "cvhonors"))
-        (org-awesomecv--format-cvenvironment environment headline contents info))
-       ((org-export-with-backend 'latex headline contents info))))))
+                         (or (org-string-nw-p env) "block")))
+          (pagebreak (org-string-nw-p (org-element-property :PAGEBREAK headline))))
+      (concat
+       (when pagebreak "\\clearpage\n")
+       (cond
+        ;; is a cv entry or subentry
+        ((or (string= environment "cventry")
+             (string= environment "cvsubentry")
+             (string= environment "cvemployer")
+             (string= environment "cvschool")
+             (string= environment "cvhonor"))
+         (org-awesomecv--format-cventry headline contents info))
+        ((or (string= environment "cventries") (string= environment "cvhonors"))
+         (org-awesomecv--format-cvenvironment environment headline contents info))
+        ((org-export-with-backend 'latex headline contents info)))))))
 
 ;;;; Plain List, to intercept and transform "cvskills" lists
 

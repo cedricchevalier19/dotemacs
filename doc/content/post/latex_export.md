@@ -143,6 +143,8 @@ these support additional property fields:
 |            | to the entry.                                                        |
 | RIGHT\_IMG | path to an image to include floating to the right of a `cventry`,    |
 |            | a `cvsubentry` or `cvschool` entry. Meant to be used to show a logo. |
+| PAGEBREAK  | Causes a LaTeX `\clearpage` statement to be inserted in the          |
+|            | exported output before the heading.                                  |
 
 </div>
 
