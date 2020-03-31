@@ -60,6 +60,8 @@
   '((:latex-class "LATEX_CLASS" nil "awesomecv" t)
     (:cvstyle "CVSTYLE" nil "classic" t)
     (:cvcolor "CVCOLOR" nil "awesome-emerald" t)
+    (:cvcolorizelinks "CVCOLORIZELINKS" nil nil t)
+    (:cvunderlinelinks "CVUNDERLINELINKS" nil nil t)
     (:mobile "MOBILE" nil nil parse)
     (:homepage "HOMEPAGE" nil nil parse)
     (:address "ADDRESS" nil nil newline)
@@ -114,7 +116,19 @@ holding export options."
      (format "\\fontdir[%s]\n" (plist-get info :fontdir))
      (format "\\colorlet{awesome}{%s}\n" (plist-get info :cvcolor))
      (format "\\setbool{acvSectionColorHighlight}{%s}\n" (plist-get info :cvhighlights))
-
+     (let ((cvcolorizelinks (plist-get info :cvcolorizelinks))
+           (cvunderlinelinks (plist-get info :cvunderlinelinks)))
+       (concat
+        (when (and (org-string-nw-p cvcolorizelinks)
+                   (not (string-equal cvcolorizelinks "false")))
+          (format "\\colorizelinks%s\n"
+                  (if (not (string-equal cvcolorizelinks "true"))
+                    (format "[%s]" cvcolorizelinks) "")))
+        (when (and (org-string-nw-p cvunderlinelinks)
+                   (not (string-equal cvunderlinelinks "false")))
+          (format "\\underlinelinks%s\n"
+                  (if (not (string-equal cvunderlinelinks "true"))
+                      (format "[%s]" cvunderlinelinks) "")))))
      ;; Author. If FIRSTNAME or LASTNAME are not given, try to deduct
      ;; their values by splitting AUTHOR on white space.
      (let* ((author (split-string (org-export-data (plist-get info :author) info)))
