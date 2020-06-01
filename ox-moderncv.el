@@ -183,16 +183,16 @@ holding export options."
   "Format HEADLINE as as cventry.
 CONTENTS holds the contents of the headline.  INFO is a plist used
 as a communication channel."
-  (let* ((title (org-export-data (org-element-property :title headline) info))
-         (from-date (or (org-element-property :FROM headline) (error "No FROM property provided for cventry %s" title)))
-         (to-date (org-element-property :TO headline))
-         (employer (org-element-property :EMPLOYER headline))
-         (location (or (org-element-property :LOCATION headline) ""))
+  (let* ((entry (org-cv-utils--parse-cventry headline info))
          (note (or (org-element-property :NOTE headline) "")))
-    (format "\\cventry{\\textbf{%s}}{%s}{%s}{%s}{%s}{%s}\n"
-            (org-cv-utils--format-time-window from-date to-date)
-            title employer location note contents)))
 
+    (format "\\cventry{\\textbf{%s}}{%s}{%s}{%s}{%s}{%s}\n"
+            (org-cv-utils--format-time-window (alist-get 'from-date entry)
+                                              (alist-get 'to-date entry))
+            (alist-get 'title entry)
+            (alist-get 'employer entry)
+            (alist-get 'location entry)
+            note contents)))
 
 ;;;; Headline
 (defun org-moderncv-headline (headline contents info)

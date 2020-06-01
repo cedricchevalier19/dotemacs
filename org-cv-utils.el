@@ -54,5 +54,17 @@ in case TO-DATE is nil return Present"
    (if (not to-date) "Present"
      (org-cv-utils-org-timestamp-to-shortdate to-date))))
 
+(defun org-cv-utils--parse-cventry (headline info)
+  "Return alist describing the entry
+INFO is a plist used
+as a communication channel."
+  (let ((title (org-export-data (org-element-property :title headline) info)))
+    `((title . ,title)
+      (from-date . ,(or (org-element-property :FROM headline)
+                      (error "No FROM property provided for cventry %s" title)))
+      (to-date . ,(org-element-property :TO headline))
+      (employer . ,(org-element-property :EMPLOYER headline))
+      (location . ,(or (org-element-property :LOCATION headline) "")))))
+
 (provide 'org-cv-utils)
 ;;; org-cv-utils ends here

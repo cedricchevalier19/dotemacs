@@ -60,13 +60,10 @@
   "Format HEADLINE as as cventry.
 CONTENTS holds the contents of the headline.  INFO is a plist used
 as a communication channel."
-  (let* ((title (org-export-data (org-element-property :title headline) info))
-         (from-date (or (org-element-property :FROM headline) (error "No FROM property provided for cventry %s" title)))
-         (to-date (org-element-property :TO headline))
+  (let* ((entry (org-cv-utils--parse-cventry headline info))
          (loffset (string-to-number (plist-get info :hugo-level-offset))) ;"" -> 0, "0" -> 0, "1" -> 1, ..
          (level (org-export-get-relative-level headline info))
-         (employer (org-element-property :EMPLOYER headline))
-         (location (or (org-element-property :LOCATION headline) "")))
+         (title (concat (make-string (+ loffset level) ?#) " " (alist-get 'title entry))))
     (format "\n%s
 
 <ul class=\"cventry\">
@@ -76,12 +73,12 @@ as a communication channel."
 </ul>
 
 %s
-"
-            (concat (make-string (+ loffset level) ?#) " " title)
-            employer
-            location
-            (org-cv-utils--format-time-window from-date to-date)
-            contents)))
+" title
+(alist-get 'employer entry)
+(alist-get 'location entry)
+(org-cv-utils--format-time-window (alist-get 'from-date entry) (alist-get 'to-date entry))
+contents)))
+
 
 
 ;;;; Headline
