@@ -2,7 +2,7 @@
 title = "Installation"
 author = ["Óscar Nájera"]
 draft = false
-weight = 1001
+weight = 1002
 +++
 
 This project is not on MELPA so you have to do a manual installation. First

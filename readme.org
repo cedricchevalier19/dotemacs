@@ -10,14 +10,17 @@
   :PROPERTIES:
   :EXPORT_FILE_NAME: goal
   :END:
-This project aims to generate from an org-mode file with reasonably ordered
-items a latex file which compiles into a reasonably nice CV. In the same
-spirit the org-mode file must export to markdown so that it can be uses for
-web based CV.
+This project exports an org-mode file with reasonably structured items into
+a latex file, which compiles into a nice CV. In the same spirit the
+org-mode file may export to markdown so that it can be used for a web based
+CV.
 
 - Online documentation in [[https://titan-c.gitlab.io/org-cv/]]
 - Development happens in the gitlab repository: https://gitlab.com/Titan-C/org-cv
 - There is a mirror in github for backup: https://github.com/Titan-C/org-cv
+
+This project dog feeds itself and produces the examples on this
+documentation page directly.
 
 * Installation
   :PROPERTIES:
@@ -52,7 +55,7 @@ put your foreseen job.
 | Field    | Description                                        |
 |----------+----------------------------------------------------|
 | TITLE    | Desired job                                        |
-| AUTHOR   | Who you are?                                       |
+| AUTHOR   | Who are you?                                       |
 | EMAIL    | Your contact email                                 |
 | ADDRESS  | Mailing address, this can span over multiple lines |
 | HOMEPAGE | URL of your website                                |
@@ -117,9 +120,9 @@ I write about awesome stuff I do.
 
 ** Using modern-cv
 [[https://www.ctan.org/tex-archive/macros/latex/contrib/moderncv][moderncv]] is a standard \(\LaTeX\) package that you can find in many of your
-latex distributions. For I maintain for personal purposes a fork of it to
-better work with my use case at https://github.com/Titan-C/moderncv.git
-Feel free to use any or even your personal fork for your desired use case.
+latex distributions. I maintain a fork of it, to work with my use case at
+https://github.com/Titan-C/moderncv.git Feel free to use any or even your
+personal fork for your desired use case.
 
 To configure the export for moderncv you need the addition options in your
 org file.
@@ -230,6 +233,45 @@ exclude some tags during export.
 
 You are responsible for styling your website.
 
+* License
+  :PROPERTIES:
+  :EXPORT_FILE_NAME: license
+  :END:
+#+begin_quote
+    org-cv
+    Copyright (C) 2018-2020  Óscar Nájera
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+#+end_quote
+
+* Tips
+  :PROPERTIES:
+  :EXPORT_FILE_NAME: tips
+  :END:
+
+If you have found this project useful. Please consider giving back. You can
+kindly tip me for this project
+
+- Stellar :: GDPTOFND6HSE5AVHPRXOCJFOA6NPFB65JAEWKTN23EBUGBB2AU4PLIBD
+- liberapay :: [[https://liberapay.com/Titan-C/][Titan-C]]
+
+
+#+BEGIN_EXPORT md
+<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+<input type="hidden" name="cmd" value="_s-xclick" />
+<input type="hidden" name="hosted_button_id" value="Y3VB5VL7PD3QC" />
+<input type="image" src="https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif" border="0" name="submit" title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button" />
+<img alt="" border="0" src="https://www.paypal.com/en_DE/i/scr/pixel.gif" width="1" height="1" />
+</form>
+#+END_EXPORT
 
 * Local Variables                                                   :ARCHIVE:
 # Local Variables:

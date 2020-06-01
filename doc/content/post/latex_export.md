@@ -8,9 +8,9 @@ weight = 1004
 ## Using modern-cv {#using-modern-cv}
 
 [moderncv](https://www.ctan.org/tex-archive/macros/latex/contrib/moderncv) is a standard \\(\LaTeX\\) package that you can find in many of your
-latex distributions. For I maintain for personal purposes a fork of it to
-better work with my use case at <https://github.com/Titan-C/moderncv.git>
-Feel free to use any or even your personal fork for your desired use case.
+latex distributions. I maintain a fork of it, to work with my use case at
+<https://github.com/Titan-C/moderncv.git> Feel free to use any or even your
+personal fork for your desired use case.
 
 To configure the export for moderncv you need the addition options in your
 org file.

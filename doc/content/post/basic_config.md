@@ -19,7 +19,7 @@ put your foreseen job.
 | Field    | Description                                        |
 |----------|----------------------------------------------------|
 | TITLE    | Desired job                                        |
-| AUTHOR   | Who you are?                                       |
+| AUTHOR   | Who are you?                                       |
 | EMAIL    | Your contact email                                 |
 | ADDRESS  | Mailing address, this can span over multiple lines |
 | HOMEPAGE | URL of your website                                |
