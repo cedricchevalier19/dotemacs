@@ -69,6 +69,7 @@
     (:photostyle "PHOTOSTYLE" nil nil t)
     (:gitlab "GITLAB" nil nil parse)
     (:github "GITHUB" nil nil parse)
+    (:leanpub "LEANPUB" nil nil parse)
     (:linkedin "LINKEDIN" nil nil parse)
     (:twitter "TWITTER" nil nil parse)
     (:stackoverflow "STACKOVERFLOW" nil nil split)
@@ -169,6 +170,7 @@ holding export options."
                   :homepage
                   :github
                   :gitlab
+                  :leanpub
                   :linkedin
                   :twitter
                   :skype
