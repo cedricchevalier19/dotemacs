@@ -28,7 +28,6 @@
 ;; LaTeX one.
 
 ;;; Code:
-(require 'cl-lib)
 (require 'ox-latex)
 (require 'org-cv-utils)
 
@@ -135,8 +134,8 @@ holding export options."
      (let* ((author (split-string (org-export-data (plist-get info :author) info)))
             (first-name-prop (org-export-data (plist-get info :firstname) info))
             (last-name-prop (org-export-data (plist-get info :lastname) info))
-            (first-name (or (org-string-nw-p first-name-prop) (first author)))
-            (last-name (or (org-string-nw-p last-name-prop) (second author))))
+            (first-name (or (org-string-nw-p first-name-prop) (car author)))
+            (last-name (or (org-string-nw-p last-name-prop) (cadr author))))
        (format "\\name{%s}{%s}\n" first-name last-name))
 
      ;; Title
@@ -180,8 +179,8 @@ holding export options."
 
      ;; Stack overflow requires two values: ID and name
      (let* ((so-list (plist-get info :stackoverflow))
-            (so-id (when so-list (first so-list)))
-            (so-name (when so-list (second so-list))))
+            (so-id (when so-list (car so-list)))
+            (so-name (when so-list (cadr so-list))))
        (when (and (org-string-nw-p so-id) (org-string-nw-p so-name))
          (format "\\stackoverflow{%s}{%s}\n" so-id so-name)))
 
