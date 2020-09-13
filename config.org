@@ -1,0 +1,35 @@
+#+TITLE: My Emacs configuration
+#+AUTHOR: Cédric Chevalier
+#+OPTIONS: toc:nil
+
+* My Emacs configuration
+
+It is inspired by:
+- [caiohcs](https://github.com/caiohcs/my-emacs/)
+
+* Programming
+** Magit
+
+#+BEGIN_SRC emacs-lisp
+(use-package magit
+  :straight t
+  :bind (("C-x g" . magit-status)))
+#+END_SRC
+
+** Yaml
+#+BEGIN_SRC emacs-lisp
+  (use-package yaml-mode
+    :straight t
+    :mode ("\\.yml\\'" . yaml-mode))
+#+END_SRC
+
+** Docker
+#+BEGIN_SRC emacs-lisp
+  (use-package docker
+    :straight t
+    :commands docker)
+
+  (use-package dockerfile-mode
+    :straight t
+    :mode ("Dockerfile\\'" . dockerfile-mode))
+#+END_SRC
