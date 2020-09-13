@@ -41,6 +41,22 @@ It is inspired by:
 
   (load-theme 'doom-acario-light t)
 #+END_SRC
+** Modeline
+#+BEGIN_SRC emacs-lisp
+(display-time-mode t)
+
+(use-package spaceline
+  :straight t
+  :defer 2.2
+  :config
+  (require 'spaceline-config)
+  (setq powerline-default-separator (quote arrow))
+  (setq spaceline-line-column-p nil)
+  (setq spaceline-buffer-size nil)
+  (setq spaceline-workspace-numbers-unicode t)
+  (setq spaceline-buffer-encoding-abbrev-p nil)
+  (spaceline-spacemacs-theme))
+#+END_SRC
 * Features
 
 ** Ivy
