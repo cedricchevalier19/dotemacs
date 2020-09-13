@@ -95,6 +95,58 @@ It is inspired by:
   :straight t
   :commands vr/replace)
 #+end_src
+
+* Dashboard
+#+BEGIN_SRC emacs-lisp
+  (use-package dashboard
+    :straight t
+    :init
+    (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
+    :config
+    ;; Dashboard requirements.
+    (use-package page-break-lines
+      :straight t)
+    (use-package all-the-icons
+      :straight t)
+    ;; Dashboard configuration.
+    (dashboard-setup-startup-hook)
+    (setq dashboard-banner-logo-title "Welcome to Emacs")
+    (setq dashboard-startup-banner 'logo)
+    (setq dashboard-items '((recents   . 5)
+                            (agenda    . 5)))
+    (setq dashboard-set-init-info t)
+    (setq dashboard-set-heading-icons t)
+    (setq dashboard-set-file-icons t)
+
+    ;; adds a clock
+    (defun dashboard-insert-custom (list-size)
+      (defun string-centralized (str)
+        (let* ((indent
+                (concat "%"
+                        (number-to-string
+                         (/ (- (window-body-width) (string-width str)) 2))
+                        "s"))
+               (str (concat indent str indent)))
+          (format str " " " ")))
+  
+      (insert (propertize (string-centralized (format-time-string "%a %d %b %Y" (current-time))) 'font-lock-face '('bold :foreground "#6c4c7b")))
+      (newline)
+      (insert (propertize (string-centralized (format-time-string "%H:%M" (current-time))) 'font-lock-face '('bold :foreground "#6c4c7b"))))
+
+    (add-to-list 'dashboard-item-generators  '(custom . dashboard-insert-custom))
+    (add-to-list 'dashboard-items '(custom) t)
+
+    (defun test-dashboard () (setq *my-timer* (run-at-time "20 sec" nil #'(lambda ()
+                                                                            (when *my-timer*
+                                                                             (cancel-timer *my-timer*)
+                                                                             (setq *my-timer* nil))
+                                                                            (when (string=
+                                                                                   (buffer-name (window-buffer))
+                                                                                   "*dashboard*")
+                                                                             (dashboard-refresh-buffer))))))
+    (add-hook 'dashboard-mode-hook #'test-dashboard))
+#+END_SRC
+
 * Features
 
 ** Ivy
