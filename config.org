@@ -57,6 +57,24 @@ It is inspired by:
   (setq spaceline-buffer-encoding-abbrev-p nil)
   (spaceline-spacemacs-theme))
 #+END_SRC
+** Which-key
+#+BEGIN_SRC emacs-lisp
+  (use-package which-key
+    :straight t
+    :commands which-key-mode)
+#+END_SRC
+** Kill ring
+#+BEGIN_SRC emacs-lisp
+(use-package popup-kill-ring
+  :straight t
+  :bind (("M-y" . popup-kill-ring))) 
+#+END_SRC
+** Regular expressions
+#+begin_src emacs-lisp
+(use-package visual-regexp-steroids
+  :straight t
+  :commands vr/replace)
+#+end_src
 * Features
 
 ** Ivy
