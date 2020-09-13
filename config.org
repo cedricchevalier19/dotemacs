@@ -33,6 +33,26 @@ It is inspired by:
     :straight t
     :mode ("Dockerfile\\'" . dockerfile-mode))
 #+END_SRC
+** Parentheses
+#+BEGIN_SRC emacs-lisp
+  (use-package smartparens
+    :straight t
+    :defer 5.1
+    :diminish smartparens-mode
+    :config 
+    (smartparens-global-mode)
+    (sp-local-pair 'org-mode "*" "*")
+    (sp-local-pair 'org-mode "_" "_"))
+
+  (use-package highlight-parentheses
+    :straight t
+    :defer 5.3
+    :diminish highlight-parentheses-mode
+    :config (global-highlight-parentheses-mode))
+
+  (defvar show-paren-delay 0)
+  (show-paren-mode t)
+#+END_SRC
 * Interface
 ** Theme
 #+BEGIN_SRC emacs-lisp
