@@ -41,3 +41,25 @@ It is inspired by:
 
   (load-theme 'doom-acario-light t)
 #+END_SRC
+* Features
+
+** Ivy
+#+BEGIN_SRC emacs-lisp
+  ;;; Global
+  ;; Ivy is a generic completion tool
+  (use-package ivy
+    :straight t
+    :diminish ivy-mode
+    :defer 0.9
+    :config
+    (use-package swiper
+      :straight t
+      :bind (("C-s" . swiper)))
+    (use-package counsel
+      :straight t
+      :diminish counsel-mode
+      :config (counsel-mode))
+    (use-package ivy-avy
+      :straight t)
+    (ivy-mode))
+#+END_SRC
