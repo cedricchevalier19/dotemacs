@@ -33,3 +33,11 @@ It is inspired by:
     :straight t
     :mode ("Dockerfile\\'" . dockerfile-mode))
 #+END_SRC
+* Interface
+** Theme
+#+BEGIN_SRC emacs-lisp
+  (use-package doom-themes
+    :straight t)
+
+  (load-theme 'doom-acario-light t)
+#+END_SRC
