@@ -222,3 +222,26 @@ It is inspired by:
       (dired-rainbow-define-chmod executable-unix "#38c172" "-.*x.*")))
 
 #+END_SRC
+** Completion
+=company= is used
+#+BEGIN_SRC emacs-lisp
+  (use-package company
+    :defer 0.5
+    :straight t
+    :delight
+    :custom
+    (company-begin-commands '(self-insert-command))
+    (company-idle-delay 0)
+    (company-minimum-prefix-length 2)
+    (company-show-numbers t)
+    (company-tooltip-align-annotations 't)
+    (global-company-mode t))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+  (use-package company-box
+    :after company
+    :delight
+    :hook (company-mode . company-box-mode))
+#+END_SRC
+
