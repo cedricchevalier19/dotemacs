@@ -16,6 +16,14 @@ It is inspired by:
   :bind (("C-x g" . magit-status)))
 #+END_SRC
 
+#+BEGIN_SRC emacs-lisp
+  (use-package git-gutter
+    :defer 0.3
+    :straight t
+    :delight
+    :init (global-git-gutter-mode +1))
+#+END_SRC
+
 ** Yaml
 #+BEGIN_SRC emacs-lisp
   (use-package yaml-mode
