@@ -245,3 +245,20 @@ It is inspired by:
     :hook (company-mode . company-box-mode))
 #+END_SRC
 
+** Indent
+*** editor config
+#+BEGIN_SRC emacs-lisp
+(use-package editorconfig
+  :defer 0.3
+  :straight t
+  :config (editorconfig-mode 1))
+#+END_SRC
+
+*** highlight
+#+BEGIN_SRC emacs-lisp
+  (use-package highlight-indent-guides
+    :defer 0.3
+    :straight t
+    :hook (prog-mode . highlight-indent-guides-mode)
+    :custom (highlight-indent-guides-method 'character))
+#+END_SRC
