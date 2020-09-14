@@ -160,14 +160,19 @@ It is inspired by:
     :config
     (use-package swiper
       :straight t
-      :bind (("C-s" . swiper)))
+      :bind (("C-s" . swiper)
+             :map swiper-map
+             ("M-%" . swiper-query-replace)))
     (use-package counsel
       :straight t
       :diminish counsel-mode
       :config (counsel-mode))
-    (use-package ivy-avy
-      :straight t)
-    (ivy-mode))
+    (use-package ivy-rich
+      :defer 0.1
+      :straight t
+      :config
+      (ivy-rich-mode 1))
+  )
 #+END_SRC
 ** Dired
 #+BEGIN_SRC emacs-lisp
