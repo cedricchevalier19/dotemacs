@@ -117,6 +117,27 @@ machine gitlab.com/api/v4 login ziggy^forge password 012345abcdef..
             </style>")))
 #+end_src
 
+** Shell scripts
+*** Exec rights
+The snippet below ensures that the execution right is automatically granted to
+save a shell script file that begins with a =#!= shebang:
+
+#+BEGIN_SRC emacs-lisp
+  (use-package sh-script
+    :straight t
+    :ensure nil
+    :hook (after-save . executable-make-buffer-file-executable-if-script-p))
+#+END_SRC
+
+*** Fish support
+
+#+BEGIN_SRC emacs-lisp
+  (use-package fish-mode
+     :straight t
+     :mode ("\\.fish\\'")
+  )
+#+END_SRC
+
 ** Parentheses
 #+BEGIN_SRC emacs-lisp
   (use-package smartparens
