@@ -76,10 +76,12 @@ machine gitlab.com/api/v4 login ziggy^forge password 012345abcdef..
     :mode ("Dockerfile\\'" . dockerfile-mode))
 #+END_SRC
 ** Markdown
+
+Needs =pandoc=
+
 #+BEGIN_SRC emacs-lisp
   (use-package markdown-mode
     :straight t
-    :ensure-system-package (pandoc . "yay -S pandoc")
     :delight "μ "
     :mode ("\\.markdown\\'" "\\.md\\'")
     :custom (markdown-command "/usr/bin/pandoc"))
