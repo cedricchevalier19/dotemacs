@@ -278,6 +278,7 @@ save a shell script file that begins with a =#!= shebang:
       :straight t
       :config
       (ivy-rich-mode 1))
+     (ivy-mode t)
   )
 #+END_SRC
 ** Dired
