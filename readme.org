@@ -96,7 +96,7 @@ It is inspired by:
 #+END_SRC
 
 *** gitlab support
-
+**** Forge
 #+BEGIN_SRC emacs-lisp
   (use-package forge
     :straight t
@@ -125,6 +125,18 @@ machine api.github.com login ziggy^forge password 012345abcdef...
 Assuming your Gitlab username is "ziggy", the package is named "forge", and you want to access Gitlab.com, an entry in one of the three mentioned files would then look like this:
 
 machine gitlab.com/api/v4 login ziggy^forge password 012345abcdef..
+
+**** Gitlab ci
+
+#+BEGIN_SRC emacs-lisp
+(use-package gitlab-ci-mode
+  :straight t)
+
+(use-package gitlab-ci-mode-flycheck
+  :straight t
+  :after gitlab-ci-mode
+  :init (gitlab-ci-mode-flycheck-enable))
+#+END_SRC
 
 ** Yaml
 #+BEGIN_SRC emacs-lisp
