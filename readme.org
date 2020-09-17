@@ -35,16 +35,28 @@ It is inspired by:
 #+END_SRC
 *** Compile
 #+BEGIN_SRC emacs-lisp
-  (use-package cmake-ide
-    :straight t
-    :init
-    ;; (use-package semantic/bovine/gcc)
-    ;; (setq cmake-ide-flags-c++ (append '("-std=c++11")
-    ;; 				    (mapcar (lambda (path) (concat "-I" path)) (semantic-gcc-get-include-paths "c++"))))
-    ;; (setq cmake-ide-flags-c (append (mapcar (lambda (path) (concat "-I" path)) (semantic-gcc-get-include-paths "c"))))
-    (cmake-ide-setup)
-    :config
-    (put 'cmake-ide-build-dir 'safe-local-variable #'stringp)
+(use-package cmake-ide
+  :straight t
+  :after projectile
+  :hook (c++-mode . my/cmake-ide-find-project)
+  :preface
+  (defun my/cmake-ide-find-project ()
+    "Finds the directory of the project for cmake-ide."
+    (with-eval-after-load 'projectile
+      (setq cmake-ide-project-dir (projectile-project-root))
+      (setq cmake-ide-build-dir (concat cmake-ide-project-dir "build")))
+    (setq cmake-ide-compile-command
+      (concat "cd " cmake-ide-build-dir " && cmake " projectile-project-root " && cmake --build"))
+    (cmake-ide-load-db))
+
+  (defun my/switch-to-compilation-window ()
+    "Switches to the *compilation* buffer after compilation."
+    (other-window 1))
+  :bind ([remap comment-region] . cmake-ide-compile)
+  :init (cmake-ide-setup)
+  :config
+  (advice-add 'cmake-ide-compile :after #'my/switch-to-compilation-window)
+  (put 'cmake-ide-build-dir 'safe-local-variable #'stringp)
 )
 #+END_SRC
 ** Projectile
