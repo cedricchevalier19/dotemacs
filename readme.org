@@ -19,6 +19,33 @@ It is inspired by:
                 '(c/c++-clang c/c++-cppcheck c/c++-gcc))
   :hook ((c-mode c++-mode objc-mode cuda-mode) .
          (lambda () (require 'ccls) (lsp))))
+
+#+END_SRC
+** CMAKE
+*** Edit
+#+BEGIN_SRC emacs-lisp
+(use-package cmake-mode
+  :straight t
+  :mode ("CMakeLists\\.txt\\'" "\\.cmake\\'"))
+
+(use-package cmake-font-lock
+  :straight t
+  :after (cmake-mode)
+  :hook (cmake-mode . cmake-font-lock-activate))
+#+END_SRC
+*** Compile
+#+BEGIN_SRC emacs-lisp
+  (use-package cmake-ide
+    :straight t
+    :init
+    ;; (use-package semantic/bovine/gcc)
+    ;; (setq cmake-ide-flags-c++ (append '("-std=c++11")
+    ;; 				    (mapcar (lambda (path) (concat "-I" path)) (semantic-gcc-get-include-paths "c++"))))
+    ;; (setq cmake-ide-flags-c (append (mapcar (lambda (path) (concat "-I" path)) (semantic-gcc-get-include-paths "c"))))
+    (cmake-ide-setup)
+    :config
+    (put 'cmake-ide-build-dir 'safe-local-variable #'stringp)
+)
 #+END_SRC
 ** Projectile
 #+BEGIN_SRC emacs-lisp
