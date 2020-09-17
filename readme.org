@@ -300,6 +300,14 @@ save a shell script file that begins with a =#!= shebang:
 (use-package hydra
   :straight t)
 #+END_SRC
+** ibuffer
+#+BEGIN_SRC emacs-lisp
+(use-package ibuffer
+  :straight t
+  :bind (("C-x C-b" . ibuffer))
+)
+#+END_SRC
+
 * Dashboard
 #+BEGIN_SRC emacs-lisp
   (use-package dashboard
