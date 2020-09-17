@@ -464,3 +464,18 @@ Use =lsp-ui=
 (use-package deadgrep
   :straight t)
 #+END_SRC
+** Snippets
+#+BEGIN_SRC emacs-lisp
+  (use-package yasnippet
+    :straight t
+    :config
+    (add-to-list 'yas-snippet-dirs (expand-file-name "snippets"
+                   user-emacs-directory))
+    (yas-global-mode 1))
+#+END_SRC
+
+And some preconfigured snippets:
+#+BEGIN_SRC emacs-lisp
+  (use-package yasnippet-snippets
+    :straight t)
+#+END_SRC
