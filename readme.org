@@ -8,6 +8,13 @@ It is inspired by:
 - [caiohcs](https://github.com/caiohcs/my-emacs/)
 
 * Programming
+** Cpp
+#+BEGIN_SRC emacs-lisp
+(use-package ccls
+  :straight t
+  :hook ((c-mode c++-mode objc-mode cuda-mode) .
+         (lambda () (require 'ccls) (lsp))))
+#+END_SRC
 ** Projectile
 #+BEGIN_SRC emacs-lisp
 (use-package projectile
@@ -523,6 +530,13 @@ Use =lsp-ui=
   (use-package lsp-ui
      :straight t
      :commands lsp-ui-mode)
+#+END_SRC
+
+*** company
+#+BEGIN_SRC emacs-lisp
+(use-package company-lsp 
+  :straight t
+  :commands company-lsp)
 #+END_SRC
 
 *** Ivy
