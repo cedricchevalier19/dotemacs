@@ -453,3 +453,14 @@ Use =lsp-ui=
   (when (file-exists-p custom-file)
     (load custom-file t))
 #+END_SRC
+** Search
+*** Fuzzy
+#+BEGIN_SRC emacs-lisp
+(use-package fzf
+  :straight t)
+#+END_SRC
+*** ripgrep
+#+BEGIN_SRC emacs-lisp
+(use-package deadgrep
+  :straight t)
+#+END_SRC
