@@ -457,6 +457,7 @@ Use =ls-deferred= to defer server status.
      :straight t
      :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
             (python-mode . lsp-deferred)
+	    (sh-mode . lsp-deferred)
             ;; if you want which-key integration
             (lsp-mode . lsp-enable-which-key-integration))
       :commands (lsp lsp-deferred))
@@ -486,6 +487,12 @@ Use =lsp-ui=
   (use-package dap-mode
      :straight t)
 ;; (use-package dap-LANGUAGE) to load the dap adapter for your language
+#+END_SRC
+** Flycheck
+#+BEGIN_SRC emacs-lisp
+(use-package flycheck
+  :straight t
+  :init (global-flycheck-mode))
 #+END_SRC
 ** Custom
 #+BEGIN_SRC emacs-lisp
