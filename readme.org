@@ -368,6 +368,50 @@ save a shell script file that begins with a =#!= shebang:
     :hook (prog-mode . highlight-indent-guides-mode)
     :custom (highlight-indent-guides-method 'character))
 #+END_SRC
+** LSP
+*** Core
+Set prefix for lsp-command-keymap (few alternatives - "=C-l=", "=C-c l=")
+
+Use =ls-deferred= to defer server status.
+
+#+BEGIN_SRC emacs-lisp
+  (setq lsp-keymap-prefix "C-c l")
+
+  (use-package lsp-mode
+     :straight t
+     :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
+            (python-mode . lsp-deferred)
+            ;; if you want which-key integration
+            (lsp-mode . lsp-enable-which-key-integration))
+      :commands (lsp lsp-deferred))
+#+END_SRC
+
+Use =lsp-ui=
+#+BEGIN_SRC emacs-lisp
+  ;; optionally
+  (use-package lsp-ui
+     :straight t
+     :commands lsp-ui-mode)
+#+END_SRC
+
+
+*** Ivy
+#+BEGIN_SRC emacs-lisp
+  (use-package lsp-ivy
+     :straight t
+     :commands lsp-ivy-workspace-symbol)
+  (use-package lsp-treemacs
+     :straight t
+     :commands lsp-treemacs-errors-list)
+#+END_SRC
+
+*** debugger
+
+#+BEGIN_SRC emacs-lisp
+  (use-package dap-mode
+     :straight t)
+;; (use-package dap-LANGUAGE) to load the dap adapter for your language
+#+END_SRC
 ** Custom
 #+BEGIN_SRC emacs-lisp
   (setq-default
