@@ -138,6 +138,18 @@ machine gitlab.com/api/v4 login ziggy^forge password 012345abcdef..
   :init (gitlab-ci-mode-flycheck-enable))
 #+END_SRC
 
+** Python
+#+BEGIN_SRC emacs-lisp
+;; (use-package lsp-pyright
+;;    :straight t
+;;    :hook (python-mode . lsp-deferred))
+
+(use-package yapfify
+  :straight t
+  :hook (python-mode . yapf-mode)
+)
+#+END_SRC
+
 ** Yaml
 #+BEGIN_SRC emacs-lisp
   (use-package yaml-mode
