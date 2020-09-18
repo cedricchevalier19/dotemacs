@@ -262,6 +262,20 @@ Needs =pandoc=
             </style>")))
 #+end_src
 
+** RST
+*** plain
+#+BEGIN_SRC emacs-lisp
+(use-package rst
+  :straight t
+  :delight "rst"
+  :mode ("\\.rst\\'" "\\.rest\\'"))
+#+END_SRC
+*** sphinx
+#+BEGIN_SRC emacs-lisp
+(use-package sphinx-mode
+  :straight t
+  :after rst)
+#+END_SRC
 ** Shell scripts
 *** Exec rights
 The snippet below ensures that the execution right is automatically granted to
