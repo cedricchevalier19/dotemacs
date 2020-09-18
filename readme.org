@@ -268,7 +268,9 @@ Needs =pandoc=
 (use-package rst
   :straight t
   :delight "rst"
-  :mode ("\\.rst\\'" "\\.rest\\'"))
+  :mode (("\\.txt$" . rst-mode)
+         ("\\.rst$" . rst-mode)
+         ("\\.rest$" . rst-mode)))
 #+END_SRC
 *** sphinx
 #+BEGIN_SRC emacs-lisp
