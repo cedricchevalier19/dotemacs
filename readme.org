@@ -658,3 +658,37 @@ And some preconfigured snippets:
   (use-package yasnippet-snippets
     :straight t)
 #+END_SRC
+* Org
+*** Roam
+For =zettelkasten= notes.
+
+Requires:
+- =sqlite3=
+- =graphviz= for =dot=
+
+#+BEGIN_SRC emacs-lisp
+(use-package org-roam
+      :straight t
+      :hook
+      (after-init . org-roam-mode)
+      :custom
+      (org-roam-directory "~/org/roam/")
+      :bind (:map org-roam-mode-map
+              (("C-c n l" . org-roam)
+               ("C-c n f" . org-roam-find-file)
+               ("C-c n g" . org-roam-graph-show))
+              :map org-mode-map
+              (("C-c n i" . org-roam-insert))
+              (("C-c n I" . org-roam-insert-immediate))))
+
+(use-package org-journal
+  :straight t
+  :after org-roam
+  :bind
+  ("C-c n j" . org-journal-new-entry)
+  :custom
+  (org-journal-date-prefix "#+title: ")
+  (org-journal-file-format "%Y-%m-%d.org")
+  (org-journal-dir org-roam-directory)
+  (org-journal-date-format "%A, %d %B %Y"))
+#+END_SRC
