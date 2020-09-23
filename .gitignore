@@ -1,0 +1,16 @@
+*~
+*.elc
+.cache
+projectile.cache
+projectile-bookmarks.eld
+recentf
+false
+forge-database.sqlite
+.dap-breakpoints
+.lsp-session*
+
+# We generate these files/directories
+readme.el
+straight/
+transient/
+url/
