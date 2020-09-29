@@ -6,6 +6,7 @@
 
 It is inspired by:
 - [caiohcs](https://github.com/caiohcs/my-emacs/)
+- [jchaffin](https://github.com/jchaffin/.emacs.d)
 
 * Programming
 ** Cpp
