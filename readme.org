@@ -904,3 +904,38 @@ From https://github.com/jchaffin/.emacs.d/blob/master/dotemacs.org
 (use-package ox-hugo
   :after (ox))
 #+END_SRC
+
+*** Reviews
+**** noter
+# #+BEGIN_SRC emacs-lisp
+(use-package org-noter
+  :after (:any org pdf-view)
+  :config
+  (setq
+   ;; The WM can handle splits
+   org-noter-notes-window-location 'other-frame
+   ;; Please stop opening frames
+   org-noter-always-create-frame nil
+   ;; I want to see the whole file
+   org-noter-hide-other nil
+   ;; Everything is relative to the main notes file
+   org-noter-notes-search-path (list org_notes)
+   )
+  )
+#+END_SRC
+
+**** pdftools
+# #+BEGIN_SRC emacs-lisp
+(setq
+  org_notes (concat (getenv "HOME") "/Documents/zotero-notes/")
+  zot_bib (concat (getenv "HOME") "/Documents/zotero.bib")
+  )
+(use-package org-pdftools
+  :hook (org-load . org-pdftools-setup-link))
+(use-package org-noter-pdftools
+  :after org-noter
+  :config
+  (with-eval-after-load 'pdf-annot
+    (add-hook 'pdf-annot-activate-handler-functions#'org-noter-pdftools-jump-to-note)))
+#+END_SRC emacs-lisp
+
