@@ -461,6 +461,7 @@ I use =bufler= instead of =ibuffer=
 ** Dired
 #+BEGIN_SRC emacs-lisp
   (use-package dired
+    :straight (:type built-in)
     :hook (dired-mode . (lambda () (dired-omit-mode)))
     :bind (:map dired-mode-map
            ("<return>" . dired-find-alternate-file)
@@ -469,6 +470,7 @@ I use =bufler= instead of =ibuffer=
            ("J" . dired-omit-mode)))
 
   (use-package dired-x
+    :straight (:type built-in)
     :config
     (setq dired-omit-verbose nil)
     (setq dired-omit-files
