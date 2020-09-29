@@ -857,6 +857,14 @@ From https://github.com/jchaffin/.emacs.d/blob/master/dotemacs.org
 	      ("M-s l" . org-latex-pdf-process-set)))
 #+END_SRC
 
+#+BEGIN_SRC emacs-lisp
+(use-package ox-beamer
+  :straight org-plus-contrib
+  :after (ox)
+  :demand t
+)
+#+END_SRC
+
 **** Pandoc
 #+BEGIN_SRC emacs-lisp
 (use-package ox-pandoc
