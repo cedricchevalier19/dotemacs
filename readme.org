@@ -383,7 +383,7 @@ I use =bufler= instead of =ibuffer=
   (use-package dashboard
     :straight t
     :init
-    (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
+    (dashboard-setup-startup-hook)
     :config
     ;; Dashboard requirements.
     (use-package page-break-lines
@@ -391,7 +391,6 @@ I use =bufler= instead of =ibuffer=
     (use-package all-the-icons
       :straight t)
     ;; Dashboard configuration.
-    (dashboard-setup-startup-hook)
     (setq dashboard-banner-logo-title "Welcome to Emacs")
     (setq dashboard-startup-banner 'logo)
     (setq dashboard-items '((recents   . 5)
