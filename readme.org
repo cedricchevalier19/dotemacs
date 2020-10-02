@@ -229,11 +229,9 @@ machine gitlab.com/api/v4 login ziggy^forge password 012345abcdef..
 **** Gitlab ci
 
 #+BEGIN_SRC emacs-lisp
-(use-package gitlab-ci-mode
-  )
+(use-package gitlab-ci-mode)
 
 (use-package gitlab-ci-mode-flycheck
-
   :after gitlab-ci-mode
   :init (gitlab-ci-mode-flycheck-enable))
 #+END_SRC
@@ -251,17 +249,17 @@ machine gitlab.com/api/v4 login ziggy^forge password 012345abcdef..
 
 ** Yaml
 #+BEGIN_SRC emacs-lisp
-  (use-package yaml-mode
-    :mode ("\\.yml\\'" . yaml-mode))
+(use-package yaml-mode
+  :mode ("\\.yml\\'" . yaml-mode))
 #+END_SRC
 
 ** Docker
 #+BEGIN_SRC emacs-lisp
-  (use-package docker
-    :bind ("C-c d" . docker))
+(use-package docker
+  :bind ("C-c d" . docker))
 
-  (use-package dockerfile-mode
-    :mode ("Dockerfile\\'" "\\.dockerfile$"))
+(use-package dockerfile-mode
+  :mode ("Dockerfile\\'" "\\.dockerfile$"))
 #+END_SRC
 ** Markdown
 
@@ -325,34 +323,34 @@ The snippet below ensures that the execution right is automatically granted to
 save a shell script file that begins with a =#!= shebang:
 
 #+BEGIN_SRC emacs-lisp
-  (use-package sh-script
-    :ensure nil
-    :hook (after-save . executable-make-buffer-file-executable-if-script-p))
+(use-package sh-script
+  :ensure nil
+  :hook (after-save . executable-make-buffer-file-executable-if-script-p))
 #+END_SRC
 
 *** Fish support
 
 #+BEGIN_SRC emacs-lisp
-  (use-package fish-mode
-     :mode ("\\.fish\\'")
-  )
+(use-package fish-mode
+  :mode ("\\.fish\\'"))
 #+END_SRC
 
 ** Parentheses
 #+BEGIN_SRC emacs-lisp
-  (use-package smartparens
-    :diminish smartparens-mode
-    :config
-    (smartparens-global-mode)
-    (sp-local-pair 'org-mode "*" "*")
-    (sp-local-pair 'org-mode "_" "_"))
+(use-package smartparens
+  :diminish smartparens-mode
+  :config
+  (smartparens-global-mode)
+  ;; (sp-local-pair 'org-mode "*" "*")
+  ;; (sp-local-pair 'org-mode "_" "_")
+  )
 
-  (use-package highlight-parentheses
-    :diminish highlight-parentheses-mode
-    :config (global-highlight-parentheses-mode))
+(use-package highlight-parentheses
+  :diminish highlight-parentheses-mode
+  :config (global-highlight-parentheses-mode))
 
-  (defvar show-paren-delay 0)
-  (show-paren-mode t)
+(defvar show-paren-delay 0)
+(show-paren-mode t)
 #+END_SRC
 * Interface
 ** Theme
@@ -386,55 +384,54 @@ I use =bufler= instead of =ibuffer=
 
 #+BEGIN_SRC emacs-lisp
 (use-package bufler
-  :bind (("C-x C-b" . bufler))
-  )
+  :bind (("C-x C-b" . bufler)))
 #+END_SRC
 
 * Dashboard
 #+BEGIN_SRC emacs-lisp
-  (use-package dashboard
-    :init
-    (dashboard-setup-startup-hook)
-    :config
-    ;; Dashboard requirements.
-    (use-package page-break-lines)
-    (use-package all-the-icons)
-    ;; Dashboard configuration.
-    (setq dashboard-banner-logo-title "Welcome to Emacs")
-    (setq dashboard-startup-banner 'logo)
-    (setq dashboard-items '((recents   . 5)
-                            (agenda    . 5)))
-    (setq dashboard-set-init-info t)
-    (setq dashboard-set-heading-icons t)
-    (setq dashboard-set-file-icons t)
+(use-package dashboard
+  :init
+  (dashboard-setup-startup-hook)
+  :config
+  ;; Dashboard requirements.
+  (use-package page-break-lines)
+  (use-package all-the-icons)
+  ;; Dashboard configuration.
+  (setq dashboard-banner-logo-title "Welcome to Emacs")
+  (setq dashboard-startup-banner 'logo)
+  (setq dashboard-items '((recents   . 5)
+                          (agenda    . 5)))
+  (setq dashboard-set-init-info t)
+  (setq dashboard-set-heading-icons t)
+  (setq dashboard-set-file-icons t)
 
-    ;; adds a clock
-    (defun dashboard-insert-custom (list-size)
-      (defun string-centralized (str)
-        (let* ((indent
-                (concat "%"
-                        (number-to-string
-                         (/ (- (window-body-width) (string-width str)) 2))
-                        "s"))
-               (str (concat indent str indent)))
-          (format str " " " ")))
+  ;; adds a clock
+  (defun dashboard-insert-custom (list-size)
+    (defun string-centralized (str)
+      (let* ((indent
+              (concat "%"
+                      (number-to-string
+                       (/ (- (window-body-width) (string-width str)) 2))
+                      "s"))
+             (str (concat indent str indent)))
+        (format str " " " ")))
 
-      (insert (propertize (string-centralized (format-time-string "%a %d %b %Y" (current-time))) 'font-lock-face '('bold :foreground "#6c4c7b")))
-      (newline)
-      (insert (propertize (string-centralized (format-time-string "%H:%M" (current-time))) 'font-lock-face '('bold :foreground "#6c4c7b"))))
+    (insert (propertize (string-centralized (format-time-string "%a %d %b %Y" (current-time))) 'font-lock-face '('bold :foreground "#6c4c7b")))
+    (newline)
+    (insert (propertize (string-centralized (format-time-string "%H:%M" (current-time))) 'font-lock-face '('bold :foreground "#6c4c7b"))))
 
-    (add-to-list 'dashboard-item-generators  '(custom . dashboard-insert-custom))
-    (add-to-list 'dashboard-items '(custom) t)
+  (add-to-list 'dashboard-item-generators  '(custom . dashboard-insert-custom))
+  (add-to-list 'dashboard-items '(custom) t)
 
-    (defun test-dashboard () (setq *my-timer* (run-at-time "20 sec" nil #'(lambda ()
-                                                                            (when *my-timer*
-                                                                             (cancel-timer *my-timer*)
-                                                                             (setq *my-timer* nil))
-                                                                            (when (string=
-                                                                                   (buffer-name (window-buffer))
-                                                                                   "*dashboard*")
-                                                                             (dashboard-refresh-buffer))))))
-    (add-hook 'dashboard-mode-hook #'test-dashboard))
+  (defun test-dashboard () (setq *my-timer* (run-at-time "20 sec" nil #'(lambda ()
+                                                                          (when *my-timer*
+                                                                            (cancel-timer *my-timer*)
+                                                                            (setq *my-timer* nil))
+                                                                          (when (string=
+                                                                                 (buffer-name (window-buffer))
+                                                                                 "*dashboard*")
+                                                                            (dashboard-refresh-buffer))))))
+  (add-hook 'dashboard-mode-hook #'test-dashboard))
 #+END_SRC
 
 * Features
@@ -442,24 +439,23 @@ I use =bufler= instead of =ibuffer=
 #+BEGIN_SRC emacs-lisp
   ;;; Global
   ;; Ivy is a generic completion tool
-  (use-package ivy
-    :diminish ivy-mode
-    :defer 0.9
+(use-package ivy
+  :diminish ivy-mode
+  :defer 0.9
+  :config
+  (use-package swiper
+    :bind (("C-s" . swiper)
+           :map swiper-map
+           ("M-%" . swiper-query-replace)))
+  (use-package counsel
+    :diminish counsel-mode
+    :config (counsel-mode))
+  (use-package ivy-rich
+    :defer 0.1
     :config
-    (use-package swiper
-      :bind (("C-s" . swiper)
-             :map swiper-map
-             ("M-%" . swiper-query-replace)))
-    (use-package counsel
-      :diminish counsel-mode
-      :config (counsel-mode))
-    (use-package ivy-rich
-      :defer 0.1
-      :config
-      (ivy-rich-mode 1))
-    (use-package ivy-hydra
-      )
-     (ivy-mode t)
+    (ivy-rich-mode 1))
+  (use-package ivy-hydra)
+  (ivy-mode t)
   )
 #+END_SRC
 ** Dired
@@ -470,23 +466,23 @@ I use =bufler= instead of =ibuffer=
 ** Completion
 =company= is used
 #+BEGIN_SRC emacs-lisp
-  (use-package company
-    :defer 0.5
-    :delight
-    :custom
-    (company-begin-commands '(self-insert-command))
-    (company-idle-delay 0)
-    (company-minimum-prefix-length 2)
-    (company-show-numbers t)
-    (company-tooltip-align-annotations 't)
-    (global-company-mode t))
+(use-package company
+  :defer 0.5
+  :delight
+  :custom
+  (company-begin-commands '(self-insert-command))
+  (company-idle-delay 0)
+  (company-minimum-prefix-length 2)
+  (company-show-numbers t)
+  (company-tooltip-align-annotations 't)
+  (global-company-mode t))
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp
-  (use-package company-box
-    :after company
-    :delight
-    :hook (company-mode . company-box-mode))
+(use-package company-box
+  :after company
+  :delight
+  :hook (company-mode . company-box-mode))
 #+END_SRC
 
 ** Indent
@@ -499,10 +495,10 @@ I use =bufler= instead of =ibuffer=
 
 *** highlight
 #+BEGIN_SRC emacs-lisp
-  (use-package highlight-indent-guides
-    :defer 0.3
-    :hook (prog-mode . highlight-indent-guides-mode)
-    :custom (highlight-indent-guides-method 'character))
+(use-package highlight-indent-guides
+  :defer 0.3
+  :hook (prog-mode . highlight-indent-guides-mode)
+  :custom (highlight-indent-guides-method 'character))
 #+END_SRC
 ** LSP
 *** Core
@@ -511,44 +507,43 @@ Set prefix for lsp-command-keymap (few alternatives - "=C-l=", "=C-c l=")
 Use =ls-deferred= to defer server status.
 
 #+BEGIN_SRC emacs-lisp
-  (setq lsp-keymap-prefix "C-c l")
+(setq lsp-keymap-prefix "C-c l")
 
-  (use-package lsp-mode
-     :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
-            (python-mode . lsp-deferred)
-            (sh-mode . lsp-deferred)
-            ;; if you want which-key integration
-            (lsp-mode . lsp-enable-which-key-integration))
-      :commands (lsp lsp-deferred))
+(use-package lsp-mode
+  :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
+         (python-mode . lsp-deferred)
+         (sh-mode . lsp-deferred)
+         ;; if you want which-key integration
+         (lsp-mode . lsp-enable-which-key-integration))
+  :commands (lsp lsp-deferred))
 #+END_SRC
 
 Use =lsp-ui=
 #+BEGIN_SRC emacs-lisp
   ;; optionally
-  (use-package lsp-ui
-     :commands lsp-ui-mode)
+(use-package lsp-ui
+  :commands lsp-ui-mode)
 #+END_SRC
 
 *** company
 #+BEGIN_SRC emacs-lisp
 (use-package company-lsp
-
   :commands company-lsp
   :config (push 'company-lsp company-backends))
 #+END_SRC
 
 *** Ivy
 #+BEGIN_SRC emacs-lisp
-  (use-package lsp-ivy
-     :commands lsp-ivy-workspace-symbol)
-  (use-package lsp-treemacs
-     :commands lsp-treemacs-errors-list)
+(use-package lsp-ivy
+  :commands lsp-ivy-workspace-symbol)
+(use-package lsp-treemacs
+  :commands lsp-treemacs-errors-list)
 #+END_SRC
 
 *** debugger
 
 #+BEGIN_SRC emacs-lisp
-  (use-package dap-mode)
+(use-package dap-mode)
 ;; (use-package dap-LANGUAGE) to load the dap adapter for your language
 #+END_SRC
 ** Flycheck
@@ -558,13 +553,13 @@ Use =lsp-ui=
 #+END_SRC
 ** Custom
 #+BEGIN_SRC emacs-lisp
-  (setq-default
-   auto-save-list-file-name  (expand-file-name "local/auto-save-list"
-                   user-emacs-directory)
-   custom-file  (expand-file-name "local/custom.el"
-                   user-emacs-directory))
-  (when (file-exists-p custom-file)
-    (load custom-file t))
+(setq-default
+ auto-save-list-file-name  (expand-file-name "local/auto-save-list"
+					     user-emacs-directory)
+ custom-file  (expand-file-name "local/custom.el"
+				user-emacs-directory))
+(when (file-exists-p custom-file)
+  (load custom-file t))
 #+END_SRC
 ** Search
 *** Fuzzy
@@ -577,16 +572,16 @@ Use =lsp-ui=
 #+END_SRC
 ** Snippets
 #+BEGIN_SRC emacs-lisp
-  (use-package yasnippet
-    :config
-    (add-to-list 'yas-snippet-dirs (expand-file-name "snippets"
-                   user-emacs-directory))
-    (yas-global-mode 1))
+(use-package yasnippet
+  :config
+  (add-to-list 'yas-snippet-dirs (expand-file-name "snippets"
+						   user-emacs-directory))
+  (yas-global-mode 1))
 #+END_SRC
 
 And some preconfigured snippets:
 #+BEGIN_SRC emacs-lisp
-  (use-package yasnippet-snippets)
+(use-package yasnippet-snippets)
 #+END_SRC
 * Org
 *** Roam
@@ -598,17 +593,17 @@ Requires:
 
 #+BEGIN_SRC emacs-lisp
 (use-package org-roam
-      :hook
-      (after-init . org-roam-mode)
-      :custom
-      (org-roam-directory "~/org/roam/")
-      :bind (:map org-roam-mode-map
+  :hook
+  (after-init . org-roam-mode)
+  :custom
+  (org-roam-directory "~/org/roam/")
+  :bind (:map org-roam-mode-map
               (("C-c n l" . org-roam)
                ("C-c n f" . org-roam-find-file)
                ("C-c n g" . org-roam-graph-show))
-              :map org-mode-map
-              (("C-c n i" . org-roam-insert))
-              (("C-c n I" . org-roam-insert-immediate))))
+         :map org-mode-map
+               (("C-c n i" . org-roam-insert))
+               (("C-c n I" . org-roam-insert-immediate))))
 
 (use-package org-journal
   :after org-roam
@@ -870,13 +865,13 @@ From https://github.com/jchaffin/.emacs.d/blob/master/dotemacs.org
 **** pdftools
 #+BEGIN_SRC emacs-lisp
 (setq
-  org_notes (concat (getenv "HOME") "/Documents/zotero-notes/")
-  zot_bib (concat (getenv "HOME") "/Documents/zotero.bib")
-   bibtex-completion-notes-path org_notes
- bibtex-completion-bibliography zot_bib
- bibtex-completion-pdf-field "file"
- bibtex-completion-notes-template-multiple-files
- (concat
+org_notes (concat (getenv "HOME") "/Documents/zotero-notes/")
+zot_bib (concat (getenv "HOME") "/Documents/zotero.bib")
+bibtex-completion-notes-path org_notes
+bibtex-completion-bibliography zot_bib
+bibtex-completion-pdf-field "file"
+bibtex-completion-notes-template-multiple-files
+(concat
   "#+TITLE: ${title}\n"
   "#+ROAM_KEY: cite:${=key=}\n"
   "* TODO Notes\n"
@@ -891,7 +886,7 @@ From https://github.com/jchaffin/.emacs.d/blob/master/dotemacs.org
   ":URL: ${url}\n"
   ":END:\n\n"
   )
-  )
+)
 (use-package org-pdftools
   :hook (org-load . org-pdftools-setup-link))
 (use-package org-noter-pdftools
