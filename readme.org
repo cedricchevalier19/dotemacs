@@ -12,7 +12,6 @@ It is inspired by:
 ** Cpp
 #+BEGIN_SRC emacs-lisp
 (use-package ccls
-  :straight t
   :config
     (setq ccls-executable "ccls")
   (setq lsp-prefer-flymake nil)
@@ -26,18 +25,15 @@ It is inspired by:
 *** Edit
 #+BEGIN_SRC emacs-lisp
 (use-package cmake-mode
-  :straight t
   :mode ("CMakeLists\\.txt\\'" "\\.cmake\\'"))
 
 (use-package cmake-font-lock
-  :straight t
   :after (cmake-mode)
   :hook (cmake-mode . cmake-font-lock-activate))
 #+END_SRC
 *** Compile
 #+BEGIN_SRC emacs-lisp
 (use-package cmake-ide
-  :straight t
   :after projectile
   :hook (c++-mode . my/cmake-ide-find-project)
   :preface
@@ -63,7 +59,6 @@ It is inspired by:
 ** Projectile
 #+BEGIN_SRC emacs-lisp
 (use-package projectile
-  :straight t
   :bind
   ("C-c p" . projectile-command-map)
   ("C-x w" . hydra-projectile-other-window/body)
@@ -71,7 +66,6 @@ It is inspired by:
   :config
   (use-package counsel-projectile
     :after (projectile)
-    :straight t
     :bind
     (:map projectile-command-map
           ("s s" . counsel-projectile-rg)
@@ -133,7 +127,6 @@ It is inspired by:
 
 #+BEGIN_SRC emacs-lisp
 (use-package magit
-  :straight t
   :bind (("C-x g" . magit-status)))
 #+END_SRC
 
@@ -148,7 +141,7 @@ It is inspired by:
   :hook ((markdown-mode . git-gutter-mode)
          (prog-mode . git-gutter-mode)
          (conf-mode . git-gutter-mode)
-	       (org-mode . git-gutter-mode))
+               (org-mode . git-gutter-mode))
   :init
   :config
   (setq git-gutter:disabled-modes '(asm-mode image-mode)
@@ -207,7 +200,6 @@ It is inspired by:
 **** Forge
 #+BEGIN_SRC emacs-lisp
   (use-package forge
-    :straight t
     :after magit
   )
 #+END_SRC
@@ -238,10 +230,10 @@ machine gitlab.com/api/v4 login ziggy^forge password 012345abcdef..
 
 #+BEGIN_SRC emacs-lisp
 (use-package gitlab-ci-mode
-  :straight t)
+  )
 
 (use-package gitlab-ci-mode-flycheck
-  :straight t
+
   :after gitlab-ci-mode
   :init (gitlab-ci-mode-flycheck-enable))
 #+END_SRC
@@ -249,11 +241,10 @@ machine gitlab.com/api/v4 login ziggy^forge password 012345abcdef..
 ** Python
 #+BEGIN_SRC emacs-lisp
 ;; (use-package lsp-pyright
-;;    :straight t
+;;
 ;;    :hook (python-mode . lsp-deferred))
 
 (use-package yapfify
-  :straight t
   :hook (python-mode . yapf-mode)
 )
 #+END_SRC
@@ -261,18 +252,15 @@ machine gitlab.com/api/v4 login ziggy^forge password 012345abcdef..
 ** Yaml
 #+BEGIN_SRC emacs-lisp
   (use-package yaml-mode
-    :straight t
     :mode ("\\.yml\\'" . yaml-mode))
 #+END_SRC
 
 ** Docker
 #+BEGIN_SRC emacs-lisp
   (use-package docker
-    :straight t
     :bind ("C-c d" . docker))
 
   (use-package dockerfile-mode
-    :straight t
     :mode ("Dockerfile\\'" "\\.dockerfile$"))
 #+END_SRC
 ** Markdown
@@ -281,13 +269,11 @@ Needs =pandoc=
 
 #+BEGIN_SRC emacs-lisp
   (use-package markdown-mode
-    :straight t
     :delight "μ "
     :mode ("\\.markdown\\'" "\\.md\\'")
     :custom (markdown-command "/usr/bin/pandoc"))
 
   (use-package markdown-preview-mode
-    :straight t
     :after markdown-mode
     :custom
     (markdown-preview-javascript
@@ -323,7 +309,6 @@ Needs =pandoc=
 *** plain
 #+BEGIN_SRC emacs-lisp
 (use-package rst
-  :straight t
   :delight "rst"
   :mode (("\\.txt$" . rst-mode)
          ("\\.rst$" . rst-mode)
@@ -332,7 +317,6 @@ Needs =pandoc=
 *** sphinx
 #+BEGIN_SRC emacs-lisp
 (use-package sphinx-mode
-  :straight t
   :after rst)
 #+END_SRC
 ** Shell scripts
@@ -342,7 +326,6 @@ save a shell script file that begins with a =#!= shebang:
 
 #+BEGIN_SRC emacs-lisp
   (use-package sh-script
-    :straight t
     :ensure nil
     :hook (after-save . executable-make-buffer-file-executable-if-script-p))
 #+END_SRC
@@ -351,7 +334,6 @@ save a shell script file that begins with a =#!= shebang:
 
 #+BEGIN_SRC emacs-lisp
   (use-package fish-mode
-     :straight t
      :mode ("\\.fish\\'")
   )
 #+END_SRC
@@ -359,17 +341,13 @@ save a shell script file that begins with a =#!= shebang:
 ** Parentheses
 #+BEGIN_SRC emacs-lisp
   (use-package smartparens
-    :straight t
-    :defer 5.1
     :diminish smartparens-mode
-    :config 
+    :config
     (smartparens-global-mode)
     (sp-local-pair 'org-mode "*" "*")
     (sp-local-pair 'org-mode "_" "_"))
 
   (use-package highlight-parentheses
-    :straight t
-    :defer 5.3
     :diminish highlight-parentheses-mode
     :config (global-highlight-parentheses-mode))
 
@@ -386,33 +364,28 @@ save a shell script file that begins with a =#!= shebang:
 ** Which-key
 #+BEGIN_SRC emacs-lisp
   (use-package which-key
-    :straight t
     :commands which-key-mode)
 #+END_SRC
 ** Kill ring
 #+BEGIN_SRC emacs-lisp
 (use-package popup-kill-ring
-  :straight t
-  :bind (("M-y" . popup-kill-ring))) 
+  :bind (("M-y" . popup-kill-ring)))
 #+END_SRC
 ** Regular expressions
 #+begin_src emacs-lisp
 (use-package visual-regexp-steroids
-  :straight t
   :commands vr/replace)
 #+end_src
 
 ** Hydra
 #+BEGIN_SRC emacs-lisp
-(use-package hydra
-  :straight t)
+(use-package hydra)
 #+END_SRC
 ** buffer
 I use =bufler= instead of =ibuffer=
 
 #+BEGIN_SRC emacs-lisp
 (use-package bufler
-  :straight t
   :bind (("C-x C-b" . bufler))
   )
 #+END_SRC
@@ -420,15 +393,12 @@ I use =bufler= instead of =ibuffer=
 * Dashboard
 #+BEGIN_SRC emacs-lisp
   (use-package dashboard
-    :straight t
     :init
     (dashboard-setup-startup-hook)
     :config
     ;; Dashboard requirements.
-    (use-package page-break-lines
-      :straight t)
-    (use-package all-the-icons
-      :straight t)
+    (use-package page-break-lines)
+    (use-package all-the-icons)
     ;; Dashboard configuration.
     (setq dashboard-banner-logo-title "Welcome to Emacs")
     (setq dashboard-startup-banner 'logo)
@@ -448,7 +418,7 @@ I use =bufler= instead of =ibuffer=
                         "s"))
                (str (concat indent str indent)))
           (format str " " " ")))
-  
+
       (insert (propertize (string-centralized (format-time-string "%a %d %b %Y" (current-time))) 'font-lock-face '('bold :foreground "#6c4c7b")))
       (newline)
       (insert (propertize (string-centralized (format-time-string "%H:%M" (current-time))) 'font-lock-face '('bold :foreground "#6c4c7b"))))
@@ -473,33 +443,28 @@ I use =bufler= instead of =ibuffer=
   ;;; Global
   ;; Ivy is a generic completion tool
   (use-package ivy
-    :straight t
     :diminish ivy-mode
     :defer 0.9
     :config
     (use-package swiper
-      :straight t
       :bind (("C-s" . swiper)
              :map swiper-map
              ("M-%" . swiper-query-replace)))
     (use-package counsel
-      :straight t
       :diminish counsel-mode
       :config (counsel-mode))
     (use-package ivy-rich
       :defer 0.1
-      :straight t
       :config
       (ivy-rich-mode 1))
     (use-package ivy-hydra
-      :straight t)
+      )
      (ivy-mode t)
   )
 #+END_SRC
 ** Dired
 #+BEGIN_SRC emacs-lisp
-(use-package dired+
-  )
+(use-package dired+)
 #+END_SRC
 
 ** Completion
@@ -507,7 +472,6 @@ I use =bufler= instead of =ibuffer=
 #+BEGIN_SRC emacs-lisp
   (use-package company
     :defer 0.5
-    :straight t
     :delight
     :custom
     (company-begin-commands '(self-insert-command))
@@ -520,7 +484,6 @@ I use =bufler= instead of =ibuffer=
 
 #+BEGIN_SRC emacs-lisp
   (use-package company-box
-    :straight t
     :after company
     :delight
     :hook (company-mode . company-box-mode))
@@ -531,7 +494,6 @@ I use =bufler= instead of =ibuffer=
 #+BEGIN_SRC emacs-lisp
 (use-package editorconfig
   :defer 0.3
-  :straight t
   :config (editorconfig-mode 1))
 #+END_SRC
 
@@ -539,7 +501,6 @@ I use =bufler= instead of =ibuffer=
 #+BEGIN_SRC emacs-lisp
   (use-package highlight-indent-guides
     :defer 0.3
-    :straight t
     :hook (prog-mode . highlight-indent-guides-mode)
     :custom (highlight-indent-guides-method 'character))
 #+END_SRC
@@ -553,10 +514,9 @@ Use =ls-deferred= to defer server status.
   (setq lsp-keymap-prefix "C-c l")
 
   (use-package lsp-mode
-     :straight t
      :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
             (python-mode . lsp-deferred)
-	    (sh-mode . lsp-deferred)
+            (sh-mode . lsp-deferred)
             ;; if you want which-key integration
             (lsp-mode . lsp-enable-which-key-integration))
       :commands (lsp lsp-deferred))
@@ -566,14 +526,13 @@ Use =lsp-ui=
 #+BEGIN_SRC emacs-lisp
   ;; optionally
   (use-package lsp-ui
-     :straight t
      :commands lsp-ui-mode)
 #+END_SRC
 
 *** company
 #+BEGIN_SRC emacs-lisp
-(use-package company-lsp 
-  :straight t
+(use-package company-lsp
+
   :commands company-lsp
   :config (push 'company-lsp company-backends))
 #+END_SRC
@@ -581,24 +540,20 @@ Use =lsp-ui=
 *** Ivy
 #+BEGIN_SRC emacs-lisp
   (use-package lsp-ivy
-     :straight t
      :commands lsp-ivy-workspace-symbol)
   (use-package lsp-treemacs
-     :straight t
      :commands lsp-treemacs-errors-list)
 #+END_SRC
 
 *** debugger
 
 #+BEGIN_SRC emacs-lisp
-  (use-package dap-mode
-     :straight t)
+  (use-package dap-mode)
 ;; (use-package dap-LANGUAGE) to load the dap adapter for your language
 #+END_SRC
 ** Flycheck
 #+BEGIN_SRC emacs-lisp
 (use-package flycheck
-  :straight t
   :init (global-flycheck-mode))
 #+END_SRC
 ** Custom
@@ -614,18 +569,15 @@ Use =lsp-ui=
 ** Search
 *** Fuzzy
 #+BEGIN_SRC emacs-lisp
-(use-package fzf
-  :straight t)
+(use-package fzf)
 #+END_SRC
 *** ripgrep
 #+BEGIN_SRC emacs-lisp
-(use-package deadgrep
-  :straight t)
+(use-package deadgrep)
 #+END_SRC
 ** Snippets
 #+BEGIN_SRC emacs-lisp
   (use-package yasnippet
-    :straight t
     :config
     (add-to-list 'yas-snippet-dirs (expand-file-name "snippets"
                    user-emacs-directory))
@@ -634,8 +586,7 @@ Use =lsp-ui=
 
 And some preconfigured snippets:
 #+BEGIN_SRC emacs-lisp
-  (use-package yasnippet-snippets
-    :straight t)
+  (use-package yasnippet-snippets)
 #+END_SRC
 * Org
 *** Roam
@@ -647,7 +598,6 @@ Requires:
 
 #+BEGIN_SRC emacs-lisp
 (use-package org-roam
-      :straight t
       :hook
       (after-init . org-roam-mode)
       :custom
@@ -661,7 +611,6 @@ Requires:
               (("C-c n I" . org-roam-insert-immediate))))
 
 (use-package org-journal
-  :straight t
   :after org-roam
   :bind
   ("C-c n j" . org-journal-new-entry)
@@ -675,8 +624,7 @@ Requires:
 *** Export
 #+BEGIN_SRC emacs-lisp
 (use-package ox
-  :straight org-plus-contrib
-)
+  :straight org-plus-contrib)
 #+END_SRC
 
 **** Latex
@@ -755,30 +703,30 @@ From https://github.com/jchaffin/.emacs.d/blob/master/dotemacs.org
       ("\\paragraph{%s}" . "\\paragraph*{%s}")
       ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))
      ("unicode-math"
-	  "\\documentclass{article}
+          "\\documentclass{article}
      [PACKAGES]
      [NO-DEFAULT-PACKAGES]
      [EXTRA]
-	   \\usepackage{fontspec}
-	   \\usepackage{amsmath}
-	   \\usepackage{xltxtra}
-	   \\usepackage{unicode-math}
-	   \\setmathfont{STIX2Math}[
-	     Path/Users/jacobchaffin/Library/Fonts/,
-	     Extension={.otf},
-	     Scale=1]
-	   \\setmainfont{STIX2Text}[
-	     Path/Users/jacobchaffin/Library/Fonts/,
-	     Extension={.otf},
-	     UprightFont={*-Regular},
-	     BoldFont={*-Bold},
-	     ItalicFont={*-Italic},
-	     BoldItalicFont={*-BoldItalic}]"
-	  ("\\section{%s}" . "\\section*{%s}")
-	  ("\\subsection{%s}" . "\\subsection*{%s}")
-	  ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-	  ("\\paragraph{%s}" . "\\paragraph*{%s}")
-	  ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
+           \\usepackage{fontspec}
+           \\usepackage{amsmath}
+           \\usepackage{xltxtra}
+           \\usepackage{unicode-math}
+           \\setmathfont{STIX2Math}[
+             Path/Users/jacobchaffin/Library/Fonts/,
+             Extension={.otf},
+             Scale=1]
+           \\setmainfont{STIX2Text}[
+             Path/Users/jacobchaffin/Library/Fonts/,
+             Extension={.otf},
+             UprightFont={*-Regular},
+             BoldFont={*-Bold},
+             ItalicFont={*-Italic},
+             BoldItalicFont={*-BoldItalic}]"
+          ("\\section{%s}" . "\\section*{%s}")
+          ("\\subsection{%s}" . "\\subsection*{%s}")
+          ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+          ("\\paragraph{%s}" . "\\paragraph*{%s}")
+          ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
   :init
   ;; minted
   (defcustom org-latex-minted-from-org-p nil
@@ -794,24 +742,24 @@ From https://github.com/jchaffin/.emacs.d/blob/master/dotemacs.org
     (interactive)
     (cl-flet ((nominted (pkg) (not (string= (cadr pkg) "minted"))))
       (if (not org-latex-minted-from-org-p)
-	        (setq org-latex-packages-alist
-		            (append org-latex-packages-alist '(("newfloat" "minted"))))
-	      (setq org-latex-packages-alist (seq-filter #'nominted org-latex-packages-alist)))
+                (setq org-latex-packages-alist
+                            (append org-latex-packages-alist '(("newfloat" "minted"))))
+              (setq org-latex-packages-alist (seq-filter #'nominted org-latex-packages-alist)))
       (setq org-latex-minted-from-org-p (not org-latex-minted-from-org-p))
       (message "org minted %s" (if org-latex-minted-from-org-p
-				                           "enabled" "disabled"))))
+                                                           "enabled" "disabled"))))
   ;; Latex process
   (setq oxl-process-bibtex
-	      '("latexmk -pdflatex='pdflatex -interaction=nonstopmode -shell-escape' -synctex=1 -pdf -bibtex -f %f"))
+              '("latexmk -pdflatex='pdflatex -interaction=nonstopmode -shell-escape' -synctex=1 -pdf -bibtex -f %f"))
 
   (setq oxl-process-biber
-	      '("latexmk -pdflatex='pdflatex -interaction=nonstopmode -shell-escape' -synctex=1 -pdf -biber -f %f"))
+              '("latexmk -pdflatex='pdflatex -interaction=nonstopmode -shell-escape' -synctex=1 -pdf -biber -f %f"))
 
   (setq oxl-process-xelatex
-	      '("latexmk -pdf -synctex=1 -shell-escape -xelatex -f %f"))
+              '("latexmk -pdf -synctex=1 -shell-escape -xelatex -f %f"))
 
   (setq oxl-process-lualatex
-	      '("latexmk -pdf -synctex=1 -shell-escape -lualatex -f %f"))
+              '("latexmk -pdf -synctex=1 -shell-escape -lualatex -f %f"))
 
   (defcustom org-latex-pdf-engines
     '(("lualatex" . oxl-process-lualatex)
@@ -830,13 +778,13 @@ From https://github.com/jchaffin/.emacs.d/blob/master/dotemacs.org
     (interactive
      (list (completing-read "Compiler: " org-latex-pdf-engines)))
     (if (member compiler org-latex-compilers)
-	      (let ((process (cdr (assoc compiler org-latex-pdf-engines))))
-	        (setq org-latex-pdf-process (symbol-value
-				                               (if (listp process)
-					                                 (intern (completing-read "Process:" process))
-					                               process))
-		            org-latex-compiler compiler)
-	        (run-hooks org-latex-pdf-process-hook))
+              (let ((process (cdr (assoc compiler org-latex-pdf-engines))))
+                (setq org-latex-pdf-process (symbol-value
+                                                               (if (listp process)
+                                                                         (intern (completing-read "Process:" process))
+                                                                       process))
+                            org-latex-compiler compiler)
+                (run-hooks org-latex-pdf-process-hook))
       (error "%s not in `org-latex-compilers'" compiler)))
 
   :config
@@ -849,7 +797,7 @@ From https://github.com/jchaffin/.emacs.d/blob/master/dotemacs.org
 
   :bind
   (:map org-mode-map
-	      ("M-s l" . org-latex-pdf-process-set)))
+              ("M-s l" . org-latex-pdf-process-set)))
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp
