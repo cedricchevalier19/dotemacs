@@ -354,10 +354,16 @@ save a shell script file that begins with a =#!= shebang:
 #+END_SRC
 * Interface
 ** Theme
+# #+BEGIN_SRC emacs-lisp
+# ;; (use-package kaolin-themes)
+# ;; (load-theme 'kaolin-temple t)
+# #+END_SRC
 #+BEGIN_SRC emacs-lisp
-(use-package kaolin-themes)
+(use-package telephone-line
+  :init (telephone-line-mode 1))
 
-(load-theme 'kaolin-temple t)
+(use-package moe-theme
+  :init (load-theme 'moe-dark t))
 #+END_SRC
 ** Which-key
 #+BEGIN_SRC emacs-lisp
