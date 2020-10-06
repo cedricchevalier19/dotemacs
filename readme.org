@@ -365,6 +365,14 @@ save a shell script file that begins with a =#!= shebang:
 (use-package moe-theme
   :init (load-theme 'moe-dark t))
 #+END_SRC
+
+Use zoom to resize buffers
+#+BEGIN_SRC emacs-lisp
+(use-package zoom
+  :init (zoom-mode))
+#+END_SRC
+
+
 ** Which-key
 #+BEGIN_SRC emacs-lisp
   (use-package which-key
