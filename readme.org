@@ -60,9 +60,9 @@ It is inspired by:
 #+BEGIN_SRC emacs-lisp
 (use-package projectile
   :bind
-  ("C-c p" . projectile-command-map)
+  ("C-c o" . projectile-command-map)
   ("C-x w" . hydra-projectile-other-window/body)
-  ("C-c C-p" . hydra-projectile/body)
+  ("C-c p" . hydra-projectile/body)
   :config
   (use-package counsel-projectile
     :after (projectile)
