@@ -131,6 +131,9 @@ It is inspired by:
   :config
   (use-package magit-delta
     :after magit
+    :init
+    (if (executable-find "git-delta")
+	     (setq magit-delta-delta-executable "git-delta"))
     :hook (magit-mode . magit-delta-mode)))
 #+END_SRC
 
