@@ -127,7 +127,11 @@ It is inspired by:
 
 #+BEGIN_SRC emacs-lisp
 (use-package magit
-  :bind (("C-x g" . magit-status)))
+  :bind (("C-x g" . magit-status))
+  :config
+  (use-package magit-delta
+    :after magit
+    :hook (magit-mode . magit-delta-mode)))
 #+END_SRC
 
 *** Current modifications
