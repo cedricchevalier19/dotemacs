@@ -423,6 +423,17 @@ I use =bufler= instead of =ibuffer=
 (use-package multiple-cursors
   :bind (("C-C m c" . mc/edit-lines)))
 #+END_SRC
+** Password manager
+
+I will try to use bitwarden. It requires bitwarden CLI to be installed.
+See [[https://github.com/bitwarden/cli]].
+
+#+BEGIN_SRC emacs-lisp
+(use-package emacs-bitwarden
+  :straight (:type git :host github :repo "seanfarley/emacs-bitwarden")
+)
+#+END_SRC
+
 * Dashboard
 #+BEGIN_SRC emacs-lisp
 (use-package dashboard
