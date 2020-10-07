@@ -380,6 +380,11 @@ Use zoom to resize buffers
   :init (zoom-mode))
 #+END_SRC
 
+Highlight changes:
+#+BEGIN_SRC emacs-lisp
+(use-package volatile-highlights
+  :config (volatile-highlights-mode t))
+#+END_SRC
 
 ** Which-key
 #+BEGIN_SRC emacs-lisp
