@@ -470,17 +470,6 @@ I use =bufler= instead of =ibuffer=
   :diminish ivy-mode
   :defer 0.9
   :config
-  (use-package swiper
-    :bind (("C-s" . swiper)
-           :map swiper-map
-           ("M-%" . swiper-query-replace)))
-  (use-package counsel
-    :diminish counsel-mode
-    :bind
-    (("M-y" . counsel-yank-pop)
-     :map ivy-minibuffer-map
-     ("M-y" . ivy-next-line))
-    :config (counsel-mode))
   (use-package ivy-rich
     :defer 0.1
     :config
@@ -489,6 +478,26 @@ I use =bufler= instead of =ibuffer=
   (ivy-mode t)
   )
 #+END_SRC
+
+*** Counsel
+#+BEGIN_SRC emacs-lisp
+(use-package counsel
+  :diminish counsel-mode
+  :bind
+  (("M-y" . counsel-yank-pop)
+   :map ivy-minibuffer-map
+   ("M-y" . ivy-next-line))
+  :config (counsel-mode))
+#+END_SRC
+
+*** Swiper
+#+BEGIN_SRC emacs-lisp
+(use-package swiper
+  :bind (("C-s" . swiper)
+  :map swiper-map
+  ("M-%" . swiper-query-replace)))
+#+END_SRC
+
 ** Dired
 Use built-in =dired= with [[https://github.com/Fuco1/dired-hacks][=dired-hacks=]]
 
