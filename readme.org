@@ -5,8 +5,9 @@
 * My Emacs configuration
 
 It is inspired by:
-- [caiohcs](https://github.com/caiohcs/my-emacs/)
-- [jchaffin](https://github.com/jchaffin/.emacs.d)
+- [[https://github.com/caiohcs/my-emacs/]]
+- [[https://github.com/jchaffin/.emacs.d]]
+- [[http://pragmaticemacs.com]]
 
 * Programming
 ** Cpp
