@@ -409,6 +409,11 @@ I use =bufler= instead of =ibuffer=
   :bind (("C-x C-b" . bufler)))
 #+END_SRC
 
+** Multiple-cursors
+#+BEGIN_SRC emacs-lisp
+(use-package multiple-cursors
+  :bind (("C-C m c" . mc/edit-lines)))
+#+END_SRC
 * Dashboard
 #+BEGIN_SRC emacs-lisp
 (use-package dashboard
