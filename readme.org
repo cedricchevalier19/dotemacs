@@ -481,7 +481,10 @@ I use =bufler= instead of =ibuffer=
 #+END_SRC
 ** Dired
 #+BEGIN_SRC emacs-lisp
-(use-package dired+)
+(use-package dired+
+  :hook
+  ;; auto refresh dired when file changes
+  (dired-mode-hook . auto-revert-mode))
 #+END_SRC
 
 ** Completion
