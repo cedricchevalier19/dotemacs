@@ -476,6 +476,10 @@ I use =bufler= instead of =ibuffer=
            ("M-%" . swiper-query-replace)))
   (use-package counsel
     :diminish counsel-mode
+    :bind
+    (("M-y" . counsel-yank-pop)
+     :map ivy-minibuffer-map
+     ("M-y" . ivy-next-line))
     :config (counsel-mode))
   (use-package ivy-rich
     :defer 0.1
