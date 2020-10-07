@@ -480,12 +480,27 @@ I use =bufler= instead of =ibuffer=
   )
 #+END_SRC
 ** Dired
+Use built-in =dired= with [[https://github.com/Fuco1/dired-hacks][=dired-hacks=]]
+
 #+BEGIN_SRC emacs-lisp
 (use-package dired
   :straight (:type built-in)
   :hook
   ;; auto refresh dired when file changes
-  (dired-mode-hook . auto-revert-mode))
+  (dired-mode-hook . auto-revert-mode)
+  :config
+  (use-package dired-rainbow
+    :after dired)
+  (use-package dired-subtree
+    :after dired)
+  (use-package dired-narrow
+    :after dired)
+  (use-package dired-collapse
+    :after dired
+    :config (dired-collapse-mode))
+  (use-package dired-quick-sort
+    :after dired
+    :config (dired-quick-sort-setup)))
 #+END_SRC
 
 ** Completion
