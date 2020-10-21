@@ -1,4 +1,4 @@
-#+TITLE: My Emacs configuration
+ #+TITLE: My Emacs configuration
 #+AUTHOR: Cédric Chevalier
 # #+OPTIONS: toc:nil
 
@@ -14,7 +14,7 @@ It is inspired by:
 #+BEGIN_SRC emacs-lisp
 (use-package ccls
   :config
-    (setq ccls-executable "ccls")
+  (setq ccls-executable "ccls")
   (setq lsp-prefer-flymake nil)
   (setq-default flycheck-disabled-checkers
                 '(c/c++-clang c/c++-cppcheck c/c++-gcc))
@@ -44,7 +44,7 @@ It is inspired by:
       (setq cmake-ide-project-dir (projectile-project-root))
       (setq cmake-ide-build-dir (concat cmake-ide-project-dir "build")))
     (setq cmake-ide-compile-command
-      (concat "cd " cmake-ide-build-dir " && cmake " projectile-project-root " && cmake --build"))
+	  (concat "cd " cmake-ide-build-dir " && cmake " projectile-project-root " && cmake --build"))
     (cmake-ide-load-db))
 
   (defun my/switch-to-compilation-window ()
@@ -55,7 +55,7 @@ It is inspired by:
   :config
   (advice-add 'cmake-ide-compile :after #'my/switch-to-compilation-window)
   (put 'cmake-ide-build-dir 'safe-local-variable #'stringp)
-)
+  )
 #+END_SRC
 ** Projectile
 #+BEGIN_SRC emacs-lisp
@@ -134,7 +134,7 @@ It is inspired by:
     :after magit
     :init
     (if (executable-find "git-delta")
-	     (setq magit-delta-delta-executable "git-delta"))
+	(setq magit-delta-delta-executable "git-delta"))
     :hook (magit-mode . magit-delta-mode)))
 #+END_SRC
 
@@ -150,7 +150,7 @@ It is inspired by:
   :hook ((markdown-mode . git-gutter-mode)
          (prog-mode . git-gutter-mode)
          (conf-mode . git-gutter-mode)
-               (org-mode . git-gutter-mode))
+         (org-mode . git-gutter-mode))
   :init
   :config
   (setq git-gutter:disabled-modes '(asm-mode image-mode)
@@ -158,8 +158,8 @@ It is inspired by:
         git-gutter:window-width 2
         git-gutter:ask-p nil)
   (defhydra hydra-git-gutter (:body-pre (git-gutter-mode 1)
-                         :hint nil)
-   "
+					:hint nil)
+    "
  Git gutter:
    _j_: next hunk        _s_tage hunk     _q_uit
    _k_: previous hunk    _r_evert hunk    _Q_uit and deactivate git-gutter
@@ -167,23 +167,23 @@ It is inspired by:
    _h_: first hunk
    _l_: last hunk        set start _R_evision
  "
- ("j" git-gutter:next-hunk)
- ("k" git-gutter:previous-hunk)
- ("h" (progn (goto-char (point-min))
-             (git-gutter:next-hunk 1)))
- ("l" (progn (goto-char (point-min))
-             (git-gutter:previous-hunk 1)))
- ("s" git-gutter:stage-hunk)
- ("r" git-gutter:revert-hunk)
- ("p" git-gutter:popup-hunk)
- ("R" git-gutter:set-start-revision)
- ("q" nil :color blue)
- ("Q" (progn (git-gutter-mode -1)
-             ;; git-gutter-fringe doesn't seem to
-             ;; clear the markup right away
-             (sit-for 0.1)
-             (git-gutter:clear))
-             :color blue)))
+    ("j" git-gutter:next-hunk)
+    ("k" git-gutter:previous-hunk)
+    ("h" (progn (goto-char (point-min))
+		(git-gutter:next-hunk 1)))
+    ("l" (progn (goto-char (point-min))
+		(git-gutter:previous-hunk 1)))
+    ("s" git-gutter:stage-hunk)
+    ("r" git-gutter:revert-hunk)
+    ("p" git-gutter:popup-hunk)
+    ("R" git-gutter:set-start-revision)
+    ("q" nil :color blue)
+    ("Q" (progn (git-gutter-mode -1)
+		;; git-gutter-fringe doesn't seem to
+		;; clear the markup right away
+		(sit-for 0.1)
+		(git-gutter:clear))
+     :color blue)))
 
 (use-package git-gutter-fringe
   :diminish git-gutter-mode
@@ -195,14 +195,14 @@ It is inspired by:
   (setq-default fringes-outside-margins t)
   ;; thin fringe bitmaps
   (define-fringe-bitmap 'git-gutter-fr:added
-  [224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224]
-  nil nil 'center)
+    [224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224]
+    nil nil 'center)
   (define-fringe-bitmap 'git-gutter-fr:modified
-  [224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224]
-  nil nil 'center)
+    [224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224]
+    nil nil 'center)
   (define-fringe-bitmap 'git-gutter-fr:deleted
-  [0 0 0 0 0 0 0 0 0 0 0 0 0 128 192 224 240 248]
-  nil nil 'center))
+    [0 0 0 0 0 0 0 0 0 0 0 0 0 128 192 224 240 248]
+    nil nil 'center))
 #+END_SRC
 
 *** gitlab support
@@ -211,7 +211,7 @@ It is inspired by:
 (use-package forge
   :after magit
   ;;  :config (setq auth-sources '("~/.authinfo"))
-)
+  )
 #+END_SRC
 
 From https://magit.vc/manual/ghub/Storing-a-Token.html#Storing-a-Token
@@ -256,7 +256,7 @@ machine gitlab.com/api/v4 login ziggy^forge password 012345abcdef..
 
 (use-package yapfify
   :hook (python-mode . yapf-mode)
-)
+  )
 #+END_SRC
 
 ** Yaml
@@ -278,31 +278,31 @@ machine gitlab.com/api/v4 login ziggy^forge password 012345abcdef..
 Needs =pandoc=
 
 #+BEGIN_SRC emacs-lisp
-  (use-package markdown-mode
-    :delight "μ "
-    :mode ("\\.markdown\\'" "\\.md\\'")
-    :custom (markdown-command "/usr/bin/pandoc"))
+(use-package markdown-mode
+  :delight "μ "
+  :mode ("\\.markdown\\'" "\\.md\\'")
+  :custom (markdown-command "/usr/bin/pandoc"))
 
-  (use-package markdown-preview-mode
-    :after markdown-mode
-    :custom
-    (markdown-preview-javascript
-     (list (concat "https://github.com/highlightjs/highlight.js/"
-                   "9.15.6/highlight.min.js")
-           "<script>
+(use-package markdown-preview-mode
+  :after markdown-mode
+  :custom
+  (markdown-preview-javascript
+   (list (concat "https://github.com/highlightjs/highlight.js/"
+                 "9.15.6/highlight.min.js")
+         "<script>
               $(document).on('mdContentChange', function() {
                 $('pre code').each(function(i, block)  {
                   hljs.highlightBlock(block);
                 });
               });
             </script>"))
-    (markdown-preview-stylesheets
-     (list (concat "https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/"
-                   "3.0.1/github-markdown.min.css")
-           (concat "https://github.com/highlightjs/highlight.js/"
-                   "9.15.6/styles/github.min.css")
+  (markdown-preview-stylesheets
+   (list (concat "https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/"
+                 "3.0.1/github-markdown.min.css")
+         (concat "https://github.com/highlightjs/highlight.js/"
+                 "9.15.6/styles/github.min.css")
 
-           "<style>
+         "<style>
               .markdown-body {
                 box-sizing: border-box;
                 min-width: 200px;
@@ -382,7 +382,7 @@ save a shell script file that begins with a =#!= shebang:
   :init (telephone-line-mode 1))
 
 (use-package moe-theme
-   :init (load-theme 'moe-dark t))
+  :init (load-theme 'moe-dark t))
 ;; (use-package modus-operandi-theme
 ;;  :init (load-theme 'modus-operandi t))
 
@@ -404,8 +404,8 @@ Highlight changes:
 
 ** Which-key
 #+BEGIN_SRC emacs-lisp
-  (use-package which-key
-    :commands which-key-mode)
+(use-package which-key
+  :commands which-key-mode)
 #+END_SRC
 ** Kill ring
 #+BEGIN_SRC emacs-lisp
@@ -443,7 +443,7 @@ See [[https://github.com/bitwarden/cli]].
 #+BEGIN_SRC emacs-lisp
 (use-package emacs-bitwarden
   :straight (:type git :host github :repo "seanfarley/emacs-bitwarden")
-)
+  )
 #+END_SRC
 
 * Dashboard
@@ -497,7 +497,7 @@ See [[https://github.com/bitwarden/cli]].
 ** Ivy
 #+BEGIN_SRC emacs-lisp
   ;;; Global
-  ;; Ivy is a generic completion tool
+;; Ivy is a generic completion tool
 (use-package ivy
   :diminish ivy-mode
   :defer 0.9
@@ -526,8 +526,8 @@ See [[https://github.com/bitwarden/cli]].
 #+BEGIN_SRC emacs-lisp
 (use-package swiper
   :bind (("C-s" . swiper)
-  :map swiper-map
-  ("M-%" . swiper-query-replace)))
+	 :map swiper-map
+	 ("M-%" . swiper-query-replace)))
 #+END_SRC
 
 ** Dired
@@ -568,7 +568,7 @@ Use built-in =dired= with [[https://github.com/Fuco1/dired-hacks][=dired-hacks=]
   ;; hydra setup
   ;; from https://github.com/abo-abo/hydra/wiki/Dired
   (defhydra hydra-dired (:hint nil :color pink)
-  "
+    "
 _+_ mkdir          _v_iew           _m_ark             _(_ details        _i_nsert-subdir    wdired
 _C_opy             _O_ view other   _U_nmark all       _)_ omit-mode      _$_ hide-subdir    C-x C-q : edit
 _D_elete           _o_pen other     _u_nmark           _l_ redisplay      _w_ kill-subdir    C-c C-c : commit
@@ -581,42 +581,42 @@ _Z_ compress       _Q_ repl regexp
 
 T - tag prefix
 "
-  ("\\" dired-do-ispell)
-  ("(" dired-hide-details-mode)
-  (")" dired-omit-mode)
-  ("+" dired-create-directory)
-  ("=" diredp-ediff)         ;; smart diff
-  ("?" dired-summary)
-  ("$" diredp-hide-subdir-nomove)
-  ("A" dired-do-find-regexp)
-  ("C" dired-do-copy)        ;; Copy all marked files
-  ("D" dired-do-delete)
-  ("E" dired-mark-extension)
-  ("e" dired-ediff-files)
-  ("F" dired-do-find-marked-files)
-  ("G" dired-do-chgrp)
-  ("g" revert-buffer)        ;; read all directories again (refresh)
-  ("i" dired-maybe-insert-subdir)
-  ("l" dired-do-redisplay)   ;; relist the marked or singel directory
-  ("M" dired-do-chmod)
-  ("m" dired-mark)
-  ("O" dired-display-file)
-  ("o" dired-find-file-other-window)
-  ("Q" dired-do-find-regexp-and-replace)
-  ("R" dired-do-rename)
-  ("r" dired-do-rsynch)
-  ("S" dired-do-symlink)
-  ("s" dired-sort-toggle-or-edit)
-  ("t" dired-toggle-marks)
-  ("U" dired-unmark-all-marks)
-  ("u" dired-unmark)
-  ("v" dired-view-file)      ;; q to exit, s to search, = gets line #
-  ("w" dired-kill-subdir)
-  ("Y" dired-do-relsymlink)
-  ("z" diredp-compress-this-file)
-  ("Z" dired-do-compress)
-  ("q" nil)
-  ("." nil :color blue))
+    ("\\" dired-do-ispell)
+    ("(" dired-hide-details-mode)
+    (")" dired-omit-mode)
+    ("+" dired-create-directory)
+    ("=" diredp-ediff)         ;; smart diff
+    ("?" dired-summary)
+    ("$" diredp-hide-subdir-nomove)
+    ("A" dired-do-find-regexp)
+    ("C" dired-do-copy)        ;; Copy all marked files
+    ("D" dired-do-delete)
+    ("E" dired-mark-extension)
+    ("e" dired-ediff-files)
+    ("F" dired-do-find-marked-files)
+    ("G" dired-do-chgrp)
+    ("g" revert-buffer)        ;; read all directories again (refresh)
+    ("i" dired-maybe-insert-subdir)
+    ("l" dired-do-redisplay)   ;; relist the marked or singel directory
+    ("M" dired-do-chmod)
+    ("m" dired-mark)
+    ("O" dired-display-file)
+    ("o" dired-find-file-other-window)
+    ("Q" dired-do-find-regexp-and-replace)
+    ("R" dired-do-rename)
+    ("r" dired-do-rsynch)
+    ("S" dired-do-symlink)
+    ("s" dired-sort-toggle-or-edit)
+    ("t" dired-toggle-marks)
+    ("U" dired-unmark-all-marks)
+    ("u" dired-unmark)
+    ("v" dired-view-file)      ;; q to exit, s to search, = gets line #
+    ("w" dired-kill-subdir)
+    ("Y" dired-do-relsymlink)
+    ("z" diredp-compress-this-file)
+    ("Z" dired-do-compress)
+    ("q" nil)
+    ("." nil :color blue))
 
   (define-key dired-mode-map "." 'hydra-dired/body)
   )
@@ -679,7 +679,7 @@ Use =ls-deferred= to defer server status.
 
 Use =lsp-ui=
 #+BEGIN_SRC emacs-lisp
-  ;; optionally
+;; optionally
 (use-package lsp-ui
   :commands lsp-ui-mode)
 #+END_SRC
@@ -760,9 +760,9 @@ Requires:
               (("C-c n l" . org-roam)
                ("C-c n f" . org-roam-find-file)
                ("C-c n g" . org-roam-graph-show))
-         :map org-mode-map
-               (("C-c n i" . org-roam-insert))
-               (("C-c n I" . org-roam-insert-immediate))))
+              :map org-mode-map
+              (("C-c n i" . org-roam-insert))
+              (("C-c n I" . org-roam-insert-immediate))))
 
 (use-package org-journal
   :after org-roam
@@ -798,55 +798,55 @@ From https://github.com/jchaffin/.emacs.d/blob/master/dotemacs.org
      ("fontsize" "\\footnotesize")))
   (org-latex-compiler "xelatex")
   (org-latex-classes
-     '(("article"
-        "\\documentclass[11pt]{article}"
-     ("\\section{%s}" . "\\section*{%s}")
-     ("\\subsection{%s}" . "\\subsection*{%s}")
-     ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-     ("\\paragraph{%s}" . "\\paragraph*{%s}")
-     ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))
-    ("report"
-     "\\documentclass[11pt]{report}"
-     ("\\part{%s}" . "\\part*{%s}")
-     ("\\chapter{%s}" . "\\chapter*{%s}")
-     ("\\section{%s}" . "\\section*{%s}")
-     ("\\subsection{%s}" . "\\subsection*{%s}")
-     ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))
-    ("book"
-     "\\documentclass[11pt]{book}"
-     ("\\part{%s}" . "\\part*{%s}")
-     ("\\chapter{%s}" . "\\chapter*{%s}")
-     ("\\section{%s}" . "\\section*{%s}")
-     ("\\subsection{%s}" . "\\subsection*{%s}")
-     ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))
-    ("article-standalone"
-     "\\documentclass{article}
+   '(("article"
+      "\\documentclass[11pt]{article}"
+      ("\\section{%s}" . "\\section*{%s}")
+      ("\\subsection{%s}" . "\\subsection*{%s}")
+      ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+      ("\\paragraph{%s}" . "\\paragraph*{%s}")
+      ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))
+     ("report"
+      "\\documentclass[11pt]{report}"
+      ("\\part{%s}" . "\\part*{%s}")
+      ("\\chapter{%s}" . "\\chapter*{%s}")
+      ("\\section{%s}" . "\\section*{%s}")
+      ("\\subsection{%s}" . "\\subsection*{%s}")
+      ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))
+     ("book"
+      "\\documentclass[11pt]{book}"
+      ("\\part{%s}" . "\\part*{%s}")
+      ("\\chapter{%s}" . "\\chapter*{%s}")
+      ("\\section{%s}" . "\\section*{%s}")
+      ("\\subsection{%s}" . "\\subsection*{%s}")
+      ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))
+     ("article-standalone"
+      "\\documentclass{article}
       [NO-DEFAULT-PACKAGES]
       [PACKAGES]
       [EXTRA]" ;; header-string
-     ("\\section{%s}" . "\\section*{%s}")
-     ("\\subsection{%s}" . "\\subsection*a{%s}")
-     ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-     ("\\paragraph{%s}" . "\\paragraph*{%s}")
-     ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))
-    ("uclaling"
-     "\\documentclass{uclaling}
+      ("\\section{%s}" . "\\section*{%s}")
+      ("\\subsection{%s}" . "\\subsection*a{%s}")
+      ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+      ("\\paragraph{%s}" . "\\paragraph*{%s}")
+      ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))
+     ("uclaling"
+      "\\documentclass{uclaling}
       [NO-DEFAULT-PACKAGES]
       [EXTRA]"
-     ("\\section{%s}" . "\\section*{%s}")
-     ("\\subsection{%s}" . "\\subsection*{%s}")
-     ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-     ("\\paragraph{%s}" . "\\paragraph*{%s}")
-     ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))
-    ("uclacs"
-     "\\documentclass{uclacs}
+      ("\\section{%s}" . "\\section*{%s}")
+      ("\\subsection{%s}" . "\\subsection*{%s}")
+      ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+      ("\\paragraph{%s}" . "\\paragraph*{%s}")
+      ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))
+     ("uclacs"
+      "\\documentclass{uclacs}
       [NO-DEFAULT-PACKAGES]
       [EXTRA]"
-     ("\\section{%s}" . "\\section*{%s}")
-     ("\\subsection{%s}" . "\\subsection*{%s}")
-     ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-     ("\\paragraph{%s}" . "\\paragraph*{%s}")
-     ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))
+      ("\\section{%s}" . "\\section*{%s}")
+      ("\\subsection{%s}" . "\\subsection*{%s}")
+      ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+      ("\\paragraph{%s}" . "\\paragraph*{%s}")
+      ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))
      ("humanities"
       "\\documentclass{humanities}
       [NO-DEFAULT-PACKAGES]
@@ -857,7 +857,7 @@ From https://github.com/jchaffin/.emacs.d/blob/master/dotemacs.org
       ("\\paragraph{%s}" . "\\paragraph*{%s}")
       ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))
      ("unicode-math"
-          "\\documentclass{article}
+      "\\documentclass{article}
      [PACKAGES]
      [NO-DEFAULT-PACKAGES]
      [EXTRA]
@@ -876,11 +876,11 @@ From https://github.com/jchaffin/.emacs.d/blob/master/dotemacs.org
              BoldFont={*-Bold},
              ItalicFont={*-Italic},
              BoldItalicFont={*-BoldItalic}]"
-          ("\\section{%s}" . "\\section*{%s}")
-          ("\\subsection{%s}" . "\\subsection*{%s}")
-          ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-          ("\\paragraph{%s}" . "\\paragraph*{%s}")
-          ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
+      ("\\section{%s}" . "\\section*{%s}")
+      ("\\subsection{%s}" . "\\subsection*{%s}")
+      ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+      ("\\paragraph{%s}" . "\\paragraph*{%s}")
+      ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
   :init
   ;; minted
   (defcustom org-latex-minted-from-org-p nil
@@ -896,24 +896,24 @@ From https://github.com/jchaffin/.emacs.d/blob/master/dotemacs.org
     (interactive)
     (cl-flet ((nominted (pkg) (not (string= (cadr pkg) "minted"))))
       (if (not org-latex-minted-from-org-p)
-                (setq org-latex-packages-alist
-                            (append org-latex-packages-alist '(("newfloat" "minted"))))
-              (setq org-latex-packages-alist (seq-filter #'nominted org-latex-packages-alist)))
+          (setq org-latex-packages-alist
+                (append org-latex-packages-alist '(("newfloat" "minted"))))
+        (setq org-latex-packages-alist (seq-filter #'nominted org-latex-packages-alist)))
       (setq org-latex-minted-from-org-p (not org-latex-minted-from-org-p))
       (message "org minted %s" (if org-latex-minted-from-org-p
-                                                           "enabled" "disabled"))))
+                                   "enabled" "disabled"))))
   ;; Latex process
   (setq oxl-process-bibtex
-              '("latexmk -pdflatex='pdflatex -interaction=nonstopmode -shell-escape' -synctex=1 -pdf -bibtex -f %f"))
+        '("latexmk -pdflatex='pdflatex -interaction=nonstopmode -shell-escape' -synctex=1 -pdf -bibtex -f %f"))
 
   (setq oxl-process-biber
-              '("latexmk -pdflatex='pdflatex -interaction=nonstopmode -shell-escape' -synctex=1 -pdf -biber -f %f"))
+        '("latexmk -pdflatex='pdflatex -interaction=nonstopmode -shell-escape' -synctex=1 -pdf -biber -f %f"))
 
   (setq oxl-process-xelatex
-              '("latexmk -pdf -synctex=1 -shell-escape -xelatex -f %f"))
+        '("latexmk -pdf -synctex=1 -shell-escape -xelatex -f %f"))
 
   (setq oxl-process-lualatex
-              '("latexmk -pdf -synctex=1 -shell-escape -lualatex -f %f"))
+        '("latexmk -pdf -synctex=1 -shell-escape -lualatex -f %f"))
 
   (defcustom org-latex-pdf-engines
     '(("lualatex" . oxl-process-lualatex)
@@ -932,13 +932,13 @@ From https://github.com/jchaffin/.emacs.d/blob/master/dotemacs.org
     (interactive
      (list (completing-read "Compiler: " org-latex-pdf-engines)))
     (if (member compiler org-latex-compilers)
-              (let ((process (cdr (assoc compiler org-latex-pdf-engines))))
-                (setq org-latex-pdf-process (symbol-value
-                                                               (if (listp process)
-                                                                         (intern (completing-read "Process:" process))
-                                                                       process))
-                            org-latex-compiler compiler)
-                (run-hooks org-latex-pdf-process-hook))
+        (let ((process (cdr (assoc compiler org-latex-pdf-engines))))
+          (setq org-latex-pdf-process (symbol-value
+                                       (if (listp process)
+                                           (intern (completing-read "Process:" process))
+                                         process))
+                org-latex-compiler compiler)
+          (run-hooks org-latex-pdf-process-hook))
       (error "%s not in `org-latex-compilers'" compiler)))
 
   :config
@@ -951,7 +951,7 @@ From https://github.com/jchaffin/.emacs.d/blob/master/dotemacs.org
 
   :bind
   (:map org-mode-map
-              ("M-s l" . org-latex-pdf-process-set)))
+        ("M-s l" . org-latex-pdf-process-set)))
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp
@@ -959,7 +959,7 @@ From https://github.com/jchaffin/.emacs.d/blob/master/dotemacs.org
   :straight org-plus-contrib
   :after (ox)
   :demand t
-)
+  )
 #+END_SRC
 
 **** Pandoc
@@ -1031,28 +1031,28 @@ bibtex-completion-bibliography zot_bib
 bibtex-completion-pdf-field "file"
 bibtex-completion-notes-template-multiple-files
 (concat
-  "#+TITLE: ${title}\n"
-  "#+ROAM_KEY: cite:${=key=}\n"
-  "* TODO Notes\n"
-  ":PROPERTIES:\n"
-  ":Custom_ID: ${=key=}\n"
-  ":NOTER_DOCUMENT: %(orb-process-file-field \"${=key=}\")\n"
-  ":AUTHOR: ${author-abbrev}\n"
-  ":JOURNAL: ${journaltitle}\n"
-  ":DATE: ${date}\n"
-  ":YEAR: ${year}\n"
-  ":DOI: ${doi}\n"
-  ":URL: ${url}\n"
-  ":END:\n\n"
-  )
+"#+TITLE: ${title}\n"
+"#+ROAM_KEY: cite:${=key=}\n"
+"* TODO Notes\n"
+":PROPERTIES:\n"
+":Custom_ID: ${=key=}\n"
+":NOTER_DOCUMENT: %(orb-process-file-field \"${=key=}\")\n"
+":AUTHOR: ${author-abbrev}\n"
+":JOURNAL: ${journaltitle}\n"
+":DATE: ${date}\n"
+":YEAR: ${year}\n"
+":DOI: ${doi}\n"
+":URL: ${url}\n"
+":END:\n\n"
+)
 )
 (use-package org-pdftools
-  :hook (org-load . org-pdftools-setup-link))
+:hook (org-load . org-pdftools-setup-link))
 (use-package org-noter-pdftools
-  :after org-noter
-  :config
-  (with-eval-after-load 'pdf-annot
-    (add-hook 'pdf-annot-activate-handler-functions#'org-noter-pdftools-jump-to-note)))
+:after org-noter
+:config
+(with-eval-after-load 'pdf-annot
+(add-hook 'pdf-annot-activate-handler-functions#'org-noter-pdftools-jump-to-note)))
 #+END_SRC emacs-lisp
 
 
@@ -1078,7 +1078,7 @@ bibtex-completion-notes-template-multiple-files
   :hook (org-roam-mode . org-roam-bibtex-mode)
   :config
   (setq orb-preformat-keywords
-   '("=key=" "title" "url" "file" "author-or-editor" "keywords"))
+	'("=key=" "title" "url" "file" "author-or-editor" "keywords"))
   (setq orb-templates
         '(("r" "ref" plain (function org-roam-capture--get-point)
            ""
