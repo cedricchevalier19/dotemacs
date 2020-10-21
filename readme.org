@@ -370,12 +370,24 @@ save a shell script file that begins with a =#!= shebang:
 # ;; (use-package kaolin-themes)
 # ;; (load-theme 'kaolin-temple t)
 # #+END_SRC
+
+# #+BEGIN_SRC emacs-lisp
+# (use-package doom-themes
+#   :init (load-theme 'doom-one t)
+#   )
+# #+END_SRC
+
 #+BEGIN_SRC emacs-lisp
 (use-package telephone-line
   :init (telephone-line-mode 1))
 
 (use-package moe-theme
-  :init (load-theme 'moe-dark t))
+   :init (load-theme 'moe-dark t))
+;; (use-package modus-operandi-theme
+;;  :init (load-theme 'modus-operandi t))
+
+;; (use-package modus-vivendi-theme
+;;  :init (load-theme 'modus-vivendi t))
 #+END_SRC
 
 Use zoom to resize buffers
