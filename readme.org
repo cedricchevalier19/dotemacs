@@ -8,6 +8,7 @@ It is inspired by:
 - [[https://github.com/caiohcs/my-emacs/]]
 - [[https://github.com/jchaffin/.emacs.d]]
 - [[http://pragmaticemacs.com]]
+- [[https://protesilaos.com/dotemacs]]
 
 * Programming
 ** Cpp
@@ -400,6 +401,16 @@ Highlight changes:
 #+BEGIN_SRC emacs-lisp
 (use-package volatile-highlights
   :config (volatile-highlights-mode t))
+#+END_SRC
+
+
+*** Auto-dim unfocused buffers
+#+BEGIN_SRC emacs-lisp
+(use-package auto-dim-other-buffers
+  :commands auto-dim-other-buffers-mode
+  :config
+  (setq auto-dim-other-buffers-dim-on-switch-to-minibuffer nil)
+  (setq auto-dim-other-buffers-dim-on-focus-out t))
 #+END_SRC
 
 ** Which-key
