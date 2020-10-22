@@ -535,7 +535,7 @@ Use built-in =dired= with [[https://github.com/Fuco1/dired-hacks][=dired-hacks=]
 
 #+BEGIN_SRC emacs-lisp
 (use-package dired
-  :straight (:type built-in)
+  :straight nil ;; (:type built-in)
   :hook
   ;; auto refresh dired when file changes
   (dired-mode-hook . auto-revert-mode)
