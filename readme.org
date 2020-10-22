@@ -423,6 +423,17 @@ Highlight changes:
   (setq auto-dim-other-buffers-dim-on-focus-out t))
 #+END_SRC
 
+*** Better display for text
+#+BEGIN_SRC emacs-lisp
+(use-package olivetti
+  :ensure
+  :diminish
+  :config
+  (setq olivetti-body-width 0.7)
+  (setq olivetti-minimum-body-width 80)
+  (setq olivetti-recall-visual-line-mode-entry-state t))
+#+END_SRC
+
 ** Which-key
 #+BEGIN_SRC emacs-lisp
 (use-package which-key
