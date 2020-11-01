@@ -562,6 +562,15 @@ See [[https://github.com/bitwarden/cli]].
 	 ("M-%" . swiper-query-replace)))
 #+END_SRC
 
+** Prescient
+#+BEGIN_SRC emacs-lisp
+(use-package prescient
+  :config (prescient-persist-mode 1))
+(use-package ivy-prescient
+  :config (ivy-prescient-mode 1))
+(use-package company-prescient
+  :config (company-prescient-mode 1))
+#+END_SRC
 ** Dired
 Use built-in =dired= with [[https://github.com/Fuco1/dired-hacks][=dired-hacks=]]
 
