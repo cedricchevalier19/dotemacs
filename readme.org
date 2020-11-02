@@ -284,6 +284,16 @@ machine gitlab.com/api/v4 login ziggy^forge password 012345abcdef..
 (use-package dockerfile-mode
   :mode ("Dockerfile\\'" "\\.dockerfile$"))
 #+END_SRC
+** Golang
+#+BEGIN_SRC emacs-lisp
+(use-package go-mode
+  :config
+  (use-package go-projectile)
+  (use-package go-eldoc
+    :after (go-mode)
+    :hook (go-mode . go-eldoc-setup))
+  :mode ("\\.go$"))
+#+END_SRC
 ** Markdown
 
 Needs =pandoc=
