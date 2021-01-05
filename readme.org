@@ -273,6 +273,7 @@ machine gitlab.com/api/v4 login ziggy^forge password 012345abcdef..
 ** Yaml
 #+BEGIN_SRC emacs-lisp
 (use-package yaml-mode
+  :init (setq yapfify-executable "yapf3")
   :mode ("\\.yml\\'" . yaml-mode))
 #+END_SRC
 
