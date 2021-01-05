@@ -385,6 +385,16 @@ save a shell script file that begins with a =#!= shebang:
 (defvar show-paren-delay 0)
 (show-paren-mode t)
 #+END_SRC
+
+** Pantuml
+#+BEGIN_SRC emacs-lisp
+(use-package plantuml-mode
+  :config
+    (setq org-plantuml-jar-path
+	      (expand-file-name "/usr/share/plantuml/plantuml.jar"))
+    (setq plantuml-default-exec-mode 'jar)
+  :mode ("\\.plantuml\\'"))
+
 * Interface
 ** Theme
 # #+BEGIN_SRC emacs-lisp
@@ -829,7 +839,19 @@ Requires:
 *** Export
 #+BEGIN_SRC emacs-lisp
 (use-package ox
-  :straight org-plus-contrib)
+  :straight org-plus-contrib
+  :config
+  (add-to-list 'org-src-lang-modes '("plantuml" . plantuml))
+  (org-babel-do-load-languages 'org-babel-load-languages
+			       '(
+				 (C . t)
+				 (emacs-lisp . t)
+				 (gnuplot . t)
+				 (latex . t)
+				 (plantuml . t)
+				 (python . t)
+				 ))
+)
 #+END_SRC
 
 **** Latex
