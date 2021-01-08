@@ -27,7 +27,7 @@ It is inspired by:
 *** Edit
 #+BEGIN_SRC emacs-lisp
 (use-package cmake-mode
-  :mode ("CMakeLists\\.txt\\'" "\\.cmake\\'"))
+  :mode ("CMakeLists.txt'" "\\.cmake\\'"))
 
 (use-package cmake-font-lock
   :after (cmake-mode)
