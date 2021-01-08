@@ -22,6 +22,8 @@ It is inspired by:
   :hook ((c-mode c++-mode objc-mode cuda-mode) .
          (lambda () (require 'ccls) (lsp))))
 
+(use-package clang-format
+  :commands clang-format clang-format-buffer clang-format-region)
 #+END_SRC
 ** CMake
 *** Edit
