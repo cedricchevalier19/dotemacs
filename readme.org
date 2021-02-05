@@ -1044,7 +1044,7 @@ From https://github.com/jchaffin/.emacs.d/blob/master/dotemacs.org
 #+BEGIN_SRC emacs-lisp
 (use-package ox-pandoc
   :ensure-system-package (pandoc)
-  :after (:all ox org-ref)
+  :after (:all ox)
   :custom
   (org-pandoc-options '((standalone . t)))
   :demand t
