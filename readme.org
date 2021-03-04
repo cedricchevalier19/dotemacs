@@ -842,7 +842,68 @@ And some preconfigured snippets:
 (use-package yasnippet-snippets)
 #+END_SRC
 * Org
-*** Roam
+** Agenda
+From [[https://framagit.org/steckerhalter/steckemacs.el/blob/master/steckemacs.el]]
+#+BEGIN_SRC emacs-lisp
+(use-package org-agenda
+    :ensure nil
+    :straight nil
+    :bind (:map org-agenda-mode-map
+                ("C-c t" . (lambda () (interactive)
+                             (org-agenda-todo 'done)
+                             (org-agenda-redo-all))))
+    :init
+    (defun my-org-agenda (key) (interactive) (org-agenda nil key))
+    (setq org-agenda-start-with-log-mode t)
+    (setq org-agenda-todo-ignore-scheduled 'future) ;don't show future scheduled
+    (setq org-agenda-todo-ignore-deadlines 'far)    ;show only near deadlines
+    (setq org-agenda-dim-blocked-tasks t)
+    (setq org-agenda-todo-ignore-scheduled 'all) ;hide scheduled TODOs
+    (setq org-agenda-dim-blocked-tasks t)
+    (setq org-agenda-show-all-dates nil)
+    (setq org-agenda-prefix-format "%?-12t% s")
+    (setq org-agenda-confirm-kill nil)
+    (setq org-tags-match-list-sublevels nil)
+
+    (defun org-archive-done-tasks ()
+      (interactive)
+      (org-map-entries
+       (lambda ()
+         (org-archive-subtree)
+         (setq org-map-continue-from (org-element-property :begin (org-element-at-point))))
+       "/DONE" 'file))
+
+    :config
+    ;; add state to the sorting strategy of todo
+    (setcdr (assq 'todo org-agenda-sorting-strategy) '(todo-state-up priority-down category-keep))
+
+    (setq org-agenda-files (list "~/org/roam/agenda/work.org"
+                                 "~/org/roam/agenda/home.org"))
+    ;; display the agenda first
+    (setq org-agenda-custom-commands
+          '(("n" "@home"
+             ((tags-todo "-@work+DEADLINE<=\"<now>\"" ((org-agenda-overriding-header "now")))
+              (tags-todo "-@work-DEADLINE={.}+TODO={TODO}" ((org-agenda-overriding-header "todo")))
+              (tags "-@work+reminder+DEADLINE>\"<now>\|-@work+reminder-DEADLINE<=\"<now>\""  ((org-agenda-overriding-header "reminders")))
+              (tags-todo "-@work+TODO={PICK}+DEADLINE>\"<now>\"|-@work+TODO={PICK}-DEADLINE={.}" ((org-agenda-overriding-header "pick")))
+              (tags-todo "-@work+DEADLINE>=\"<now>\"" ((org-agenda-overriding-header "scheduled")))))
+            ("w" "@work"
+             ((tags-todo "@work+DEADLINE<=\"<now>\"" ((org-agenda-overriding-header "now")))
+              (tags-todo "@work-DEADLINE={.}+TODO={TODO}" ((org-agenda-overriding-header "todo")))
+              (tags "@work+reminder+DEADLINE>\"<now>\|@work+reminder-DEADLINE<=\"<now>\""  ((org-agenda-overriding-header "reminders")))
+              (tags-todo "@work+TODO={PICK}+DEADLINE>\"<now>\"|@work+TODO={PICK}-DEADLINE={.}" ((org-agenda-overriding-header "pick")))
+              (tags-todo "@work+DEADLINE>=\"<now>\"" ((org-agenda-overriding-header "scheduled")))))))
+
+    ;; add new appointments when saving the org buffer, use 'refresh argument to do it properly
+    (defun my-org-agenda-to-appt-refresh () (org-agenda-to-appt 'refresh))
+    (defun my-org-mode-hook ()
+      (add-hook 'after-save-hook 'my-org-agenda-to-appt-refresh nil 'make-it-local))
+    :hook
+    ('org-mode-hook 'my-org-mode-hook)
+    )
+#+END_SRC
+
+** Roam
 For =zettelkasten= notes.
 
 Requires:
@@ -871,7 +932,8 @@ Requires:
   (org-journal-date-prefix "#+title: ")
   (org-journal-file-format "%Y-%m-%d.org")
   (org-journal-dir org-roam-directory)
-  (org-journal-date-format "%A, %d %B %Y"))
+  (org-journal-date-format "%A, %d %B %Y")
+  (org-journal-enable-agenda-integration t))
 #+END_SRC
 
 *** Export
