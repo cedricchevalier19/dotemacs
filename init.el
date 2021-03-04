@@ -59,11 +59,11 @@
       (use-package no-littering
         :demand t
         :commands (no-littering-expand-etc-file-name)
-        :custom
-        (no-littering-etc-directory (expand-file-name "etc" user-emacs-directory))
-        (no-littering-var-directory (expand-file-name "var" user-emacs-directory))
         :init
         (require 'recentf)
+
+        (setq no-littering-etc-directory (expand-file-name "etc" user-emacs-directory))
+        (setq no-littering-var-directory (expand-file-name "var" user-emacs-directory))
         ;; exclude from recentf
         (add-to-list 'recentf-exclude no-littering-var-directory)
         (add-to-list 'recentf-exclude no-littering-etc-directory)
@@ -92,7 +92,7 @@
 ;;;;;; customizations
         :custom
 ;;;;;;; Files
-        (org-directory (file-truename "~/Dropbox/org"))
+        (org-directory (file-truename "~/.org/"))
         ;; setup archive directory in current folder
         (org-archive-location "archive/%s_archive::")
 ;;;;;;; Org source
