@@ -250,7 +250,7 @@ as a communication channel."
          (letter-date
           (format "\\letterdate{%s}"
                   (if date
-                   (format "%s" (org-awesomecv-org-timestamp-to-dateformat date))
+                   (format "%s" (org-awesomecv-org-timestamp-to-dateformat date nil t))
                    "\\today")))
          (letter-opening (or (format "\\letteropening{%s}" (org-element-property :LETTER_OPENING headline)) ""))
          (letter-closing (or (format  "\\letterclosing{%s}" (org-element-property :LETTER_CLOSING headline)) ""))
@@ -384,8 +384,9 @@ returns an empty string."
   nil)
 
 
-(defun org-awesomecv-org-timestamp-to-dateformat (date_str &optional FORMAT-STRING)
+(defun org-awesomecv-org-timestamp-to-dateformat (date_str &optional FORMAT-STRING ORDINAL)
 "Format orgmode timestamp DATE_STR into a date format FORMAT-STRING.
+ORDINAL returns the date as an ordinal number, specified as %E in format.
 Uses defaults that are consistent with awesomecv.
 Other strings are just returned unmodified
 
@@ -394,11 +395,24 @@ today => today"
   (if (string-match (org-re-timestamp 'active) date_str)
       (let* ((dte (org-parse-time-string date_str))
              (time (encode-time dte))
-             (format-string (or FORMAT-STRING
+             (day-format (if ORDINAL "%E" "%e"))
+             (format-string-0 (or FORMAT-STRING
                                 (if (eql calendar-date-style 'american)
-                                    "%B %e, %Y"
-                                  "%e %B, %Y")))
-             )
+                                    (format "%%B %s, %%Y" day-format)
+                                  (format "%s %%B, %%Y" day-format))))
+             (day-raw (format-time-string "%eth" time))
+             (day-ordinal
+              (let ((r0 "\\([04-9]\\|1[0-9]\\)th$")
+                    (r1 "\\([1]\\)th$"   )
+                    (r2 "\\([2]\\)th$"   )
+                    (r3 "\\([3]\\)th$"   )
+                    )
+                (cond
+                 ((string-match r0 day-raw) (replace-regexp-in-string r0 "\\1th" day-raw))
+                 ((string-match r1 day-raw) (replace-regexp-in-string r1 "\\1st" day-raw))
+                 ((string-match r2 day-raw) (replace-regexp-in-string r2 "\\1nd" day-raw))
+                 ((string-match r3 day-raw) (replace-regexp-in-string r3 "\\1rd" day-raw )))))
+             (format-string (replace-regexp-in-string "%E" day-ordinal format-string-0 't)))
         (format-time-string format-string time))
     date_str))
 
