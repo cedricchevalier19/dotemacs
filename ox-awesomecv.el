@@ -75,7 +75,7 @@
     (:extrainfo "EXTRAINFO" nil nil parse)
     (:with-email nil "email" t t)
     (:fontdir "FONTDIR" nil "fonts/" t)
-    (:latex-title-command nil nil "\\makecvheader" t)
+    (:latex-title-command "LATEX_TITLE" nil "\\makecvheader" t)
     (:cvhighlights "CVHIGHLIGHTS" nil "true" t)
     (:quote "QUOTE" nil nil t)
     (:firstname "FIRSTNAME" nil nil t)
