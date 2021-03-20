@@ -244,7 +244,14 @@ as a communication channel."
          (location (or (org-element-property :LOCATION headline) ""))
          (right-img (org-element-property :RIGHT_IMG headline))
          (label (or (org-element-property :LABEL headline) nil))
-         (label-str (if label (format "%s\\hfill{}" label) "")))
+         (label-str (if label (format "%s\\hfill{}" label) ""))
+         ;; Other Coverletter properties
+         (recipient  (or (org-element-property :RECIPIENT headline) ""))
+         (letter-date (format "\\letterdate{%s}" (or date "\\today")))
+         (letter-opening (or (format "\\letteropening{%s}" (org-element-property :LETTER_OPENING headline)) ""))
+         (letter-closing (or (format  "\\letterclosing{%s}" (org-element-property :LETTER_CLOSING headline)) ""))
+         (letter-attached (or (format "\\letterenclosure[Attached]{%s}" (org-element-property :LETTER_ATTACHED headline)) ""))
+         )
 
     (cond
      ((string= entrytype "cvemployer")
@@ -280,7 +287,25 @@ as a communication channel."
               title
               employer
               location
-              (org-cv-utils--format-time-window from-date to-date))))))
+              (org-cv-utils--format-time-window from-date to-date)))
+     ;; Coverletter sections
+     ((string= entrytype "letterheader")
+      (format "\\recipient\n  {%s}\n  {%s\\\\%s}\n\n%s\n%s\n%s\n%s\n"
+              recipient
+              employer
+              location
+              letter-date
+              letter-opening
+              letter-closing
+              letter-attached))
+     ((string= entrytype "cvletter")
+      (format "\n\\lettertitle{%s}\n\\makelettertitle\n\n\\begin{cvletter}\n%s\n\\end{cvletter}\n\\makeletterclosing"
+              title
+              contents))
+     ((string= entrytype "lettersection")
+      (format "\n\\lettersection{%s}\n%s"
+              title
+              contents)))))
 
 ;;;; Headlines of type "cventries"
 (defun org-awesomecv--format-cvenvironment (environment headline contents info)
@@ -308,7 +333,11 @@ as a communication channel."
              (string= environment "cvsubentry")
              (string= environment "cvemployer")
              (string= environment "cvschool")
-             (string= environment "cvhonor"))
+             (string= environment "cvhonor")
+             (string= environment "cvletter")
+             (string= environment "lettersection")
+             (string= environment "letterheader")
+             )
          (org-awesomecv--format-cventry headline contents info))
         ((or (string= environment "cventries") (string= environment "cvhonors"))
          (org-awesomecv--format-cvenvironment environment headline contents info))
