@@ -75,7 +75,7 @@
     (:extrainfo "EXTRAINFO" nil nil parse)
     (:with-email nil "email" t t)
     (:fontdir "FONTDIR" nil "fonts/" t)
-    (:latex-title-command nil nil "\\makecvheader" t)
+    (:latex-title-command "LATEX_TITLE" nil "\\makecvheader" t)
     (:cvhighlights "CVHIGHLIGHTS" nil "true" t)
     (:quote "QUOTE" nil nil t)
     (:firstname "FIRSTNAME" nil nil t)
@@ -244,7 +244,19 @@ as a communication channel."
          (location (or (org-element-property :LOCATION headline) ""))
          (right-img (org-element-property :RIGHT_IMG headline))
          (label (or (org-element-property :LABEL headline) nil))
-         (label-str (if label (format "%s\\hfill{}" label) "")))
+         (label-str (if label (format "%s\\hfill{}" label) ""))
+         ;; Other Coverletter properties
+         (recipient  (or (org-element-property :RECIPIENT headline) ""))
+         (letter-dateformat (org-element-property :DATEFORMAT headline))
+         (letter-date
+          (format "\\letterdate{%s}"
+                  (if date
+                   (format "%s" (org-awesomecv-org-timestamp-to-dateformat date letter-dateformat t))
+                   "\\today")))
+         (letter-opening (or (format "\\letteropening{%s}" (org-element-property :LETTER_OPENING headline)) ""))
+         (letter-closing (or (format  "\\letterclosing{%s}" (org-element-property :LETTER_CLOSING headline)) ""))
+         (letter-attached (or (format "\\letterenclosure[Attached]{%s}" (org-element-property :LETTER_ATTACHED headline)) ""))
+         )
 
     (cond
      ((string= entrytype "cvemployer")
@@ -280,7 +292,25 @@ as a communication channel."
               title
               employer
               location
-              (org-cv-utils--format-time-window from-date to-date))))))
+              (org-cv-utils--format-time-window from-date to-date)))
+     ;; Coverletter sections
+     ((string= entrytype "letterheader")
+      (format "\\recipient\n  {%s}\n  {%s\\\\%s}\n\n%s\n%s\n%s\n%s\n"
+              recipient
+              employer
+              location
+              letter-date
+              letter-opening
+              letter-closing
+              letter-attached))
+     ((string= entrytype "cvletter")
+      (format "\n\\lettertitle{%s}\n\\makelettertitle\n\n\\begin{cvletter}\n%s\n\\end{cvletter}\n\\makeletterclosing"
+              title
+              contents))
+     ((string= entrytype "lettersection")
+      (format "\n\\lettersection{%s}\n%s"
+              title
+              contents)))))
 
 ;;;; Headlines of type "cventries"
 (defun org-awesomecv--format-cvenvironment (environment headline contents info)
@@ -308,7 +338,11 @@ as a communication channel."
              (string= environment "cvsubentry")
              (string= environment "cvemployer")
              (string= environment "cvschool")
-             (string= environment "cvhonor"))
+             (string= environment "cvhonor")
+             (string= environment "cvletter")
+             (string= environment "lettersection")
+             (string= environment "letterheader")
+             )
          (org-awesomecv--format-cventry headline contents info))
         ((or (string= environment "cventries") (string= environment "cvhonors"))
          (org-awesomecv--format-cvenvironment environment headline contents info))
@@ -349,6 +383,40 @@ contextual information."
 This does not make sense in the AwesomeCV format, so it only
 returns an empty string."
   nil)
+
+
+(defun org-awesomecv-org-timestamp-to-dateformat (date_str &optional FORMAT-STRING ORDINAL)
+"Format orgmode timestamp DATE_STR into a date format FORMAT-STRING.
+ORDINAL returns the date as an ordinal number, specified as %E in format.
+Uses defaults that are consistent with awesomecv.
+Other strings are just returned unmodified
+
+e.g. <2002-08-12 Mon> => August 12th, 2012
+today => today"
+  (if (string-match (org-re-timestamp 'active) date_str)
+      (let* ((dte (org-parse-time-string date_str))
+             (time (encode-time dte))
+             (day-format (if ORDINAL "%E" "%e"))
+             (format-string-0 (or FORMAT-STRING
+                                (if (eql calendar-date-style 'american)
+                                    (format "%%B %s, %%Y" day-format)
+                                  (format "%s %%B, %%Y" day-format))))
+             (day-raw (format-time-string "%eth" time))
+             (day-ordinal
+              (let ((r0 "\\([04-9]\\|1[0-9]\\)th$")
+                    (r1 "\\([1]\\)th$"   )
+                    (r2 "\\([2]\\)th$"   )
+                    (r3 "\\([3]\\)th$"   )
+                    )
+                (cond
+                 ((string-match r0 day-raw) (replace-regexp-in-string r0 "\\1th" day-raw))
+                 ((string-match r1 day-raw) (replace-regexp-in-string r1 "\\1st" day-raw))
+                 ((string-match r2 day-raw) (replace-regexp-in-string r2 "\\1nd" day-raw))
+                 ((string-match r3 day-raw) (replace-regexp-in-string r3 "\\1rd" day-raw )))))
+             (format-string (replace-regexp-in-string "%E" day-ordinal format-string-0 't)))
+        (format-time-string format-string time))
+    date_str))
+
 
 (provide 'ox-awesomecv)
 ;;; ox-awesomecv ends here
