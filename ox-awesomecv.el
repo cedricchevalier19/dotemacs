@@ -240,7 +240,7 @@ as a communication channel."
                        (org-element-property :SCHOOL headline)
                        (org-element-property :EMPLOYER headline)
                        (org-element-property :EVENT headline)
-                       (org-element-property :POSITION headline)))
+                       (org-element-property :POSITION headline) ""))
          (location (or (org-element-property :LOCATION headline) ""))
          (right-img (org-element-property :RIGHT_IMG headline))
          (label (or (org-element-property :LABEL headline) nil))
@@ -295,9 +295,10 @@ as a communication channel."
               (org-cv-utils--format-time-window from-date to-date)))
      ;; Coverletter sections
      ((string= entrytype "letterheader")
-      (format "\\recipient\n  {%s}\n  {%s\\\\%s}\n\n%s\n%s\n%s\n%s\n"
+      (format "\\recipient\n  {%s}\n  {%s%s%s}\n\n%s\n%s\n%s\n%s\n"
               recipient
               employer
+              (if (and employer location) "\\\\" "")
               location
               letter-date
               letter-opening
