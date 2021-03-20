@@ -247,7 +247,11 @@ as a communication channel."
          (label-str (if label (format "%s\\hfill{}" label) ""))
          ;; Other Coverletter properties
          (recipient  (or (org-element-property :RECIPIENT headline) ""))
-         (letter-date (format "\\letterdate{%s}" (or date "\\today")))
+         (letter-date
+          (format "\\letterdate{%s}"
+                  (if date
+                   (format "%s" (org-awesomecv-org-timestamp-to-dateformat date))
+                   "\\today")))
          (letter-opening (or (format "\\letteropening{%s}" (org-element-property :LETTER_OPENING headline)) ""))
          (letter-closing (or (format  "\\letterclosing{%s}" (org-element-property :LETTER_CLOSING headline)) ""))
          (letter-attached (or (format "\\letterenclosure[Attached]{%s}" (org-element-property :LETTER_ATTACHED headline)) ""))
@@ -378,6 +382,26 @@ contextual information."
 This does not make sense in the AwesomeCV format, so it only
 returns an empty string."
   nil)
+
+
+(defun org-awesomecv-org-timestamp-to-dateformat (date_str &optional FORMAT-STRING)
+"Format orgmode timestamp DATE_STR into a date format FORMAT-STRING.
+Uses defaults that are consistent with awesomecv.
+Other strings are just returned unmodified
+
+e.g. <2002-08-12 Mon> => August 12th, 2012
+today => today"
+  (if (string-match (org-re-timestamp 'active) date_str)
+      (let* ((dte (org-parse-time-string date_str))
+             (time (encode-time dte))
+             (format-string (or FORMAT-STRING
+                                (if (eql calendar-date-style 'american)
+                                    "%B %e, %Y"
+                                  "%e %B, %Y")))
+             )
+        (format-time-string format-string time))
+    date_str))
+
 
 (provide 'ox-awesomecv)
 ;;; ox-awesomecv ends here
