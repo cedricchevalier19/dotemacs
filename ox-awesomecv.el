@@ -247,10 +247,11 @@ as a communication channel."
          (label-str (if label (format "%s\\hfill{}" label) ""))
          ;; Other Coverletter properties
          (recipient  (or (org-element-property :RECIPIENT headline) ""))
+         (letter-dateformat (org-element-property :DATEFORMAT headline))
          (letter-date
           (format "\\letterdate{%s}"
                   (if date
-                   (format "%s" (org-awesomecv-org-timestamp-to-dateformat date nil t))
+                   (format "%s" (org-awesomecv-org-timestamp-to-dateformat date letter-dateformat t))
                    "\\today")))
          (letter-opening (or (format "\\letteropening{%s}" (org-element-property :LETTER_OPENING headline)) ""))
          (letter-closing (or (format  "\\letterclosing{%s}" (org-element-property :LETTER_CLOSING headline)) ""))
