@@ -328,6 +328,10 @@ Provides heading information for a cover letter. Supports attributes =RECIPIENT=
 
 Converts to a =\cvletter= environment. This holds the content of a cover letter.
 
+*** =cvletter_notitle=
+
+Same as =cvletter=, but does not include a letter title at the top.
+
 *** =lettersection=
 
 Converts to a =\lettersection= command. These are the headline portions of a cover letter.

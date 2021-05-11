@@ -253,10 +253,18 @@ as a communication channel."
                   (if date
                    (format "%s" (org-awesomecv-org-timestamp-to-dateformat date letter-dateformat t))
                    "\\today")))
-         (letter-opening (or (format "\\letteropening{%s}" (org-element-property :LETTER_OPENING headline)) ""))
-         (letter-closing (or (format  "\\letterclosing{%s}" (org-element-property :LETTER_CLOSING headline)) ""))
-         (letter-attached (or (format "\\letterenclosure[Attached]{%s}" (org-element-property :LETTER_ATTACHED headline)) ""))
-         )
+         (letter-opening (if (org-element-property :LETTER_OPENING headline)
+                           (format "\\letteropening{%s}" (org-element-property :LETTER_OPENING headline))
+                           ""))
+         (letter-closing (if (org-element-property :LETTER_CLOSING headline)
+                           (format  "\\letterclosing{%s}" (org-element-property :LETTER_CLOSING headline))
+                           ""))
+         (letter-signature (if (org-element-property :LETTER_SIGNATURE headline)
+                               (format  "\\lettersignature{%s}" (org-element-property :LETTER_SIGNATURE headline))
+                           ""))
+         (letter-attached (if (org-element-property :LETTER_ATTACHED headline)
+                            (format "\\letterenclosure[Attached]{%s}" (org-element-property :LETTER_ATTACHED headline))
+                            "")))
 
     (cond
      ((string= entrytype "cvemployer")
@@ -295,7 +303,7 @@ as a communication channel."
               (org-cv-utils--format-time-window from-date to-date)))
      ;; Coverletter sections
      ((string= entrytype "letterheader")
-      (format "\\recipient\n  {%s}\n  {%s%s%s}\n\n%s\n%s\n%s\n%s\n"
+      (format "\\recipient\n  {%s}\n  {%s%s%s}\n\n%s\n%s\n%s\n%s\n%s\n"
               recipient
               employer
               (if (and employer location) "\\\\" "")
@@ -303,10 +311,14 @@ as a communication channel."
               letter-date
               letter-opening
               letter-closing
+              letter-signature
               letter-attached))
      ((string= entrytype "cvletter")
       (format "\n\\lettertitle{%s}\n\\makelettertitle\n\n\\begin{cvletter}\n%s\n\\end{cvletter}\n\\makeletterclosing"
               title
+              contents))
+     ((string= entrytype "cvletter_notitle")
+      (format "\n\\makelettertitle\n\n\\begin{cvletter}\n%s\n\\end{cvletter}\n\\makeletterclosing"
               contents))
      ((string= entrytype "lettersection")
       (format "\n\\lettersection{%s}\n%s"
@@ -341,6 +353,7 @@ as a communication channel."
              (string= environment "cvschool")
              (string= environment "cvhonor")
              (string= environment "cvletter")
+             (string= environment "cvletter_notitle")
              (string= environment "lettersection")
              (string= environment "letterheader")
              )
