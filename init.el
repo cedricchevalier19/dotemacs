@@ -4,7 +4,7 @@
 ;;; Code:
     (let ((straight-treat-as-init t))
       (when (locate-library "gnutls")
-        (require 'gnutls)	
+        (require 'gnutls)
 ;;; straight
 ;;;; Variables
       (setq straight-repository-branch "develop"
@@ -85,10 +85,10 @@
 
 ;;; Org
 ;;;;; install org mode:
-      (straight-use-package 'org-plus-contrib)
+;;      (straight-use-package 'org-contrib)
 ;;;;; Org configuration
       (use-package org
-        :straight org-plus-contrib
+;;        :straight org-contrib
 ;;;;;; customizations
         :custom
 ;;;;;;; Files
@@ -157,6 +157,9 @@
 (org-babel-load-file
  (expand-file-name "readme.org"
                    user-emacs-directory))
+;; (org-babel-load-file
+;;  (expand-file-name "email.org"
+;;                    user-emacs-directory))
 (put 'dired-find-alternate-file 'disabled nil)
 
 (provide 'init)
