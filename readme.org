@@ -351,6 +351,10 @@ This environment provides heading/signature information for a cover letter. Supp
 
 Note that the text within the heading is not exported! You can use this, for example, to keep notes about your application or the employer. For example:
 
+#+BEGIN_SRC org :exports none :tangle awesome-letter.org
+#+include: basic_cv.org
+#+END_SRC
+
 #+begin_src org :tangle awesome-letter.org
 ,* Recipient
 :PROPERTIES:
