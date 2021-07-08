@@ -45,14 +45,19 @@ today => today"
     date_str))
 
 (defun org-cv-utils--format-time-window (from-date to-date)
-"Join date strings in a time window.
+  "Join date strings in a time window.
 FROM-DATE -- TO-DATE
-in case TO-DATE is nil return Present"
-  (concat
-   (org-cv-utils-org-timestamp-to-shortdate from-date)
-   " -- "
-   (if (not to-date) "Present"
-     (org-cv-utils-org-timestamp-to-shortdate to-date))))
+in case TO-DATE is nil return Present.
+If both dates are the same, return just FROM-DATE"
+  (let ((from (when from-date (org-cv-utils-org-timestamp-to-shortdate from-date)))
+        (to (if (not to-date) "Present"
+              (org-cv-utils-org-timestamp-to-shortdate to-date))))
+
+    (if from
+        (if (string= from to)
+            from
+          (concat from " -- " to))
+      "")))
 
 (defun org-cv-utils--parse-cventry (headline info)
   "Return alist describing the entry
