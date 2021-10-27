@@ -585,6 +585,12 @@ See [[https://github.com/bitwarden/cli]].
 (use-package ivy
   :diminish ivy-mode
   :defer 0.9
+  :custom
+    (ivy-re-builders-alist
+     '((ivy-swith-buffer . ivy--regex-fuzzy)
+       (counsel-M-x . ivy--regex-ignore-order)
+       (t . ivy--regex-plus)))
+    (ivy-initial-inputs-alist nil)
   :config
   (use-package ivy-rich
     :defer 0.1
