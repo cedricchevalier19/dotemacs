@@ -947,12 +947,14 @@ Requires:
   (org-babel-do-load-languages 'org-babel-load-languages
                                '(
                                  (C . t)
+				 (ditaa . t)
                                  (emacs-lisp . t)
                                  (gnuplot . t)
                                  (latex . t)
                                  (plantuml . t)
                                  (python . t)
                                  ))
+  (setq org-ditaa-jar-path "/usr/bin/ditaa")
 )
 #+END_SRC
 
@@ -1133,6 +1135,9 @@ From https://github.com/jchaffin/.emacs.d/blob/master/dotemacs.org
 (use-package ox-beamer
   :straight org-contrib
   :after (ox)
+  :config
+  (add-to-list 'org-beamer-environments-extra
+             '("onlyenv" "O" "\\begin{onlyenv}%a" "\\end{onlyenv}"))
   :demand t
   )
 #+END_SRC
