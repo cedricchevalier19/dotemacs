@@ -1,60 +1,21 @@
+;;; Initialize emacs for declarative configuration
 (when (< emacs-major-version 27)
   (setq gc-cons-threshold 100000000))
 
 ;;; Code:
-    (let ((straight-treat-as-init t))
-      (when (locate-library "gnutls")
-        (require 'gnutls)
-;;; straight
-;;;; Variables
-      (setq straight-repository-branch "develop"
-            straight-profiles '((dotemacs . "versions.el")
-                                (nil . "default.el"))
-            straight-current-profile 'dotemacs)
-      ;; Enable `straight-live-modifications-mode' if its dependencies are
-      ;; found.
-;;;; straight live modifications:
-      (if (and (executable-find "watchexec")
-               (executable-find "python3"))
-          (setq straight-check-for-modifications
-                '(watch-files find-when-checking))
-        (setq straight-check-for-modifications
-              '(check-on-save find-when-checking)))
-;;;; Bootstrap straight.el:
-      (let ((bootstrap-file
-             (expand-file-name
-              "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-            (bootstrap-version 5)
-            (domain "https://raw.githubusercontent.com")
-            (repo "raxod502/straight.el")
-            (branch straight-repository-branch)
-            (remote-file "install.el"))
-        (unless (file-exists-p bootstrap-file)
-          (with-current-buffer
-              (url-retrieve-synchronously
-               (mapconcat #'identity (list domain repo branch remote-file) "/")
-               'silent 'inhibit-cookies)
-            (goto-char (point-max))
-            (eval-print-last-sexp)))
-        (load bootstrap-file nil 'nomessage))
-;;;; use package
-      ;; Enable the `:bind-key' keyword
-      (straight-use-package 'bind-key)
-      ;; Now clone the `use-package' library
-      (straight-use-package 'use-package)
-      ;; Enable the `:ensure-system-package' keyword
-      (straight-use-package 'use-package-ensure-system-package)
-      ;; Use `blackout' to clean mode lighters, essentially a drop in
-      ;; replacement for ':diminish'
-      (straight-use-package
-       '(blackout :host github :repo "raxod502/blackout"))
-      (require 'blackout)
-      ;; lazy load by default
-      (setq use-package-always-defer t)
-      ;; Enable the newer version of `use-package'.
-      (setq straight-use-package-version 'straight
-            straight-use-package-by-default t)
-      ;; reduce the clutter in `user-emacs-directory'
+(require 'package)
+(add-to-list 'package-archives '("gnu"   . "https://elpa.gnu.org/packages/"))
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+(package-initialize)
+
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+(eval-and-compile
+  (setq use-package-always-ensure t
+        use-package-expand-minimally t))
+
+
 ;;;; no littering
       (use-package no-littering
         :demand t
@@ -78,17 +39,10 @@
         :demand t
         :init
         (auto-compile-on-load-mode))
-      ;; `el-patch' is like advice, but with state awareness and validation.
-      (straight-use-package 'el-patch)
-      (require 'subr-x)
-      (straight-use-package 'git)
 
 ;;; Org
-;;;;; install org mode:
-;;      (straight-use-package 'org-contrib)
 ;;;;; Org configuration
       (use-package org
-;;        :straight org-contrib
 ;;;;;; customizations
         :custom
 ;;;;;;; Files
@@ -139,7 +93,9 @@
                        org-collector
                        org-mac-iCal
                        org-mac-link
-                       org-velocity))
+                       org-velocity
+                       org-latex
+                       org-beamer))
 ;;;;;; org keybindings
         :bind
         (("C-c a" . org-agenda)
@@ -147,8 +103,7 @@
          ("C-c b" . org-switchb)
          (:map org-mode-map
                ("C-c C-x h" . org-toggle-link-display)
-               ("C-c C-s" . org-schedule))))))
-
+               ("C-c C-s" . org-schedule))))
  (use-package diminish
   :defer t)
 
