@@ -1149,6 +1149,11 @@ From https://github.com/jchaffin/.emacs.d/blob/master/dotemacs.org
   )
 #+END_SRC
 
+*** gnuplot
+#+BEGIN_SRC emacs-lisp
+(use-package gnuplot)
+#+END_SRC
+
 *** Pandoc
 #+BEGIN_SRC emacs-lisp
 (use-package ox-pandoc
