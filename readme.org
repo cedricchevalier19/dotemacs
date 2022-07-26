@@ -267,10 +267,17 @@ machine gitlab.com/api/v4 login ziggy^forge password 012345abcdef..
 ;;
 ;;    :hook (python-mode . lsp-deferred))
 
-(use-package yapfify
-  :hook (python-mode . yapf-mode)
-  )
+;; (use-package yapfify
+;;   :hook (python-mode . yapf-mode)
+;;   )
+(use-package python-black
+  :demand t
+  :after python
+  :hook (python-mode . python-black-on-save-mode))
 #+END_SRC
+
+#+RESULTS:
+| python-black-on-save-mode-enable-dwim | yasnippet-snippets--fixed-indent | lsp-deferred | yapf-mode |
 
 ** Yaml
 #+BEGIN_SRC emacs-lisp
