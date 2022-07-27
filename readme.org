@@ -1151,6 +1151,32 @@ From https://github.com/jchaffin/.emacs.d/blob/master/dotemacs.org
 (use-package gnuplot)
 #+END_SRC
 
+*** latex
+#+BEGIN_SRC emacs-lisp
+(use-package latex
+  :straight auctex
+  :mode
+  ("\\.tex\\'" . latex-mode)
+  :bind
+  (:map LaTeX-mode-map
+        ("C-c C-r" . reftex-query-replace-document)
+        ("C-c C-g" . reftex-grep-document))
+  :config
+    (setq-default TeX-master nil ; by each new file AUCTEX will ask for a master fie.
+                  TeX-PDF-mode t
+                  TeX-engine 'xetex)     ; optional
+
+    (setq TeX-auto-save t
+          TeX-save-query nil       ; don't prompt for saving the .tex file
+          TeX-parse-self t
+          TeX-show-compilation nil         ; if `t`, automatically shows compilation log
+          LaTeX-babel-hyphen nil ; Disable language-specific hyphen insertion.
+	  )
+    ;; Add standard Sweave file extensions to the list of files recognized  by AuCTeX.
+    (add-hook 'TeX-mode-hook (lambda () (reftex-isearch-minor-mode)))
+  )
+#+END_SRC
+
 *** Pandoc
 #+BEGIN_SRC emacs-lisp
 (use-package ox-pandoc
