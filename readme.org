@@ -750,7 +750,6 @@ From [[https://framagit.org/steckerhalter/steckemacs.el/blob/master/steckemacs.e
     (setq org-agenda-todo-ignore-scheduled 'all) ;hide scheduled TODOs
     (setq org-agenda-dim-blocked-tasks t)
     (setq org-agenda-show-all-dates nil)
-    (setq org-agenda-prefix-format "%?-12t% s")
     (setq org-agenda-confirm-kill nil)
     (setq org-tags-match-list-sublevels nil)
 
@@ -842,8 +841,8 @@ Requires:
   (setq org-latex-logfiles-extensions
                 '("acn" "ind" "ilg" "ist" "glo" "tex" "synctex.gz"))
 
-  (add-to-list 'org-beamer-environments-extra
-             '("onlyenv" "O" "\\begin{onlyenv}%a" "\\end{onlyenv}"))
+  ;; (add-to-list 'org-beamer-environments-extra
+  ;;            '("onlyenv" "O" "\\begin{onlyenv}%a" "\\end{onlyenv}"))
 
   :custom
   (org-latex-hyperref-template nil)
