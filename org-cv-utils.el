@@ -28,20 +28,20 @@
 
 ;;; Code:
 (require 'org)
+(require 'org-element)
 
 (defun org-cv-utils-org-timestamp-to-shortdate (date_str)
 "Format orgmode timestamp DATE_STR  into a short form date.
 Other strings are just returned unmodified
 
-e.g. <2002-08-12 Mon> => Aug 2012
+e.g. <2012-08-12 Mon> => Aug 2012
 today => today"
-  (if (string-match (org-re-timestamp 'active) date_str)
-      (let* ((abbreviate 't)
-             (dte (org-parse-time-string date_str))
+  (if (string-match (org-re-timestamp 'all) date_str)
+      (let* ((dte (org-parse-time-string date_str))
              (month (nth 4 dte))
              (year (nth 5 dte))) ;;'(02 07 2015)))
         (concat
-         (calendar-month-name month abbreviate) " " (number-to-string year)))
+         (calendar-month-name month 'abbreviate) " " (number-to-string year)))
     date_str))
 
 (defun org-cv-utils--format-time-window (from-date to-date)
@@ -60,9 +60,8 @@ If both dates are the same, return just FROM-DATE"
       "")))
 
 (defun org-cv-utils--parse-cventry (headline info)
-  "Return alist describing the entry
-INFO is a plist used
-as a communication channel."
+  "Return alist describing the entry in HEADLINE.
+INFO is a plist used as a communication channel."
   (let ((title (org-export-data (org-element-property :title headline) info)))
     `((title . ,title)
       (from-date . ,(or (org-element-property :FROM headline)
@@ -72,4 +71,4 @@ as a communication channel."
       (location . ,(or (org-element-property :LOCATION headline) "")))))
 
 (provide 'org-cv-utils)
-;;; org-cv-utils ends here
+;;; org-cv-utils.el ends here
