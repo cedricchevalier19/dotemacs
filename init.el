@@ -73,29 +73,6 @@
         (org-blank-before-new-entry
          '((heading . auto)
            (plain-list-item . auto)))
-;;;;;;; org libraries
-        (org-modules '(ol-bookmark
-                       ol-man
-                       ol-elisp-symbol
-                       org-bbdb
-                       org-bibtex
-                       org-crypt
-                       org-eww
-                       org-habit
-                       org-id
-                       org-info
-                       org-inlinetask
-                       org-protocol
-                       org-tempo
-                       org-eshell
-                       org-annotate-file
-                       org-checklist
-                       org-collector
-                       org-mac-iCal
-                       org-mac-link
-                       org-velocity
-                       org-latex
-                       org-beamer))
 ;;;;;; org keybindings
         :bind
         (("C-c a" . org-agenda)
