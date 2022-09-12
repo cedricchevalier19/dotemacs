@@ -807,27 +807,6 @@ Requires:
          ("C-c n i" . org-roam-node-insert))
   :config
   (require 'citar)
-;; Create a new node from a bibliographic source. taken from
-;; https://jethrokuan.github.io/org-roam-guide/
-(defun cc/org-roam-node-from-cite (keys-entries)
-  (interactive (list (citar-select-ref :filter nil)))
-  (let ((title (citar-format--entry (cdr keys-entries)
-                                              "${author editor}${date urldate} :: ${title}")))
-    (org-roam-capture- :templates
-                       '(("r" "reference" plain
-                          "%?"
-                          :if-new (file+head "references/${citekey}.org"
-                                             ":properties:
-:roam_refs: [cite:@${citekey}]
-:end:
-,#+title: ${title}
-,#+filetags: %(kb/insert-lit-category)\n")
-                          :immediate-finish t
-                          :unnarrowed t))
-                       :info (list :citekey (car keys-entries))
-                       :node (org-roam-node-create :title title)
-                       :props '(:finalize find-file))))
-  :bind ("C-c c" . cc/org-roam-node-from-cite)
 )
 
 (use-package org-journal
@@ -845,35 +824,28 @@ Requires:
 ** COMMENT ref
 #+BEGIN_SRC emacs-lisp
 
-
 (use-package citar
+  :no-require
   :bind (("C-c r" . citar-insert-citation)
          :map minibuffer-local-map
          ("M-b" . citar-insert-preset))
-  :init
-  (setq citar-bibliography cc/bibfiles))
+  :custom
+  (org-cite-global-bibliography cc/bibfiles)
+  (citar-notes-paths '("~/org/roam/references"))
+  (org-cite-insert-processor 'citar)
+  (org-cite-follow-processor 'citar)
+  (org-cite-activate-processor 'citar)
+  (citar-bibliography org-cite-global-bibliography))
 
 (use-package citar-embark
   :after citar embark
   :no-require
   :config (citar-embark-mode))
 
-;; (use-package org-cite
-;;   :config
-;;   ;; Actually, I set this value to `cc/bib-files', which is a list of file paths.
-;;   ;; I set that as the value of any variable that requires bibliography files,
-;;   ;; such as `citar', as you'll see below.
-;;   (org-cite-global-bibliography
-;;    '("~/org/org-roam/biblio.bib"))
-;;   (org-cite-export-processors
-;;    '((md . (csl "chicago-fullnote-bibliography.csl"))   ; Footnote reliant
-;;      (latex . biblatex)                                 ; For humanities
-;;      (odt . (csl "chicago-fullnote-bibliography.csl"))  ; Footnote reliant
-;;      (t . (csl "modern-language-association.csl"))      ; Fallback
-;;      ))
-;;   )
-
-
+(use-package citar-org-roam
+  :after citar org-roam
+  :no-require
+  :config (citar-org-roam-mode))
 #+END_SRC
 
 ** Export
