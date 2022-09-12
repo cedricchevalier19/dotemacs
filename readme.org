@@ -39,9 +39,9 @@ It is inspired by:
 #+BEGIN_SRC emacs-lisp
 (use-package cmake-ide
   :after projectile
-  :hook (c++-mode . my/cmake-ide-find-project)
+  :hook (c++-mode . cc/cmake-ide-find-project)
   :preface
-  (defun my/cmake-ide-find-project ()
+  (defun cc/cmake-ide-find-project ()
     "Finds the directory of the project for cmake-ide."
     (with-eval-after-load 'projectile
       (setq cmake-ide-project-dir (projectile-project-root))
@@ -50,13 +50,13 @@ It is inspired by:
           (concat "cd " cmake-ide-build-dir " && cmake " projectile-project-root " && cmake --build"))
     (cmake-ide-load-db))
 
-  (defun my/switch-to-compilation-window ()
+  (defun cc/switch-to-compilation-window ()
     "Switches to the *compilation* buffer after compilation."
     (other-window 1))
   :bind ([remap comment-region] . cmake-ide-compile)
   :init (cmake-ide-setup)
   :config
-  (advice-add 'cmake-ide-compile :after #'my/switch-to-compilation-window)
+  (advice-add 'cmake-ide-compile :after #'cc/switch-to-compilation-window)
   (put 'cmake-ide-build-dir 'safe-local-variable #'stringp)
   )
 #+END_SRC
@@ -801,12 +801,33 @@ Requires:
 #+BEGIN_SRC emacs-lisp
 (use-package org-roam
   :custom
-  (org-roam-directory "~/org/roam/")
+  (org-roam-directory cc/roam-dir)
   :bind (("C-c n l" . org-roam-buffer-toggle)
          ("C-c n f" . org-roam-node-find)
          ("C-c n i" . org-roam-node-insert))
   :config
-  (org-roam-setup)
+  (require 'citar)
+;; Create a new node from a bibliographic source. taken from
+;; https://jethrokuan.github.io/org-roam-guide/
+(defun cc/org-roam-node-from-cite (keys-entries)
+  (interactive (list (citar-select-ref :filter nil)))
+  (let ((title (citar-format--entry (cdr keys-entries)
+                                              "${author editor}${date urldate} :: ${title}")))
+    (org-roam-capture- :templates
+                       '(("r" "reference" plain
+                          "%?"
+                          :if-new (file+head "references/${citekey}.org"
+                                             ":properties:
+:roam_refs: [cite:@${citekey}]
+:end:
+,#+title: ${title}
+,#+filetags: %(kb/insert-lit-category)\n")
+                          :immediate-finish t
+                          :unnarrowed t))
+                       :info (list :citekey (car keys-entries))
+                       :node (org-roam-node-create :title title)
+                       :props '(:finalize find-file))))
+  :bind ("C-c c" . cc/org-roam-node-from-cite)
 )
 
 (use-package org-journal
@@ -823,16 +844,14 @@ Requires:
 
 ** COMMENT ref
 #+BEGIN_SRC emacs-lisp
-(use-package org-roam-bibtex
-  :after org-roam
-  ) ; optional: if using Org-ref v2 or v3 citation links
+
 
 (use-package citar
-  :bind (("C-c b" . citar-insert-citation)
+  :bind (("C-c r" . citar-insert-citation)
          :map minibuffer-local-map
          ("M-b" . citar-insert-preset))
-  :config
-  (setq citar-bibliography '("~/org/roam/biblio.bib")))
+  :init
+  (setq citar-bibliography cc/bibfiles))
 
 (use-package citar-embark
   :after citar embark

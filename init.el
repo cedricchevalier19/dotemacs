@@ -109,6 +109,9 @@
 
  (require 'bind-key)
 
+(defvar cc/roam-dir "~/org/roam")
+(defvar cc/bibfiles '("~/org/roam/biblio.bib"))
+
 (org-babel-load-file
  (expand-file-name "readme.org"
                    user-emacs-directory))
