@@ -732,121 +732,66 @@ And some preconfigured snippets:
 (use-package yasnippet-snippets)
 #+END_SRC
 * Org
-** Agenda
-From [[https://framagit.org/steckerhalter/steckemacs.el/blob/master/steckemacs.el]]
-#+BEGIN_SRC emacs-lisp
-(use-package org-agenda
-    :ensure nil
-    :bind (:map org-agenda-mode-map
-                ("C-c t" . (lambda () (interactive)
-                             (org-agenda-todo 'done)
-                             (org-agenda-redo-all))))
-    :init
-    (defun my-org-agenda (key) (interactive) (org-agenda nil key))
-    (setq org-agenda-start-with-log-mode t)
-    (setq org-agenda-todo-ignore-scheduled 'future) ;don't show future scheduled
-    (setq org-agenda-todo-ignore-deadlines 'far)    ;show only near deadlines
-    (setq org-agenda-dim-blocked-tasks t)
-    (setq org-agenda-todo-ignore-scheduled 'all) ;hide scheduled TODOs
-    (setq org-agenda-dim-blocked-tasks t)
-    (setq org-agenda-show-all-dates nil)
-    (setq org-agenda-confirm-kill nil)
-    (setq org-tags-match-list-sublevels nil)
+# ** Agenda
+# From [[https://framagit.org/steckerhalter/steckemacs.el/blob/master/steckemacs.el]]
+# #+BEGIN_SRC emacs-lisp
+# (use-package org-agenda
+#     :ensure nil
+#     :bind (:map org-agenda-mode-map
+#                 ("C-c t" . (lambda () (interactive)
+#                              (org-agenda-todo 'done)
+#                              (org-agenda-redo-all))))
+#     :init
+#     (defun my-org-agenda (key) (interactive) (org-agenda nil key))
+#     (setq org-agenda-start-with-log-mode t)
+#     (setq org-agenda-todo-ignore-scheduled 'future) ;don't show future scheduled
+#     (setq org-agenda-todo-ignore-deadlines 'far)    ;show only near deadlines
+#     (setq org-agenda-dim-blocked-tasks t)
+#     (setq org-agenda-todo-ignore-scheduled 'all) ;hide scheduled TODOs
+#     (setq org-agenda-dim-blocked-tasks t)
+#     (setq org-agenda-show-all-dates nil)
+#     (setq org-agenda-confirm-kill nil)
+#     (setq org-tags-match-list-sublevels nil)
 
-    (defun org-archive-done-tasks ()
-      (interactive)
-      (org-map-entries
-       (lambda ()
-         (org-archive-subtree)
-         (setq org-map-continue-from (org-element-property :begin (org-element-at-point))))
-       "/DONE" 'file))
+#     (defun org-archive-done-tasks ()
+#       (interactive)
+#       (org-map-entries
+#        (lambda ()
+#          (org-archive-subtree)
+#          (setq org-map-continue-from (org-element-property :begin (org-element-at-point))))
+#        "/DONE" 'file))
 
-    :config
-    ;; add state to the sorting strategy of todo
-    (setcdr (assq 'todo org-agenda-sorting-strategy) '(todo-state-up priority-down category-keep))
+#     :config
+#     ;; add state to the sorting strategy of todo
+#     (setcdr (assq 'todo org-agenda-sorting-strategy) '(todo-state-up priority-down category-keep))
 
-    (setq org-agenda-files (list "~/org/roam/agenda/"))
+#     (setq org-agenda-files (list "~/org/roam/agenda/"))
 
-    ;; display the agenda first
-    (setq org-agenda-custom-commands
-          '(("n" "@home"
-             ((tags-todo "-@work+DEADLINE<=\"<now>\"" ((org-agenda-overriding-header "now")))
-              (tags-todo "-@work-DEADLINE={.}+TODO={TODO}" ((org-agenda-overriding-header "todo")))
-              (tags "-@work+reminder+DEADLINE>\"<now>\|-@work+reminder-DEADLINE<=\"<now>\""  ((org-agenda-overriding-header "reminders")))
-              (tags-todo "-@work+TODO={PICK}+DEADLINE>\"<now>\"|-@work+TODO={PICK}-DEADLINE={.}" ((org-agenda-overriding-header "pick")))
-              (tags-todo "-@work+DEADLINE>=\"<now>\"" ((org-agenda-overriding-header "scheduled")))))
-            ("w" "@work"
-             ((tags-todo "@work+DEADLINE<=\"<now>\"" ((org-agenda-overriding-header "now")))
-              (tags-todo "@work-DEADLINE={.}+TODO={TODO}" ((org-agenda-overriding-header "todo")))
-              (tags "@work+reminder+DEADLINE>\"<now>\|@work+reminder-DEADLINE<=\"<now>\""  ((org-agenda-overriding-header "reminders")))
-              (tags-todo "@work+TODO={PICK}+DEADLINE>\"<now>\"|@work+TODO={PICK}-DEADLINE={.}" ((org-agenda-overriding-header "pick")))
-              (tags-todo "@work+DEADLINE>=\"<now>\"" ((org-agenda-overriding-header "scheduled")))))))
+#     ;; display the agenda first
+#     (setq org-agenda-custom-commands
+#           '(("n" "@home"
+#              ((tags-todo "-@work+DEADLINE<=\"<now>\"" ((org-agenda-overriding-header "now")))
+#               (tags-todo "-@work-DEADLINE={.}+TODO={TODO}" ((org-agenda-overriding-header "todo")))
+#               (tags "-@work+reminder+DEADLINE>\"<now>\|-@work+reminder-DEADLINE<=\"<now>\""  ((org-agenda-overriding-header "reminders")))
+#               (tags-todo "-@work+TODO={PICK}+DEADLINE>\"<now>\"|-@work+TODO={PICK}-DEADLINE={.}" ((org-agenda-overriding-header "pick")))
+#               (tags-todo "-@work+DEADLINE>=\"<now>\"" ((org-agenda-overriding-header "scheduled")))))
+#             ("w" "@work"
+#              ((tags-todo "@work+DEADLINE<=\"<now>\"" ((org-agenda-overriding-header "now")))
+#               (tags-todo "@work-DEADLINE={.}+TODO={TODO}" ((org-agenda-overriding-header "todo")))
+#               (tags "@work+reminder+DEADLINE>\"<now>\|@work+reminder-DEADLINE<=\"<now>\""  ((org-agenda-overriding-header "reminders")))
+#               (tags-todo "@work+TODO={PICK}+DEADLINE>\"<now>\"|@work+TODO={PICK}-DEADLINE={.}" ((org-agenda-overriding-header "pick")))
+#               (tags-todo "@work+DEADLINE>=\"<now>\"" ((org-agenda-overriding-header "scheduled")))))))
 
-    ;; add new appointments when saving the org buffer, use 'refresh argument to do it properly
-    (defun my-org-agenda-to-appt-refresh () (org-agenda-to-appt 'refresh))
-    (defun my-org-mode-hook ()
-      (add-hook 'after-save-hook 'my-org-agenda-to-appt-refresh nil 'make-it-local))
-    :hook
-    ('org-mode-hook 'my-org-mode-hook)
-    )
-#+END_SRC
+#     ;; add new appointments when saving the org buffer, use 'refresh argument to do it properly
+#     (defun my-org-agenda-to-appt-refresh () (org-agenda-to-appt 'refresh))
+#     (defun my-org-mode-hook ()
+#       (add-hook 'after-save-hook 'my-org-agenda-to-appt-refresh nil 'make-it-local))
+#     :hook
+#     ('org-mode-hook 'my-org-mode-hook)
+#     )
+# #+END_SRC
 
-** Roam
-For =zettelkasten= notes.
 
-Requires:
-- =sqlite3=
-- =graphviz= for =dot=
-
-#+BEGIN_SRC emacs-lisp
-(use-package org-roam
-  :custom
-  (org-roam-directory cc/roam-dir)
-  :bind (("C-c n l" . org-roam-buffer-toggle)
-         ("C-c n f" . org-roam-node-find)
-         ("C-c n i" . org-roam-node-insert))
-  :config
-  (require 'citar)
-)
-
-(use-package org-journal
-  :after org-roam
-  :bind
-  ("C-c n j" . org-journal-new-entry)
-  :custom
-  (org-journal-date-prefix "#+title: ")
-  (org-journal-file-format "%Y-%m-%d.org")
-  (org-journal-dir org-roam-directory)
-  (org-journal-date-format "%A, %d %B %Y")
-  (org-journal-enable-agenda-integration t))
-#+END_SRC
-
-** COMMENT ref
-#+BEGIN_SRC emacs-lisp
-
-(use-package citar
-  :no-require
-  :bind (("C-c r" . citar-insert-citation)
-         :map minibuffer-local-map
-         ("M-b" . citar-insert-preset))
-  :custom
-  (org-cite-global-bibliography cc/bibfiles)
-  (citar-notes-paths '("~/org/roam/references"))
-  (org-cite-insert-processor 'citar)
-  (org-cite-follow-processor 'citar)
-  (org-cite-activate-processor 'citar)
-  (citar-bibliography org-cite-global-bibliography))
-
-(use-package citar-embark
-  :after citar embark
-  :no-require
-  :config (citar-embark-mode))
-
-(use-package citar-org-roam
-  :after citar org-roam
-  :no-require
-  :config (citar-org-roam-mode))
-#+END_SRC
 
 ** Export
 #+BEGIN_SRC emacs-lisp
@@ -1118,3 +1063,60 @@ Requires:
 # (use-package ox-hugo
 #   :after (ox))
 # #+END_SRC
+
+
+
+
+** ref
+#+BEGIN_SRC emacs-lisp
+(use-package citar
+  :no-require
+  :bind (("C-c n o" . citar-open)
+  	 ("C-c r" . citar-insert-citation)
+         :map minibuffer-local-map
+         ("M-b" . citar-insert-preset))
+  :custom
+  (org-cite-global-bibliography cc/bibfiles)
+  (citar-notes-paths '("~/org/roam/references"))
+  (org-cite-insert-processor 'citar)
+  (org-cite-follow-processor 'citar)
+  (org-cite-activate-processor 'citar)
+  (citar-bibliography org-cite-global-bibliography))
+
+(use-package citar-embark
+  :after citar embark
+  :no-require
+  :config (citar-embark-mode))
+
+(use-package citar-org-roam
+  :after citar org-roam
+  :no-require
+  :config (citar-org-roam-mode))
+#+END_SRC
+** Roam
+For =zettelkasten= notes.
+
+Requires:
+- =sqlite3=
+- =graphviz= for =dot=
+
+#+BEGIN_SRC emacs-lisp
+(use-package org-roam
+  :custom
+  (org-roam-directory cc/roam-dir)
+  :bind (("C-c n l" . org-roam-buffer-toggle)
+         ("C-c n f" . org-roam-node-find)
+         ("C-c n i" . org-roam-node-insert))
+)
+
+(use-package org-journal
+  :after org-roam
+  :bind
+  ("C-c n j" . org-journal-new-entry)
+  :custom
+  (org-journal-date-prefix "#+title: ")
+  (org-journal-file-format "%Y-%m-%d.org")
+  (org-journal-dir org-roam-directory)
+  (org-journal-date-format "%A, %d %B %Y")
+  (org-journal-enable-agenda-integration t))
+#+END_SRC
