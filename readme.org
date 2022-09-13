@@ -699,6 +699,16 @@ Use =lsp-ui=
 (use-package flycheck
   :init (global-flycheck-mode))
 #+END_SRC
+** Custom
+#+BEGIN_SRC emacs-lisp
+(setq-default
+ auto-save-list-file-name  (expand-file-name "local/auto-save-list"
+                                             user-emacs-directory)
+ custom-file  (expand-file-name "local/custom.el"
+                                user-emacs-directory))
+(when (file-exists-p custom-file)
+  (load custom-file t))
+#+END_SRC
 ** Search
 *** Fuzzy
 #+BEGIN_SRC emacs-lisp
