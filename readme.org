@@ -13,14 +13,14 @@ It is inspired by:
 * Programming
 ** Cpp
 #+BEGIN_SRC emacs-lisp
-(use-package ccls
-  :config
-  (setq ccls-executable "ccls")
-  (setq lsp-prefer-flymake nil)
-  (setq-default flycheck-disabled-checkers
-                '(c/c++-clang c/c++-cppcheck c/c++-gcc))
-  :hook ((c-mode c++-mode objc-mode cuda-mode) .
-         (lambda () (require 'ccls) (lsp))))
+;; (use-package ccls
+;;   :config
+;;   (setq ccls-executable "ccls")
+;;   (setq lsp-prefer-flymake nil)
+;;   (setq-default flycheck-disabled-checkers
+;;                 '(c/c++-clang c/c++-cppcheck c/c++-gcc))
+;;   :hook ((c-mode c++-mode objc-mode cuda-mode) .
+;;          (lambda () (require 'ccls) (lsp))))
 
 (use-package clang-format
   :commands clang-format clang-format-buffer clang-format-region)
@@ -39,9 +39,9 @@ It is inspired by:
 #+BEGIN_SRC emacs-lisp
 (use-package cmake-ide
   :after projectile
-  :hook (c++-mode . my/cmake-ide-find-project)
+  :hook (c++-mode . cc/cmake-ide-find-project)
   :preface
-  (defun my/cmake-ide-find-project ()
+  (defun cc/cmake-ide-find-project ()
     "Finds the directory of the project for cmake-ide."
     (with-eval-after-load 'projectile
       (setq cmake-ide-project-dir (projectile-project-root))
@@ -50,13 +50,13 @@ It is inspired by:
           (concat "cd " cmake-ide-build-dir " && cmake " projectile-project-root " && cmake --build"))
     (cmake-ide-load-db))
 
-  (defun my/switch-to-compilation-window ()
+  (defun cc/switch-to-compilation-window ()
     "Switches to the *compilation* buffer after compilation."
     (other-window 1))
   :bind ([remap comment-region] . cmake-ide-compile)
   :init (cmake-ide-setup)
   :config
-  (advice-add 'cmake-ide-compile :after #'my/switch-to-compilation-window)
+  (advice-add 'cmake-ide-compile :after #'cc/switch-to-compilation-window)
   (put 'cmake-ide-build-dir 'safe-local-variable #'stringp)
   )
 #+END_SRC
@@ -131,11 +131,7 @@ It is inspired by:
 
 #+BEGIN_SRC emacs-lisp
 (use-package magit
-  :bind (("C-x g" . magit-status))
-  :config
-  (use-package magit-delta
-    :after magit
-    :hook (magit-mode . magit-delta-mode)))
+  :bind (("C-x g" . magit-status)))
 #+END_SRC
 
 *** Current modifications
@@ -149,80 +145,14 @@ It is inspired by:
   :hook (after-init-hook . global-diff-hl-mode))
 #+END_SRC
 
-
-# #+BEGIN_SRC emacs-lisp
-# ;;; Git Gutter
-# ;;Git gutter is great for giving visual feedback on changes, but it doesn't play well
-# ;;with org-mode using org-indent. So I don't use it globally.
-# (use-package git-gutter
-#   :after hydra
-#   :defer t
-#   :hook ((markdown-mode . git-gutter-mode)
-#          (prog-mode . git-gutter-mode)
-#          (conf-mode . git-gutter-mode)
-#          (org-mode . git-gutter-mode))
-#   :init
-#   :config
-#   (setq git-gutter:disabled-modes '(asm-mode image-mode)
-#         git-gutter:update-interval 1
-#         git-gutter:window-width 2
-#         git-gutter:ask-p nil)
-#   (defhydra hydra-git-gutter (:body-pre (git-gutter-mode 1)
-#                                       :hint nil)
-#     "
-#  Git gutter:
-#    _j_: next hunk        _s_tage hunk     _q_uit
-#    _k_: previous hunk    _r_evert hunk    _Q_uit and deactivate git-gutter
-#    ^ ^                   _p_opup hunk
-#    _h_: first hunk
-#    _l_: last hunk        set start _R_evision
-#  "
-#     ("j" git-gutter:next-hunk)
-#     ("k" git-gutter:previous-hunk)
-#     ("h" (progn (goto-char (point-min))
-#               (git-gutter:next-hunk 1)))
-#     ("l" (progn (goto-char (point-min))
-#               (git-gutter:previous-hunk 1)))
-#     ("s" git-gutter:stage-hunk)
-#     ("r" git-gutter:revert-hunk)
-#     ("p" git-gutter:popup-hunk)
-#     ("R" git-gutter:set-start-revision)
-#     ("q" nil :color blue)
-#     ("Q" (progn (git-gutter-mode -1)
-#               ;; git-gutter-fringe doesn't seem to
-#               ;; clear the markup right away
-#               (sit-for 0.1)
-#               (git-gutter:clear))
-#      :color blue)))
-
-# (use-package git-gutter-fringe
-#   :diminish git-gutter-mode
-#   :after git-gutter
-#   :demand fringe-helper
-#   :config
-#   ;; subtle diff indicators in the fringe
-#   ;; places the git gutter outside the margins.
-#   (setq-default fringes-outside-margins t)
-#   ;; thin fringe bitmaps
-#   (define-fringe-bitmap 'git-gutter-fr:added
-#     [224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224]
-#     nil nil 'center)
-#   (define-fringe-bitmap 'git-gutter-fr:modified
-#     [224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224]
-#     nil nil 'center)
-#   (define-fringe-bitmap 'git-gutter-fr:deleted
-#     [0 0 0 0 0 0 0 0 0 0 0 0 0 128 192 224 240 248]
-#     nil nil 'center))
-# #+END_SRC
-
 *** gitlab support
 **** Forge
-#+BEGIN_SRC emacs-lisp
-(use-package forge
-  :after magit
-  ;;  :config (setq auth-sources '("~/.authinfo"))
-  )
-#+END_SRC
+# #+BEGIN_SRC emacs-lisp
+# (use-package forge
+#   :after magit
+#   ;;  :config (setq auth-sources '("~/.authinfo"))
+#   )
+# #+END_SRC
 
 From https://magit.vc/manual/ghub/Storing-a-Token.html#Storing-a-Token
 
@@ -250,13 +180,13 @@ machine gitlab.com/api/v4 login ziggy^forge password 012345abcdef..
 
 **** Gitlab ci
 
-#+BEGIN_SRC emacs-lisp
-(use-package gitlab-ci-mode)
+# #+BEGIN_SRC emacs-lisp
+# (use-package gitlab-ci-mode)
 
-(use-package gitlab-ci-mode-flycheck
-  :after gitlab-ci-mode
-  :init (gitlab-ci-mode-flycheck-enable))
-#+END_SRC
+# (use-package gitlab-ci-mode-flycheck
+#   :after gitlab-ci-mode
+#   :init (gitlab-ci-mode-flycheck-enable))
+# #+END_SRC
 
 ** Python
 #+BEGIN_SRC emacs-lisp
@@ -309,37 +239,6 @@ Needs =pandoc=
   :delight "μ "
   :mode ("\\.markdown\\'" "\\.md\\'")
   :custom (markdown-command "/usr/bin/pandoc"))
-
-(use-package markdown-preview-mode
-  :after markdown-mode
-  :custom
-  (markdown-preview-javascript
-   (list (concat "https://github.com/highlightjs/highlight.js/"
-                 "9.15.6/highlight.min.js")
-         "<script>
-              $(document).on('mdContentChange', function() {
-                $('pre code').each(function(i, block)  {
-                  hljs.highlightBlock(block);
-                });
-              });
-            </script>"))
-  (markdown-preview-stylesheets
-   (list (concat "https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/"
-                 "3.0.1/github-markdown.min.css")
-         (concat "https://github.com/highlightjs/highlight.js/"
-                 "9.15.6/styles/github.min.css")
-
-         "<style>
-              .markdown-body {
-                box-sizing: border-box;
-                min-width: 200px;
-                max-width: 980px;
-                margin: 0 auto;
-                padding: 45px;
-              }
-
-              @media (max-width: 767px) { .markdown-body { padding: 15px; } }
-            </style>")))
 #+end_src
 
 ** RST
@@ -523,16 +422,6 @@ I use =bufler= instead of =ibuffer=
 (use-package multiple-cursors
   :bind (("C-C m c" . mc/edit-lines)))
 #+END_SRC
-** Password manager
-
-I will try to use bitwarden. It requires bitwarden CLI to be installed.
-See [[https://github.com/bitwarden/cli]].
-
-#+BEGIN_SRC emacs-lisp
-(use-package emacs-bitwarden
-  :straight (:type git :host github :repo "seanfarley/emacs-bitwarden")
-  )
-#+END_SRC
 
 * Dashboard
 #+BEGIN_SRC emacs-lisp
@@ -637,94 +526,93 @@ See [[https://github.com/bitwarden/cli]].
 ** Dired
 Use built-in =dired= with [[https://github.com/Fuco1/dired-hacks][=dired-hacks=]]
 
-#+BEGIN_SRC emacs-lisp
-(use-package dired
-  :straight nil ;; (:type built-in)
-  :hook
-  ;; auto refresh dired when file changes
-  (dired-mode-hook . auto-revert-mode)
-  :config
-  (use-package dired-rainbow
-    :after dired
-    :config (dired-rainbow-mode))
-  (use-package dired-subtree
-    :after dired)
-  (use-package dired-filter
-    :after dired
-    :config
-    (dired-filter-mode)
-    (setq dired-filter-show-filters nil)
-    )
-  (use-package dired-narrow
-    :after dired
-    :bind (:map dired-mode-map
-                ("/" . dired-narrow)))
-  (use-package dired-collapse
-    :after dired
-    :config (dired-collapse-mode))
-  (use-package dired-quick-sort
-    :after dired
-    :config (dired-quick-sort-setup))
-  (use-package dired-filetype-face
-    :after dired
-    :config (dired-filetype-face))
+# #+BEGIN_SRC emacs-lisp
+# (use-package dired
+#   :hook
+#   ;; auto refresh dired when file changes
+#   (dired-mode-hook . auto-revert-mode)
+#   :config
+#   (use-package dired-rainbow
+#     :after dired
+#     :config (dired-rainbow-mode))
+#   (use-package dired-subtree
+#     :after dired)
+#   (use-package dired-filter
+#     :after dired
+#     :config
+#     (dired-filter-mode)
+#     (setq dired-filter-show-filters nil)
+#     )
+#   (use-package dired-narrow
+#     :after dired
+#     :bind (:map dired-mode-map
+#                 ("/" . dired-narrow)))
+#   (use-package dired-collapse
+#     :after dired
+#     :config (dired-collapse-mode))
+#   (use-package dired-quick-sort
+#     :after dired
+#     :config (dired-quick-sort-setup))
+#   (use-package dired-filetype-face
+#     :after dired
+#     :config (dired-filetype-face))
 
-  ;; hydra setup
-  ;; from https://github.com/abo-abo/hydra/wiki/Dired
-  (defhydra hydra-dired (:hint nil :color pink)
-    "
-_+_ mkdir          _v_iew           _m_ark             _(_ details        _i_nsert-subdir    wdired
-_C_opy             _O_ view other   _U_nmark all       _)_ omit-mode      _$_ hide-subdir    C-x C-q : edit
-_D_elete           _o_pen other     _u_nmark           _l_ redisplay      _w_ kill-subdir    C-c C-c : commit
-_R_ename           _M_ chmod        _t_oggle           _g_ revert buf     _e_ ediff          C-c ESC : abort
-_Y_ rel symlink    _G_ chgrp        _E_xtension mark   _s_ort             _=_ pdiff
-_S_ymlink          ^ ^              _F_ind marked      _._ toggle hydra   \\ flyspell
-_r_sync            ^ ^              ^ ^                ^ ^                _?_ summary
-_z_ compress-file  _A_ find regexp
-_Z_ compress       _Q_ repl regexp
+#   ;; hydra setup
+#   ;; from https://github.com/abo-abo/hydra/wiki/Dired
+#   (defhydra hydra-dired (:hint nil :color pink)
+#     "
+# _+_ mkdir          _v_iew           _m_ark             _(_ details        _i_nsert-subdir    wdired
+# _C_opy             _O_ view other   _U_nmark all       _)_ omit-mode      _$_ hide-subdir    C-x C-q : edit
+# _D_elete           _o_pen other     _u_nmark           _l_ redisplay      _w_ kill-subdir    C-c C-c : commit
+# _R_ename           _M_ chmod        _t_oggle           _g_ revert buf     _e_ ediff          C-c ESC : abort
+# _Y_ rel symlink    _G_ chgrp        _E_xtension mark   _s_ort             _=_ pdiff
+# _S_ymlink          ^ ^              _F_ind marked      _._ toggle hydra   \\ flyspell
+# _r_sync            ^ ^              ^ ^                ^ ^                _?_ summary
+# _z_ compress-file  _A_ find regexp
+# _Z_ compress       _Q_ repl regexp
 
-T - tag prefix
-"
-    ("\\" dired-do-ispell)
-    ("(" dired-hide-details-mode)
-    (")" dired-omit-mode)
-    ("+" dired-create-directory)
-    ("=" diredp-ediff)         ;; smart diff
-    ("?" dired-summary)
-    ("$" diredp-hide-subdir-nomove)
-    ("A" dired-do-find-regexp)
-    ("C" dired-do-copy)        ;; Copy all marked files
-    ("D" dired-do-delete)
-    ("E" dired-mark-extension)
-    ("e" dired-ediff-files)
-    ("F" dired-do-find-marked-files)
-    ("G" dired-do-chgrp)
-    ("g" revert-buffer)        ;; read all directories again (refresh)
-    ("i" dired-maybe-insert-subdir)
-    ("l" dired-do-redisplay)   ;; relist the marked or singel directory
-    ("M" dired-do-chmod)
-    ("m" dired-mark)
-    ("O" dired-display-file)
-    ("o" dired-find-file-other-window)
-    ("Q" dired-do-find-regexp-and-replace)
-    ("R" dired-do-rename)
-    ("r" dired-do-rsynch)
-    ("S" dired-do-symlink)
-    ("s" dired-sort-toggle-or-edit)
-    ("t" dired-toggle-marks)
-    ("U" dired-unmark-all-marks)
-    ("u" dired-unmark)
-    ("v" dired-view-file)      ;; q to exit, s to search, = gets line #
-    ("w" dired-kill-subdir)
-    ("Y" dired-do-relsymlink)
-    ("z" diredp-compress-this-file)
-    ("Z" dired-do-compress)
-    ("q" nil)
-    ("." nil :color blue))
+# T - tag prefix
+# "
+#     ("\\" dired-do-ispell)
+#     ("(" dired-hide-details-mode)
+#     (")" dired-omit-mode)
+#     ("+" dired-create-directory)
+#     ("=" diredp-ediff)         ;; smart diff
+#     ("?" dired-summary)
+#     ("$" diredp-hide-subdir-nomove)
+#     ("A" dired-do-find-regexp)
+#     ("C" dired-do-copy)        ;; Copy all marked files
+#     ("D" dired-do-delete)
+#     ("E" dired-mark-extension)
+#     ("e" dired-ediff-files)
+#     ("F" dired-do-find-marked-files)
+#     ("G" dired-do-chgrp)
+#     ("g" revert-buffer)        ;; read all directories again (refresh)
+#     ("i" dired-maybe-insert-subdir)
+#     ("l" dired-do-redisplay)   ;; relist the marked or singel directory
+#     ("M" dired-do-chmod)
+#     ("m" dired-mark)
+#     ("O" dired-display-file)
+#     ("o" dired-find-file-other-window)
+#     ("Q" dired-do-find-regexp-and-replace)
+#     ("R" dired-do-rename)
+#     ("r" dired-do-rsynch)
+#     ("S" dired-do-symlink)
+#     ("s" dired-sort-toggle-or-edit)
+#     ("t" dired-toggle-marks)
+#     ("U" dired-unmark-all-marks)
+#     ("u" dired-unmark)
+#     ("v" dired-view-file)      ;; q to exit, s to search, = gets line #
+#     ("w" dired-kill-subdir)
+#     ("Y" dired-do-relsymlink)
+#     ("z" diredp-compress-this-file)
+#     ("Z" dired-do-compress)
+#     ("q" nil)
+#     ("." nil :color blue))
 
-  (define-key dired-mode-map "." 'hydra-dired/body)
-  )
-#+END_SRC
+#   (define-key dired-mode-map "." 'hydra-dired/body)
+#   )
+# #+END_SRC
 
 ** Completion
 =company= is used
@@ -792,13 +680,6 @@ Use =lsp-ui=
   :commands lsp-ui-mode)
 #+END_SRC
 
-*** company
-#+BEGIN_SRC emacs-lisp
-(use-package company-lsp
-  :commands company-lsp
-  :config (push 'company-lsp company-backends))
-#+END_SRC
-
 *** Ivy
 #+BEGIN_SRC emacs-lisp
 (use-package lsp-ivy
@@ -851,101 +732,9 @@ And some preconfigured snippets:
 (use-package yasnippet-snippets)
 #+END_SRC
 * Org
-** Agenda
-From [[https://framagit.org/steckerhalter/steckemacs.el/blob/master/steckemacs.el]]
-#+BEGIN_SRC emacs-lisp
-(use-package org-agenda
-    :ensure nil
-    :straight nil
-    :bind (:map org-agenda-mode-map
-                ("C-c t" . (lambda () (interactive)
-                             (org-agenda-todo 'done)
-                             (org-agenda-redo-all))))
-    :init
-    (defun my-org-agenda (key) (interactive) (org-agenda nil key))
-    (setq org-agenda-start-with-log-mode t)
-    (setq org-agenda-todo-ignore-scheduled 'future) ;don't show future scheduled
-    (setq org-agenda-todo-ignore-deadlines 'far)    ;show only near deadlines
-    (setq org-agenda-dim-blocked-tasks t)
-    (setq org-agenda-todo-ignore-scheduled 'all) ;hide scheduled TODOs
-    (setq org-agenda-dim-blocked-tasks t)
-    (setq org-agenda-show-all-dates nil)
-    (setq org-agenda-prefix-format "%?-12t% s")
-    (setq org-agenda-confirm-kill nil)
-    (setq org-tags-match-list-sublevels nil)
-
-    (defun org-archive-done-tasks ()
-      (interactive)
-      (org-map-entries
-       (lambda ()
-         (org-archive-subtree)
-         (setq org-map-continue-from (org-element-property :begin (org-element-at-point))))
-       "/DONE" 'file))
-
-    :config
-    ;; add state to the sorting strategy of todo
-    (setcdr (assq 'todo org-agenda-sorting-strategy) '(todo-state-up priority-down category-keep))
-
-    (setq org-agenda-files (list "~/org/roam/agenda/"))
-
-    ;; display the agenda first
-    (setq org-agenda-custom-commands
-          '(("n" "@home"
-             ((tags-todo "-@work+DEADLINE<=\"<now>\"" ((org-agenda-overriding-header "now")))
-              (tags-todo "-@work-DEADLINE={.}+TODO={TODO}" ((org-agenda-overriding-header "todo")))
-              (tags "-@work+reminder+DEADLINE>\"<now>\|-@work+reminder-DEADLINE<=\"<now>\""  ((org-agenda-overriding-header "reminders")))
-              (tags-todo "-@work+TODO={PICK}+DEADLINE>\"<now>\"|-@work+TODO={PICK}-DEADLINE={.}" ((org-agenda-overriding-header "pick")))
-              (tags-todo "-@work+DEADLINE>=\"<now>\"" ((org-agenda-overriding-header "scheduled")))))
-            ("w" "@work"
-             ((tags-todo "@work+DEADLINE<=\"<now>\"" ((org-agenda-overriding-header "now")))
-              (tags-todo "@work-DEADLINE={.}+TODO={TODO}" ((org-agenda-overriding-header "todo")))
-              (tags "@work+reminder+DEADLINE>\"<now>\|@work+reminder-DEADLINE<=\"<now>\""  ((org-agenda-overriding-header "reminders")))
-              (tags-todo "@work+TODO={PICK}+DEADLINE>\"<now>\"|@work+TODO={PICK}-DEADLINE={.}" ((org-agenda-overriding-header "pick")))
-              (tags-todo "@work+DEADLINE>=\"<now>\"" ((org-agenda-overriding-header "scheduled")))))))
-
-    ;; add new appointments when saving the org buffer, use 'refresh argument to do it properly
-    (defun my-org-agenda-to-appt-refresh () (org-agenda-to-appt 'refresh))
-    (defun my-org-mode-hook ()
-      (add-hook 'after-save-hook 'my-org-agenda-to-appt-refresh nil 'make-it-local))
-    :hook
-    ('org-mode-hook 'my-org-mode-hook)
-    )
-#+END_SRC
-
-** Roam
-For =zettelkasten= notes.
-
-Requires:
-- =sqlite3=
-- =graphviz= for =dot=
-
-#+BEGIN_SRC emacs-lisp
-(use-package org-roam
-  :custom
-  (org-roam-directory "~/org/roam/")
-  :bind (("C-c n l" . org-roam-buffer-toggle)
-         ("C-c n f" . org-roam-node-find)
-         ("C-c n i" . org-roam-node-insert))
-  :config
-  (org-roam-setup)
-)
-
-(use-package org-journal
-  :after org-roam
-  :bind
-  ("C-c n j" . org-journal-new-entry)
-  :custom
-  (org-journal-date-prefix "#+title: ")
-  (org-journal-file-format "%Y-%m-%d.org")
-  (org-journal-dir org-roam-directory)
-  (org-journal-date-format "%A, %d %B %Y")
-  (org-journal-enable-agenda-integration t))
-#+END_SRC
-
 ** Export
 #+BEGIN_SRC emacs-lisp
-(use-package ox
-  :straight org-contrib
+(use-package org
   :config
   (add-to-list 'org-src-lang-modes '("plantuml" . plantuml))
   (org-babel-do-load-languages 'org-babel-load-languages
@@ -959,16 +748,13 @@ Requires:
                                  (python . t)
                                  ))
   (setq org-ditaa-jar-path "/usr/bin/ditaa")
-)
-#+END_SRC
 
-*** Latex
-From https://github.com/jchaffin/.emacs.d/blob/master/dotemacs.org
-#+BEGIN_SRC emacs-lisp
-(use-package ox-latex
-  :straight org-contrib
-  :after (ox)
-  :demand t
+  (setq org-latex-logfiles-extensions
+                '("acn" "ind" "ilg" "ist" "glo" "tex" "synctex.gz"))
+
+  ;; (add-to-list 'org-beamer-environments-extra
+  ;;            '("onlyenv" "O" "\\begin{onlyenv}%a" "\\end{onlyenv}"))
+
   :custom
   (org-latex-hyperref-template nil)
   (org-latex-listings 'minted)
@@ -1135,16 +921,17 @@ From https://github.com/jchaffin/.emacs.d/blob/master/dotemacs.org
         ("M-s l" . org-latex-pdf-process-set)))
 #+END_SRC
 
-#+BEGIN_SRC emacs-lisp
-(use-package ox-beamer
-  :straight org-contrib
-  :after (ox)
-  :config
-  (add-to-list 'org-beamer-environments-extra
-             '("onlyenv" "O" "\\begin{onlyenv}%a" "\\end{onlyenv}"))
-  :demand t
-  )
-#+END_SRC
+# #+BEGIN_SRC emacs-lisp
+# (use-package ox-beamer
+#   :after (ox)
+#   :config
+#   (add-to-list 'org-beamer-environments-extra
+#              '("onlyenv" "O" "\\begin{onlyenv}%a" "\\end{onlyenv}"))
+#   :demand t
+#   )
+# #+END_SRC
+
+#+RESULTS:
 
 *** gnuplot
 #+BEGIN_SRC emacs-lisp
@@ -1154,7 +941,7 @@ From https://github.com/jchaffin/.emacs.d/blob/master/dotemacs.org
 *** latex
 #+BEGIN_SRC emacs-lisp
 (use-package latex
-  :straight auctex
+  :ensure auctex
   :mode
   ("\\.tex\\'" . latex-mode)
   :bind
@@ -1180,7 +967,6 @@ From https://github.com/jchaffin/.emacs.d/blob/master/dotemacs.org
 *** Pandoc
 #+BEGIN_SRC emacs-lisp
 (use-package ox-pandoc
-  :ensure-system-package (pandoc)
   :after (:all ox)
   :custom
   (org-pandoc-options '((standalone . t)))
@@ -1217,97 +1003,48 @@ From https://github.com/jchaffin/.emacs.d/blob/master/dotemacs.org
 #   :after (ox))
 # #+END_SRC
 
-** Reviews
-*** noter
+
+
+
+** ref
 #+BEGIN_SRC emacs-lisp
-(use-package org-noter
-  :after (:any org pdf-view)
-  :config
-  (setq
-   ;; The WM can handle splits
-   org-noter-notes-window-location 'other-frame
-   ;; Please stop opening frames
-   org-noter-always-create-frame nil
-   ;; I want to see the whole file
-   org-noter-hide-other nil
-   ;; Everything is relative to the main notes file
-   org-noter-notes-search-path (list org_notes)
-   )
-  )
+(use-package citar
+  :no-require
+  :bind (("C-c n o" . citar-open)
+  	 ("C-c r" . citar-insert-citation)
+         :map minibuffer-local-map
+         ("M-b" . citar-insert-preset))
+  :custom
+  (org-cite-global-bibliography cc/bibfiles)
+  (citar-notes-paths '("~/org/roam/references"))
+  (org-cite-insert-processor 'citar)
+  (org-cite-follow-processor 'citar)
+  (org-cite-activate-processor 'citar)
+  (citar-bibliography org-cite-global-bibliography))
+
+(use-package citar-embark
+  :after citar embark
+  :no-require
+  :config (citar-embark-mode))
+
+(use-package citar-org-roam
+  :after citar org-roam
+  :no-require
+  :config (citar-org-roam-mode))
 #+END_SRC
+** Roam
+For =zettelkasten= notes.
 
-*** pdftools
-#+BEGIN_SRC emacs-lisp
-(use-package org-pdftools
-:hook (org-load . org-pdftools-setup-link))
-(use-package org-noter-pdftools
-:after org-noter
-:config
-(with-eval-after-load 'pdf-annot
-(add-hook 'pdf-annot-activate-handler-functions#'org-noter-pdftools-jump-to-note)))
-#+END_SRC emacs-lisp
-
-
-*** bibtex
-See [[https://rgoswami.me/posts/org-note-workflow/]]
-#+BEGIN_SRC emacs-lisp
-(setq
- org_notes (concat (getenv "HOME") "/org/roam/zotero-notes/")
- zot_bib (concat (getenv "HOME") "/Documents/zotero.bib")
- bibtex-completion-notes-path org_notes
- bibtex-completion-bibliography zot_bib
- bibtex-completion-pdf-field "file"
- bibtex-completion-notes-template-multiple-files
- (concat
-  "#+TITLE: ${title}\n"
-  "#+ROAM_KEY: cite:${=key=}\n"
-  "* TODO Notes\n"
-  ":PROPERTIES:\n"
-  ":Custom_ID: ${=key=}\n"
-  ":NOTER_DOCUMENT: %(orb-process-file-field \"${=key=}\")\n"
-  ":AUTHOR: ${author-abbrev}\n"
-  ":JOURNAL: ${journaltitle}\n"
-  ":DATE: ${date}\n"
-  ":YEAR: ${year}\n"
-  ":DOI: ${doi}\n"
-  ":URL: ${url}\n"
-  ":END:\n\n"
-  )
- )
-#+END_SRC
+Requires:
+- =sqlite3=
+- =graphviz= for =dot=
 
 #+BEGIN_SRC emacs-lisp
-(use-package ivy-bibtex)
-
-(use-package org-ref
-  :config
-  (setq
-   org-ref-completion-library 'org-ref-ivy-cite
-   org-ref-get-pdf-filename-function 'org-ref-get-pdf-filename-helm-bibtex
-   org-ref-default-bibliography (list zot_bib)
-   org-ref-bibliography-notes (concat org_notes "/bibnotes.org")
-   org-ref-note-title-format "* TODO %y - %t\n :PROPERTIES:\n  :Custom_ID: %k\n  :NOTER_DOCUMENT: %F\n :ROAM_KEY: cite:%k\n  :AUTHOR: %9a\n  :JOURNAL: %j\n  :YEAR: %y\n  :VOLUME: %v\n  :PAGES: %p\n  :DOI: %D\n  :URL: %U\n :END:\n\n"
-   org-ref-notes-directory org_notes
-   org-ref-notes-function 'orb-edit-notes
-   )
-  )
-
-(use-package org-roam-bibtex
-  :after (org-roam)
-  :hook (org-roam-mode . org-roam-bibtex-mode)
-  :config
-  (setq orb-preformat-keywords
-        '("=key=" "title" "url" "file" "author-or-editor" "keywords"))
-  (setq orb-templates
-        '(("r" "ref" plain (function org-roam-capture--get-point)
-           ""
-           :file-name "${slug}"
-           :head "#+TITLE: ${=key=}: ${title}\n#+ROAM_KEY: ${ref}
-- tags ::
-- keywords :: ${keywords}
-\n* ${title}\n  :PROPERTIES:\n  :Custom_ID: ${=key=}\n  :URL: ${url}\n  :AUTHOR: ${author-or-editor}\n  :NOTER_DOCUMENT: %(orb-process-file-field \"${=key=}\")\n  :NOTER_PAGE: \n  :END:\n\n"
-           :unnarrowed t)))
-  (setq orb-note-actions-interface 'hydra)
-  (setq orb-insert-interface 'ivy)
-  )
+(use-package org-roam
+  :custom
+  (org-roam-directory cc/roam-dir)
+  :bind (("C-c n l" . org-roam-buffer-toggle)
+         ("C-c n f" . org-roam-node-find)
+         ("C-c n i" . org-roam-node-insert))
+)
 #+END_SRC
