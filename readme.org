@@ -959,6 +959,7 @@ And some preconfigured snippets:
           TeX-show-compilation nil         ; if `t`, automatically shows compilation log
           LaTeX-babel-hyphen nil ; Disable language-specific hyphen insertion.
 	  )
+    (add-hook 'LaTeX-mode-hook 'reftex-mode)
     ;; Add standard Sweave file extensions to the list of files recognized  by AuCTeX.
     (add-hook 'TeX-mode-hook (lambda () (reftex-isearch-minor-mode)))
   )
@@ -1003,9 +1004,6 @@ And some preconfigured snippets:
 #   :after (ox))
 # #+END_SRC
 
-
-
-
 ** ref
 #+BEGIN_SRC emacs-lisp
 (use-package citar
@@ -1042,6 +1040,7 @@ Requires:
 #+BEGIN_SRC emacs-lisp
 (use-package org-roam
   :custom
+  (require 'citar)
   (org-roam-directory cc/roam-dir)
   :bind (("C-c n l" . org-roam-buffer-toggle)
          ("C-c n f" . org-roam-node-find)
