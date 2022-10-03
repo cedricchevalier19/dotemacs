@@ -731,6 +731,14 @@ And some preconfigured snippets:
 #+BEGIN_SRC emacs-lisp
 (use-package yasnippet-snippets)
 #+END_SRC
+
+** Undo
+#+BEGIN_SRC emacs-lisp
+(use-package vundo
+  :config
+  (setq vundo-glyph-alist vundo-unicode-symbols)
+)
+
 * Org
 ** Export
 #+BEGIN_SRC emacs-lisp
