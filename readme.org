@@ -738,6 +738,7 @@ And some preconfigured snippets:
   :config
   (setq vundo-glyph-alist vundo-unicode-symbols)
 )
+#+END_SRC
 
 * Org
 ** Export
@@ -940,6 +941,19 @@ And some preconfigured snippets:
 # #+END_SRC
 
 #+RESULTS:
+
+*** mermaid
+#+BEGIN_SRC emacs-lisp
+(use-package mermaid-mode)
+(use-package ob-mermaid
+:after org
+:config
+(setq ob-mermaid-cli-path "~/opt/node_modules/.bin/mmdc")
+  (org-babel-do-load-languages 'org-babel-load-languages
+                               '(
+                                 (mermaid . t)
+                                 )))
+#+END_SRC
 
 *** gnuplot
 #+BEGIN_SRC emacs-lisp
