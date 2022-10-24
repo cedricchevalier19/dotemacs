@@ -261,10 +261,9 @@ save a shell script file that begins with a =#!= shebang:
 
 ** Rust
 =rust-analyser= must be installed before (https://rust-analyzer.github.io/manual.html#installation)
-#+BEGIN_SRC bash
-mkdir -p ~/.local/bin
-curl -L https://github.com/rust-lang/rust-analyzer/releases/latest/download/rust-analyzer-x86_64-unknown-linux-gnu.gz | gunzip -c - > ~/.local/bin/rust-analyzer
-chmod +x ~/.local/bin/rust-analyzer
+
+#+BEGIN_SRC shell
+rustup component add rust-analyzer
 #+END_SRC
 
 
@@ -278,6 +277,7 @@ From https://www.bytedude.com/setting-up-rust-support-in-emacs/
    rustic-format-on-save nil
    ;; Prevent automatic syntax checking, which was causing lags and stutters.
    eglot-send-changes-idle-time (* 60 60)
+   rustic-analyzer-command '("~/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rust-analyzer")
    )
   ;; Disable the annoying doc popups in the minibuffer.
   (add-hook 'eglot-managed-mode-hook (lambda () (eldoc-mode -1)))
