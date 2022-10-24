@@ -1,4 +1,4 @@
-#+TITLE: My Emacs configuration
+ #+TITLE: My Emacs configuration
 #+AUTHOR: Cédric Chevalier
 # #+OPTIONS: toc:nil
 
@@ -189,9 +189,6 @@ machine gitlab.com/api/v4 login ziggy^forge password 012345abcdef..
   :hook (python-mode . python-black-on-save-mode))
 #+END_SRC
 
-#+RESULTS:
-| python-black-on-save-mode-enable-dwim | yasnippet-snippets--fixed-indent | lsp-deferred | yapf-mode |
-
 ** Yaml
 #+BEGIN_SRC emacs-lisp
 (use-package yaml-mode
@@ -306,9 +303,9 @@ From https://www.bytedude.com/setting-up-rust-support-in-emacs/
 #+BEGIN_SRC emacs-lisp
 (use-package plantuml-mode
   :config
-    (setq org-plantuml-jar-path
-              (expand-file-name "/usr/share/plantuml/plantuml.jar"))
-    (setq plantuml-default-exec-mode 'jar)
+  (setq org-plantuml-jar-path
+        (expand-file-name "/usr/share/plantuml/plantuml.jar"))
+  (setq plantuml-default-exec-mode 'jar)
   :mode ("\\.plantuml\\'"))
 #+END_SRC
 
@@ -461,11 +458,11 @@ I use =bufler= instead of =ibuffer=
   :diminish ivy-mode
   :defer 0.9
   :custom
-    (ivy-re-builders-alist
-     '((ivy-swith-buffer . ivy--regex-fuzzy)
-       (counsel-M-x . ivy--regex-ignore-order)
-       (t . ivy--regex-plus)))
-    (ivy-initial-inputs-alist nil)
+  (ivy-re-builders-alist
+   '((ivy-swith-buffer . ivy--regex-fuzzy)
+     (counsel-M-x . ivy--regex-ignore-order)
+     (t . ivy--regex-plus)))
+  (ivy-initial-inputs-alist nil)
   :config
   (use-package ivy-rich
     :defer 0.1
@@ -688,7 +685,7 @@ And some preconfigured snippets:
 (use-package vundo
   :config
   (setq vundo-glyph-alist vundo-unicode-symbols)
-)
+  )
 #+END_SRC
 
 * Org
@@ -700,7 +697,7 @@ And some preconfigured snippets:
   (org-babel-do-load-languages 'org-babel-load-languages
                                '(
                                  (C . t)
-				 (ditaa . t)
+                                 (ditaa . t)
                                  (emacs-lisp . t)
                                  (gnuplot . t)
                                  (latex . t)
@@ -710,7 +707,7 @@ And some preconfigured snippets:
   (setq org-ditaa-jar-path "/usr/bin/ditaa")
 
   (setq org-latex-logfiles-extensions
-                '("acn" "ind" "ilg" "ist" "glo" "tex" "synctex.gz"))
+        '("acn" "ind" "ilg" "ist" "glo" "tex" "synctex.gz"))
 
   ;; (add-to-list 'org-beamer-environments-extra
   ;;            '("onlyenv" "O" "\\begin{onlyenv}%a" "\\end{onlyenv}"))
@@ -897,9 +894,9 @@ And some preconfigured snippets:
 #+BEGIN_SRC emacs-lisp
 (use-package mermaid-mode)
 (use-package ob-mermaid
-:after org
-:config
-(setq ob-mermaid-cli-path "~/opt/node_modules/.bin/mmdc")
+  :after org
+  :config
+  (setq ob-mermaid-cli-path "~/opt/node_modules/.bin/mmdc")
   (org-babel-do-load-languages 'org-babel-load-languages
                                '(
                                  (mermaid . t)
@@ -922,20 +919,20 @@ And some preconfigured snippets:
         ("C-c C-r" . reftex-query-replace-document)
         ("C-c C-g" . reftex-grep-document))
   :config
-    (setq-default TeX-master nil ; by each new file AUCTEX will ask for a master fie.
-                  TeX-PDF-mode t
-                  TeX-engine 'xetex)     ; optional
+  (setq-default TeX-master nil ; by each new file AUCTEX will ask for a master fie.
+                TeX-PDF-mode t
+                TeX-engine 'xetex)     ; optional
 
-    (setq TeX-auto-save t
-          TeX-save-query nil       ; don't prompt for saving the .tex file
-          TeX-parse-self t
-          TeX-show-compilation nil         ; if `t`, automatically shows compilation log
-          LaTeX-babel-hyphen nil ; Disable language-specific hyphen insertion.
-	  )
-    (add-hook 'LaTeX-mode-hook 'reftex-mode)
-    ;; Add standard Sweave file extensions to the list of files recognized  by AuCTeX.
-    (add-hook 'TeX-mode-hook (lambda () (reftex-isearch-minor-mode)))
-  )
+  (setq TeX-auto-save t
+        TeX-save-query nil       ; don't prompt for saving the .tex file
+        TeX-parse-self t
+        TeX-show-compilation nil  ; if `t`, automatically shows compilation log
+        LaTeX-babel-hyphen nil  ; Disable language-specific hyphen insertion.
+        )
+  (add-hook 'LaTeX-mode-hook 'reftex-mode)
+  ;; Add standard Sweave file extensions to the list of files recognized  by AuCTeX.
+  (add-hook 'TeX-mode-hook (lambda () (reftex-isearch-minor-mode)))
+)
 #+END_SRC
 
 *** Pandoc
@@ -982,7 +979,7 @@ And some preconfigured snippets:
 (use-package citar
   :no-require
   :bind (("C-c n o" . citar-open)
-  	 ("C-c r" . citar-insert-citation)
+         ("C-c r" . citar-insert-citation)
          :map minibuffer-local-map
          ("M-b" . citar-insert-preset))
   :custom
@@ -1018,5 +1015,5 @@ Requires:
   :bind (("C-c n l" . org-roam-buffer-toggle)
          ("C-c n f" . org-roam-node-find)
          ("C-c n i" . org-roam-node-insert))
-)
+  )
 #+END_SRC
