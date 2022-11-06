@@ -616,6 +616,12 @@ Use built-in =dired= with [[https://github.com/Fuco1/dired-hacks][=dired-hacks=]
 #+END_SRC
 
 ** Indent
+*** Indent
+#+BEGIN_SRC emacs-lisp
+(use-package indent-tools
+    :bind (("C-C >" .'indent-tools-hydra/body)))
+#+END_SRC
+
 *** editor config
 #+BEGIN_SRC emacs-lisp
 (use-package editorconfig
