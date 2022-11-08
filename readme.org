@@ -857,6 +857,11 @@ And some preconfigured snippets:
   )
 #+END_SRC
 
+** Shell
+#+BEGIN_SRC emacs-lisp
+(use-package aweshell
+  :load-path "~/.emacs.d/mirrors/aweshell")
+#+END_SRC
 * Org
 ** Export
 #+BEGIN_SRC emacs-lisp
