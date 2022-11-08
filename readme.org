@@ -21,97 +21,17 @@ It is inspired by:
   :after (cmake-mode)
   :hook (cmake-mode . cmake-font-lock-activate))
 #+END_SRC
-*** Compile
+
+*** Develop
 #+BEGIN_SRC emacs-lisp
-(use-package cmake-ide
-  :after projectile
-  :hook (c++-mode . cc/cmake-ide-find-project)
-  :preface
-  (defun cc/cmake-ide-find-project ()
-    "Finds the directory of the project for cmake-ide."
-    (with-eval-after-load 'projectile
-      (setq cmake-ide-project-dir (projectile-project-root))
-      (setq cmake-ide-build-dir (concat cmake-ide-project-dir "build")))
-    (setq cmake-ide-compile-command
-          (concat "cd " cmake-ide-build-dir " && cmake " projectile-project-root " && cmake --build"))
-    (cmake-ide-load-db))
-
-  (defun cc/switch-to-compilation-window ()
-    "Switches to the *compilation* buffer after compilation."
-    (other-window 1))
-  :bind ([remap comment-region] . cmake-ide-compile)
-  :init (cmake-ide-setup)
-  :config
-  (advice-add 'cmake-ide-compile :after #'cc/switch-to-compilation-window)
-  (put 'cmake-ide-build-dir 'safe-local-variable #'stringp)
-  )
+(use-package project-cmake
+    :load-path "~/.emacs.d/mirrors/project-cmake"
+    :after eglot
+    :config
+    (project-cmake-scan-kits)
+    (project-cmake-eglot-integration))
 #+END_SRC
-** Projectile
-#+BEGIN_SRC emacs-lisp
-(use-package projectile
-  :bind
-  ("C-c o" . projectile-command-map)
-  ("C-x w" . hydra-projectile-other-window/body)
-  ("C-c p" . hydra-projectile/body)
-  :config
-  (use-package counsel-projectile
-    :after (projectile)
-    :bind
-    (:map projectile-command-map
-          ("s s" . counsel-projectile-rg)
-          ("p" . counsel-projectile-switch-project)))
-  (when (eq system-type 'windows-nt)
-    (setq projectile-indexing-method 'native))
-  (setq projectile-enable-caching t
-        projectile-require-project-root t
-        projectile-mode-line '(:eval (format " 🛠[%s]" (projectile-project-name)))
-        projectile-completion-system 'default)
-  (add-to-list 'projectile-globally-ignored-directories "node_modules")
-  (projectile-mode)
-  (defhydra hydra-projectile-other-window (:color teal)
-    "projectile-other-window"
-    ("f"  projectile-find-file-other-window        "file")
-    ("g"  projectile-find-file-dwim-other-window   "file dwim")
-    ("d"  projectile-find-dir-other-window         "dir")
-    ("b"  projectile-switch-to-buffer-other-window "buffer")
-    ("q"  nil                                      "cancel" :color blue))
-  (defhydra hydra-projectile (:color teal :hint nil)
-    "
- PROJECTILE: %(projectile-project-root)
 
- Find File            Search/Tags          Buffers                Cache
-  ------------------------------------------------------------------------------------------
-  _C-f_: file            _r_: ag                _i_: Ibuffer           _c_: cache clear
-   _ff_: file dwim       _g_: update gtags      _b_: switch to buffer  _x_: remove known project
-   _fd_: file curr dir   _o_: multi-occur     _C-k_: Kill all buffers  _X_: cleanup non-existing
-    _r_: recent file                                               ^^^^_z_: cache current
-    _d_: dir
-
-  "
-    ("r"   counsel-projectile-rg)
-    ("b"   projectile-switch-to-buffer)
-    ("c"   projectile-invalidate-cache)
-    ("d"   projectile-find-dir)
-    ("C-f" projectile-find-file)
-    ("ff"  projectile-find-file-dwim)
-    ("fd"  projectile-find-file-in-directory)
-    ("g"   ggtags-update-tags)
-    ("C-g" ggtags-update-tags)
-    ("i"   projectile-ibuffer)
-    ("K"   projectile-kill-buffers)
-    ("C-k" projectile-kill-buffers)
-    ("m"   projectile-multi-occur)
-    ("o"   projectile-multi-occur)
-    ("C-p" projectile-switch-project "switch project")
-    ("p"   projectile-switch-project)
-    ("s"   projectile-switch-project)
-    ("r"   projectile-recentf)
-    ("x"   projectile-remove-known-project)
-    ("X"   projectile-cleanup-known-projects)
-    ("z"   projectile-cache-current-file)
-    ("`"   hydra-projectile-other-window/body "other window")
-    ("q"   nil "cancel" :color blue)))
-#+END_SRC
 ** Git
 *** Magit
 
@@ -878,7 +798,12 @@ Use built-in =dired= with [[https://github.com/Fuco1/dired-hacks][=dired-hacks=]
 ** eglot
 *** Core
 #+BEGIN_SRC emacs-lisp
-(use-package eglot)
+(use-package eglot
+  :config
+  (add-to-list 'eglot-server-programs '((c++-mode c-mode) "clangd"))
+  (add-hook 'c-mode-hook 'eglot-ensure)
+  (add-hook 'c++-mode-hook 'eglot-ensure)
+)
 #+END_SRC
 
 *** debugger
