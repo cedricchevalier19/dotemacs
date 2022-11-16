@@ -32,6 +32,12 @@ It is inspired by:
     (project-cmake-eglot-integration))
 #+END_SRC
 
+** Meson
+#+BEGIN_SRC emacs-lisp
+(use-package meson-mode
+  :hook (meson-mode-hook . company-mode))
+#+END_SRC
+
 ** Git
 *** Magit
 
