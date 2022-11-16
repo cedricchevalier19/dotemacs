@@ -1093,6 +1093,7 @@ And some preconfigured snippets:
 (use-package mermaid-mode)
 (use-package ob-mermaid
   :after org
+  :defer t
   :config
   (setq ob-mermaid-cli-path "~/opt/node_modules/.bin/mmdc")
   (org-babel-do-load-languages 'org-babel-load-languages
@@ -1103,7 +1104,8 @@ And some preconfigured snippets:
 
 *** gnuplot
 #+BEGIN_SRC emacs-lisp
-(use-package gnuplot)
+(use-package gnuplot
+  :defer t)
 #+END_SRC
 
 *** latex
@@ -1136,6 +1138,7 @@ And some preconfigured snippets:
 *** Pandoc
 #+BEGIN_SRC emacs-lisp
 (use-package ox-pandoc
+  :disabled
   :after (:all ox)
   :custom
   (org-pandoc-options '((standalone . t)))
