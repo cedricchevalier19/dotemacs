@@ -154,8 +154,7 @@ Needs =pandoc=
 #+BEGIN_SRC emacs-lisp
 (use-package rst
   :delight "rst"
-  :mode (("\\.txt$" . rst-mode)
-         ("\\.rst$" . rst-mode)
+  :mode (("\\.rst$" . rst-mode)
          ("\\.rest$" . rst-mode)))
 #+END_SRC
 *** sphinx
