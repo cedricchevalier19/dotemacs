@@ -1,8 +1,6 @@
 *~
 *.elc
 .cache
-projectile.cache
-projectile-bookmarks.eld
 recentf
 false
 forge-database.sqlite
@@ -14,3 +12,8 @@ readme.el
 straight/
 transient/
 url/
+eln-cache/
+elpa/
+org-roam.db
+var/
+local/
