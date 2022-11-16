@@ -804,6 +804,8 @@ Use built-in =dired= with [[https://github.com/Fuco1/dired-hacks][=dired-hacks=]
 *** Core
 #+BEGIN_SRC emacs-lisp
 (use-package eglot
+  :init
+  (setq exec-path (append exec-path '("~/opt/lsp-tools/bin")))
   :config
   (add-to-list 'eglot-server-programs '((c++-mode c-mode) "clangd"))
   (add-hook 'c-mode-hook 'eglot-ensure)
