@@ -10,6 +10,20 @@ It is inspired by:
 - [[http://pragmaticemacs.com]]
 - [[https://protesilaos.com/dotemacs]]
 
+# * Startup profiling
+# #+BEGIN_SRC emacs-lisp
+# (use-package esup
+#   :ensure t)
+# #+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+(use-package benchmark-init
+  :ensure t
+  :config
+  ;; To disable collection of benchmark data after init is done.
+  (add-hook 'after-init-hook 'benchmark-init/deactivate))
+#+END_SRC
+
 * Programming
 ** CMake
 *** Edit
@@ -191,6 +205,7 @@ rustup component add rust-analyzer
 From https://www.bytedude.com/setting-up-rust-support-in-emacs/
 #+BEGIN_SRC emacs-lisp
 (use-package rustic
+  :defer t
   :config
   (setq
    ;; eglot seems to be the best option right now.
@@ -261,8 +276,8 @@ From https://www.bytedude.com/setting-up-rust-support-in-emacs/
 
 Use zoom to resize buffers
 #+BEGIN_SRC emacs-lisp
-(use-package zoom
-  :init (zoom-mode))
+;; (use-package zoom
+;;   :init (zoom-mode))
 #+END_SRC
 
 Highlight changes:
@@ -328,7 +343,11 @@ I use =bufler= instead of =ibuffer=
 
 * Dashboard
 #+BEGIN_SRC emacs-lisp
+(use-package all-the-icons
+  :if (display-graphic-p))
+
 (use-package dashboard
+  :after all-the-icons
   :init
   (dashboard-setup-startup-hook)
   :config
@@ -790,14 +809,15 @@ Use built-in =dired= with [[https://github.com/Fuco1/dired-hacks][=dired-hacks=]
 
 ** tree-sitter
 #+BEGIN_SRC emacs-lisp
-  (use-package tree-sitter-langs :ensure t)
-
   (use-package tree-sitter
-    :ensure t
-    :after tree-sitter-langs
     :config
-    (global-tree-sitter-mode)
-    (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode))
+    (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode)
+    :hook
+    ((c-mode c++-mode python-mode rustic-mode yaml-mode json-mode) #'tree-sitter-mode)
+    )
+
+  (use-package tree-sitter-langs
+    :after tree-sitter)
 #+END_SRC
 ** eglot
 *** Core
@@ -814,7 +834,8 @@ Use built-in =dired= with [[https://github.com/Fuco1/dired-hacks][=dired-hacks=]
 *** debugger
 
 #+BEGIN_SRC emacs-lisp
-(use-package dap-mode)
+(use-package dap-mode
+  :disabled)
 ;; (use-package dap-LANGUAGE) to load the dap adapter for your language
 #+END_SRC
 ** Flycheck
@@ -844,6 +865,7 @@ Use built-in =dired= with [[https://github.com/Fuco1/dired-hacks][=dired-hacks=]
 ** Snippets
 #+BEGIN_SRC emacs-lisp
 (use-package yasnippet
+  :disabled
   :config
   (add-to-list 'yas-snippet-dirs (expand-file-name "snippets"
                                                    user-emacs-directory))
@@ -852,7 +874,8 @@ Use built-in =dired= with [[https://github.com/Fuco1/dired-hacks][=dired-hacks=]
 
 And some preconfigured snippets:
 #+BEGIN_SRC emacs-lisp
-(use-package yasnippet-snippets)
+(use-package yasnippet-snippets
+  :disabled)
 #+END_SRC
 
 ** Undo
