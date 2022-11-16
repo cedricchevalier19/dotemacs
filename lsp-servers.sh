@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Installs lsp-servers used with eglot
+# - rust-analyzer is installed via rustup as described in readme.org
+# - bsdtar is required to decompress zip file on the fly
+
 LSP_ROOT_TOOLS=~/opt/lsp-tools
 
 mkdir -p $LSP_ROOT_TOOLS/bin
