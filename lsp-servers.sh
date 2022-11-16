@@ -19,8 +19,11 @@ ln -sf ../node_modules/dockerfile-language-server-nodejs/bin/docker-langserver .
 # cmake
 cd ${LSP_ROOT_TOOLS} || exit
 pip install --prefix=${LSP_ROOT_TOOLS} cmake-language-server
-cd bin || exit
-ln -sf ../local/bin/cmake-language-server .
+if [ ! -x bin/cmake-language-server ]; then
+    # on ubuntu pip installs in prefix/local
+    cd bin || exit
+    ln -sf ../local/bin/cmake-language-server .
+fi
 
 #bash
 cd ${LSP_ROOT_TOOLS} || exit
