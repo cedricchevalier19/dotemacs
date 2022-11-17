@@ -312,11 +312,6 @@ Highlight changes:
 (use-package which-key
   :commands which-key-mode)
 #+END_SRC
-** Kill ring
-#+BEGIN_SRC emacs-lisp
-(use-package popup-kill-ring
-  :bind (("M-y" . popup-kill-ring)))
-#+END_SRC
 ** Regular expressions
 #+begin_src emacs-lisp
 (use-package visual-regexp-steroids
