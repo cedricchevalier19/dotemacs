@@ -306,13 +306,6 @@ Highlight changes:
 #+BEGIN_SRC emacs-lisp
 (use-package hydra)
 #+END_SRC
-** buffer
-I use =bufler= instead of =ibuffer=
-
-#+BEGIN_SRC emacs-lisp
-(use-package bufler
-  :bind (("C-x C-b" . bufler)))
-#+END_SRC
 
 ** Multiple-cursors
 #+BEGIN_SRC emacs-lisp
