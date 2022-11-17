@@ -892,16 +892,23 @@ And some preconfigured snippets:
 (use-package org
   :config
   (add-to-list 'org-src-lang-modes '("plantuml" . plantuml))
-  (org-babel-do-load-languages 'org-babel-load-languages
-                               '(
-                                 (C . t)
-                                 (ditaa . t)
-                                 (emacs-lisp . t)
-                                 (gnuplot . t)
-                                 (latex . t)
-                                 (plantuml . t)
-                                 (python . t)
-                                 ))
+  (defadvice org-babel-execute-src-block (around load-language nil activate)
+  "Load language if needed"
+  (let ((language (org-element-property :language (org-element-at-point))))
+    (unless (cdr (assoc (intern language) org-babel-load-languages))
+      (add-to-list 'org-babel-load-languages (cons (intern language) t))
+      (org-babel-do-load-languages 'org-babel-load-languages org-babel-load-languages))
+    ad-do-it))
+  ;; (org-babel-do-load-languages 'org-babel-load-languages
+  ;;                              '(
+  ;;                                (C . t)
+  ;;                                (ditaa . t)
+  ;;                                (emacs-lisp . t)
+  ;;                                (gnuplot . t)
+  ;;                                (latex . t)
+  ;;                                (plantuml . t)
+  ;;                                (python . t)
+  ;;                                ))
   (setq org-ditaa-jar-path "/usr/bin/ditaa")
 
   (setq org-latex-logfiles-extensions
