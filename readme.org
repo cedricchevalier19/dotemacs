@@ -1088,8 +1088,6 @@ And some preconfigured snippets:
 #   )
 # #+END_SRC
 
-#+RESULTS:
-
 *** mermaid
 #+BEGIN_SRC emacs-lisp
 (use-package mermaid-mode)
@@ -1097,11 +1095,7 @@ And some preconfigured snippets:
   :after org
   :defer t
   :config
-  (setq ob-mermaid-cli-path "~/opt/node_modules/.bin/mmdc")
-  (org-babel-do-load-languages 'org-babel-load-languages
-                               '(
-                                 (mermaid . t)
-                                 )))
+  (setq ob-mermaid-cli-path "~/opt/node_modules/.bin/mmdc"))
 #+END_SRC
 
 *** gnuplot
