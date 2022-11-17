@@ -25,6 +25,16 @@ It is inspired by:
 #+END_SRC
 
 * Programming
+** Documentation
+#+BEGIN_SRC emacs-lisp
+(use-package devdocs
+  :bind (("C-h D" . devdocs-lookup))
+  :hook
+  (cmake-mode . (lambda () (setq-local devdocs-current-docs '("cmake~3.24"))))
+  (sh-mode . (lambda () (setq-local devdocs-current-docs '("bash"))))
+  )
+#+END_SRC
+
 ** CMake
 *** Edit
 #+BEGIN_SRC emacs-lisp
