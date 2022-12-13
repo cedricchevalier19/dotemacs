@@ -639,9 +639,9 @@ https://github.com/minad/marginalia
   ;; Configure a custom style dispatcher (see the Consult wiki)
   ;; (setq orderless-style-dispatchers '(+orderless-dispatch)
   ;;       orderless-component-separator #'orderless-escapable-split-on-space)
-  (setq completion-styles '(orderless basic)
+  (setq completion-styles '(orderless flex)
         completion-category-defaults nil
-        completion-category-overrides '((file (styles partial-completion)))))
+        completion-category-overrides '((file (styles partial-completion)) (eglot (styles . (orderless flex))))))
 #+END_SRC
 
 ** Dired
@@ -804,9 +804,12 @@ Use built-in =dired= with [[https://github.com/Fuco1/dired-hacks][=dired-hacks=]
 (use-package eglot
   :init
   (setq exec-path (append '("~/opt/lsp-tools/bin") exec-path))
+  ;; Option 1: Specify explicitly to use Orderless for Eglot
+  (setq completion-category-overrides '((eglot (styles orderless))))
   :config
   (add-hook 'c-mode-hook 'eglot-ensure)
   (add-hook 'c++-mode-hook 'eglot-ensure)
+  (setq completion-category-defaults nil)
 )
 #+END_SRC
 
