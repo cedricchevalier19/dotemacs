@@ -58,8 +58,7 @@ It is inspired by:
 
 ** Meson
 #+BEGIN_SRC emacs-lisp
-(use-package meson-mode
-  :hook (meson-mode-hook . company-mode))
+(use-package meson-mode)
 #+END_SRC
 
 ** Git
@@ -506,8 +505,6 @@ https://github.com/minad/consult
               ("C-x C-d" . consult-dir)
               ("C-x C-j" . consult-dir-jump-file)))
 
-(use-package consult-company)
-
 (use-package consult-eglot)
 
 (use-package consult-org-roam
@@ -651,8 +648,6 @@ https://github.com/minad/marginalia
 #+BEGIN_SRC emacs-lisp
 (use-package prescient
   :config (prescient-persist-mode 1))
-(use-package company-prescient
-  :config (company-prescient-mode 1))
 #+END_SRC
 ** Dired
 Use built-in =dired= with [[https://github.com/Fuco1/dired-hacks][=dired-hacks=]]
@@ -746,27 +741,34 @@ Use built-in =dired= with [[https://github.com/Fuco1/dired-hacks][=dired-hacks=]
 # #+END_SRC
 
 ** Completion
-=company= is used
-#+BEGIN_SRC emacs-lisp
-(use-package company
-  :defer 0.5
-  :delight
-  :custom
-  (company-begin-commands '(self-insert-command))
-  (company-idle-delay 0)
-  (company-minimum-prefix-length 2)
-  (company-show-numbers t)
-  (company-tooltip-align-annotations 't)
-  (global-company-mode t))
-#+END_SRC
+=corfu= is used
 
 #+BEGIN_SRC emacs-lisp
-(use-package company-box
-  :after company
-  :delight
-  :hook (company-mode . company-box-mode))
-#+END_SRC
+(use-package corfu
+  ;; Optional customizations
+  ;; :custom
+  ;; (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
+  ;; (corfu-auto t)                 ;; Enable auto completion
+  ;; (corfu-separator ?\s)          ;; Orderless field separator
+  ;; (corfu-quit-at-boundary nil)   ;; Never quit at completion boundary
+  ;; (corfu-quit-no-match nil)      ;; Never quit, even if there is no match
+  ;; (corfu-preview-current nil)    ;; Disable current candidate preview
+  ;; (corfu-preselect-first nil)    ;; Disable candidate preselection
+  ;; (corfu-on-exact-match nil)     ;; Configure handling of exact matches
+  ;; (corfu-scroll-margin 5)        ;; Use scroll margin
 
+  ;; Enable Corfu only for certain modes.
+  ;; :hook ((prog-mode . corfu-mode)
+  ;;        (shell-mode . corfu-mode)
+  ;;        (eshell-mode . corfu-mode))
+
+  ;; Recommended: Enable Corfu globally.
+  ;; This is recommended since Dabbrev can be used globally (M-/).
+  ;; See also `corfu-excluded-modes'.
+  :init
+  (global-corfu-mode))
+  #+END_SRC
+  
 ** Indent
 *** Indent
 #+BEGIN_SRC emacs-lisp
