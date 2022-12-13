@@ -644,11 +644,6 @@ https://github.com/minad/marginalia
         completion-category-overrides '((file (styles partial-completion)))))
 #+END_SRC
 
-** Prescient
-#+BEGIN_SRC emacs-lisp
-(use-package prescient
-  :config (prescient-persist-mode 1))
-#+END_SRC
 ** Dired
 Use built-in =dired= with [[https://github.com/Fuco1/dired-hacks][=dired-hacks=]]
 
