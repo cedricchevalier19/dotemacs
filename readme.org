@@ -10,11 +10,11 @@ It is inspired by:
 - [[http://pragmaticemacs.com]]
 - [[https://protesilaos.com/dotemacs]]
 
-# * Startup profiling
-# #+BEGIN_SRC emacs-lisp
-# (use-package esup
-#   :ensure t)
-# #+END_SRC
+* Startup profiling
+#+BEGIN_SRC emacs-lisp
+(use-package esup
+  :ensure t)
+#+END_SRC
 
 #+BEGIN_SRC emacs-lisp
 (use-package benchmark-init
@@ -47,14 +47,14 @@ It is inspired by:
 #+END_SRC
 
 *** Develop
-#+BEGIN_SRC emacs-lisp
-(use-package project-cmake
-    :load-path "~/.emacs.d/mirrors/project-cmake"
-    :after eglot
-    :config
-    (project-cmake-scan-kits)
-    (project-cmake-eglot-integration))
-#+END_SRC
+# #+BEGIN_SRC emacs-lisp
+# (use-package project-cmake
+#     :load-path "~/.emacs.d/mirrors/project-cmake"
+#     :after eglot
+#     :config
+#     (project-cmake-scan-kits)
+#     (project-cmake-eglot-integration))
+# #+END_SRC
 
 ** Meson
 #+BEGIN_SRC emacs-lisp
@@ -207,7 +207,6 @@ rustup component add rust-analyzer
 From https://www.bytedude.com/setting-up-rust-support-in-emacs/
 #+BEGIN_SRC emacs-lisp
 (use-package rustic
-  :defer t
   :config
   (setq
    ;; eglot seems to be the best option right now.
@@ -219,6 +218,7 @@ From https://www.bytedude.com/setting-up-rust-support-in-emacs/
    )
   ;; Disable the annoying doc popups in the minibuffer.
   (add-hook 'eglot-managed-mode-hook (lambda () (eldoc-mode -1)))
+  ;;:mode ("\\.rs\\'" "Cargo.toml\\'")
   )
 #+END_SRC
 
@@ -734,9 +734,9 @@ Use built-in =dired= with [[https://github.com/Fuco1/dired-hacks][=dired-hacks=]
 #+BEGIN_SRC emacs-lisp
 (use-package corfu
   ;; Optional customizations
-  ;; :custom
-  ;; (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
-  ;; (corfu-auto t)                 ;; Enable auto completion
+  :custom
+  (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
+  (corfu-auto t)                 ;; Enable auto completion
   ;; (corfu-separator ?\s)          ;; Orderless field separator
   ;; (corfu-quit-at-boundary nil)   ;; Never quit at completion boundary
   ;; (corfu-quit-no-match nil)      ;; Never quit, even if there is no match
@@ -750,11 +750,19 @@ Use built-in =dired= with [[https://github.com/Fuco1/dired-hacks][=dired-hacks=]
   ;;        (shell-mode . corfu-mode)
   ;;        (eshell-mode . corfu-mode))
 
+  :bind (:map corfu-map
+         ("C-j" . corfu-next)
+         ("C-k" . corfu-previous)
+         ("TAB" . corfu-insert)
+         ("RET" . nil))
+
   ;; Recommended: Enable Corfu globally.
   ;; This is recommended since Dabbrev can be used globally (M-/).
   ;; See also `corfu-excluded-modes'.
   :init
-  (global-corfu-mode))
+  (global-corfu-mode)
+  (global-set-key (kbd "M-i") #'completion-at-point)
+  )
   #+END_SRC
 
 ** Indent
