@@ -1124,7 +1124,12 @@ From https://titan-c.gitlab.io/org-cv/
 
 #+BEGIN_SRC emacs-lisp
 (use-package ox-moderncv
-  :load-path "~/.emacs.d/mirrors/org-cv")
+  :load-path "~/.emacs.d/mirrors/org-cv"
+  :init (require 'ox-moderncv))
+
+(use-package ox-awesomecv
+  :load-path "~/.emacs.d/mirrors/org-cv"
+  :init (require 'ox-awesomecv))
 #+END_SRC
 
 *** Pandoc
