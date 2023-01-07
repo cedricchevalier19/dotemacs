@@ -1016,16 +1016,16 @@ And some preconfigured snippets:
                                    "enabled" "disabled"))))
   ;; Latex process
   (setq oxl-process-bibtex
-        '("latexmk -pdflatex='pdflatex -interaction=nonstopmode -shell-escape' -synctex=1 -pdf -bibtex -f %f"))
+        '("podman run --rm  -v .:/workdir danteev/texlive latexmk -pdflatex='pdflatex -interaction=nonstopmode -shell-escape' -synctex=1 -pdf -bibtex -f %f"))
 
   (setq oxl-process-biber
-        '("latexmk -pdflatex='pdflatex -interaction=nonstopmode -shell-escape' -synctex=1 -pdf -biber -f %f"))
+        '("podman run --rm  -v .:/workdir danteev/texlive latexmk -pdflatex='pdflatex -interaction=nonstopmode -shell-escape' -synctex=1 -pdf -biber -f %f"))
 
   (setq oxl-process-xelatex
-        '("latexmk -pdf -synctex=1 -shell-escape -xelatex -f %f"))
+        '("podman run --rm  -v .:/workdir danteev/texlive latexmk -pdf -synctex=1 -shell-escape -xelatex -f %f"))
 
   (setq oxl-process-lualatex
-        '("latexmk -pdf -synctex=1 -shell-escape -lualatex -f %f"))
+        '("podman run --rm  -v .:/workdir danteev/texlive latexmk -pdf -synctex=1 -shell-escape -lualatex -f %f"))
 
   (defcustom org-latex-pdf-engines
     '(("lualatex" . oxl-process-lualatex)
