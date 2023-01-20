@@ -275,9 +275,9 @@ as a communication channel."
       )
      ((string= entrytype "cventry")
       (format "\n\\cventry\n{%s}\n{%s}\n{%s}\n{%s}\n{%s%s}\n"
+              title
               employer
               location
-              title
               (org-cv-utils--format-time-window from-date to-date)
               (org-awesomecv--cventry-right-img-code right-img)
               contents))
@@ -290,8 +290,8 @@ as a communication channel."
      ((string= entrytype "cvschool")
       (format "\n\\cventry\n{%s}\n{%s}\n{%s}\n{%s}\n{%s%s}\n"
               title
-              location
               employer
+              location
               (org-cv-utils--format-time-window from-date to-date)
               (org-awesomecv--cventry-right-img-code right-img)
               contents))
