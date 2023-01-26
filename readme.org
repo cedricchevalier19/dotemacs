@@ -251,6 +251,17 @@ From https://www.bytedude.com/setting-up-rust-support-in-emacs/
   :mode ("\\.plantuml\\'"))
 #+END_SRC
 
+** Project
+#+BEGIN_SRC emacs-lisp
+(use-package projectile
+  :ensure t
+  :init
+  (projectile-mode +1)
+  :bind (:map projectile-mode-map
+              ("M-p" . projectile-command-map)
+              ("C-c p" . projectile-command-map)))
+#+END_SRC
+
 * Interface
 ** Theme
 #+BEGIN_SRC emacs-lisp
@@ -481,8 +492,8 @@ https://github.com/minad/consult
   ;;;; 1. project.el (the default)
   ;; (setq consult-project-function #'consult--default-project--function)
   ;;;; 2. projectile.el (projectile-project-root)
-  ;; (autoload 'projectile-project-root "projectile")
-  ;; (setq consult-project-function (lambda (_) (projectile-project-root)))
+  (autoload 'projectile-project-root "projectile")
+  (setq consult-project-function (lambda (_) (projectile-project-root)))
   ;;;; 3. vc.el (vc-root-dir)
   ;; (setq consult-project-function (lambda (_) (vc-root-dir)))
   ;;;; 4. locate-dominating-file
