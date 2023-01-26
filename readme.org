@@ -58,7 +58,8 @@ It is inspired by:
 
 ** Meson
 #+BEGIN_SRC emacs-lisp
-(use-package meson-mode)
+(use-package meson-mode
+  :mode ("meson.build'" "meson_options.txt'"))
 #+END_SRC
 
 ** Git
