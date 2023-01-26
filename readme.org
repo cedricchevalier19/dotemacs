@@ -253,13 +253,8 @@ From https://www.bytedude.com/setting-up-rust-support-in-emacs/
 
 ** Project
 #+BEGIN_SRC emacs-lisp
-(use-package projectile
-  :ensure t
-  :init
-  (projectile-mode +1)
-  :bind (:map projectile-mode-map
-              ("M-p" . projectile-command-map)
-              ("C-c p" . projectile-command-map)))
+(use-package project
+  :ensure t)
 #+END_SRC
 
 * Interface
@@ -492,8 +487,8 @@ https://github.com/minad/consult
   ;;;; 1. project.el (the default)
   ;; (setq consult-project-function #'consult--default-project--function)
   ;;;; 2. projectile.el (projectile-project-root)
-  (autoload 'projectile-project-root "projectile")
-  (setq consult-project-function (lambda (_) (projectile-project-root)))
+  ;; (autoload 'projectile-project-root "projectile")
+  ;; (setq consult-project-function (lambda (_) (projectile-project-root)))
   ;;;; 3. vc.el (vc-root-dir)
   ;; (setq consult-project-function (lambda (_) (vc-root-dir)))
   ;;;; 4. locate-dominating-file
@@ -799,18 +794,6 @@ Use built-in =dired= with [[https://github.com/Fuco1/dired-hacks][=dired-hacks=]
   :custom (highlight-indent-guides-method 'character))
 #+END_SRC
 
-** tree-sitter
-#+BEGIN_SRC emacs-lisp
-  (use-package tree-sitter
-    :config
-    (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode)
-    :hook
-    ((c-mode c++-mode python-mode yaml-mode json-mode) #'tree-sitter-mode)
-    )
-
-  (use-package tree-sitter-langs
-    :after tree-sitter)
-#+END_SRC
 ** eglot
 *** Core
 #+BEGIN_SRC emacs-lisp
