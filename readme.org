@@ -1017,7 +1017,7 @@ And some preconfigured snippets:
         '("latexmk -pdflatex='pdflatex -interaction=nonstopmode -shell-escape' -synctex=1 -pdf -biber -f %f"))
 
   (setq oxl-process-xelatex
-        '("latexmk -pdf -synctex=1 -shell-escape -xelatex -f %f"))
+        '("latexmk -pdf -shell-escape -xelatex -f %f"))
 
   (setq oxl-process-lualatex
         '("latexmk -pdf -synctex=1 -shell-escape -lualatex -f %f"))
@@ -1168,6 +1168,8 @@ And some preconfigured snippets:
   (org-cite-insert-processor 'citar)
   (org-cite-follow-processor 'citar)
   (org-cite-activate-processor 'citar)
+  (org-cite-csl-styles-dir
+   (expand-file-name "~/Zotero/styles/"))
   (citar-bibliography org-cite-global-bibliography))
 
 (use-package citar-embark
@@ -1196,4 +1198,14 @@ Requires:
          ("C-c n f" . org-roam-node-find)
          ("C-c n i" . org-roam-node-insert))
   )
+#+END_SRC
+
+** French
+#+BEGIN_SRC emacs-lisp
+(use-package flycheck-grammalecte
+  :after flycheck
+  :config
+  (setq flycheck-grammalecte-report-esp nil)
+  (add-to-list 'flycheck-grammalecte-enabled-modes 'fountain-mode)
+  (flycheck-grammalecte-setup))
 #+END_SRC
