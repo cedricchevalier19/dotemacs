@@ -1201,11 +1201,11 @@ Requires:
 #+END_SRC
 
 ** French
-#+BEGIN_SRC emacs-lisp
-(use-package flycheck-grammalecte
-  :after flycheck
-  :config
-  (setq flycheck-grammalecte-report-esp nil)
-  (add-to-list 'flycheck-grammalecte-enabled-modes 'fountain-mode)
-  (flycheck-grammalecte-setup))
-#+END_SRC
+# #+BEGIN_SRC emacs-lisp
+# (use-package flycheck-grammalecte
+#   :after flycheck
+#   :config
+#   (setq flycheck-grammalecte-report-esp nil)
+#   (add-to-list 'flycheck-grammalecte-enabled-modes 'fountain-mode)
+#   (flycheck-grammalecte-setup))
+# #+END_SRC
