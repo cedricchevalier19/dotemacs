@@ -1185,6 +1185,14 @@ Requires:
   )
 #+END_SRC
 
+** Zotero
+Follow http://www.mkbehr.com/posts/a-research-workflow-with-zotero-and-org-mode/
+#+BEGIN_SRC emacs-lisp
+;; (use-package org-noter)
+(use-package zotxt)
+#+END_SRC
+
+
 ** French
 # #+BEGIN_SRC emacs-lisp
 # (use-package flycheck-grammalecte
