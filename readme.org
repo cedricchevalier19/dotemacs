@@ -259,35 +259,38 @@ From https://www.bytedude.com/setting-up-rust-support-in-emacs/
 
 * Interface
 ** Theme
-#+BEGIN_SRC emacs-lisp
-(use-package telephone-line
-  :init (telephone-line-mode 1))
-
-(use-package moe-theme
-  :init (load-theme 'moe-dark t))
+#+BEGIN_SRC emacs-lips
+(use-package leuven-theme)
 #+END_SRC
+# #+BEGIN_SRC emacs-lisp
+# (use-package telephone-line
+#   :init (telephone-line-mode 1))
 
-Use zoom to resize buffers
-#+BEGIN_SRC emacs-lisp
-(use-package zoom
-   :init (zoom-mode))
-#+END_SRC
+# (use-package moe-theme
+#   :init (load-theme 'moe-dark t))
+# #+END_SRC
 
-Highlight changes:
-#+BEGIN_SRC emacs-lisp
-(use-package volatile-highlights
-  :config (volatile-highlights-mode t))
-#+END_SRC
+# Use zoom to resize buffers
+# #+BEGIN_SRC emacs-lisp
+# (use-package zoom
+#    :init (zoom-mode))
+# #+END_SRC
+
+# Highlight changes:
+# #+BEGIN_SRC emacs-lisp
+# (use-package volatile-highlights
+#   :config (volatile-highlights-mode t))
+# #+END_SRC
 
 
-*** Auto-dim unfocused buffers
-#+BEGIN_SRC emacs-lisp
-(use-package auto-dim-other-buffers
-  :commands auto-dim-other-buffers-mode
-  :config
-  (setq auto-dim-other-buffers-dim-on-switch-to-minibuffer nil)
-  (setq auto-dim-other-buffers-dim-on-focus-out t))
-#+END_SRC
+# *** Auto-dim unfocused buffers
+# #+BEGIN_SRC emacs-lisp
+# (use-package auto-dim-other-buffers
+#   :commands auto-dim-other-buffers-mode
+#   :config
+#   (setq auto-dim-other-buffers-dim-on-switch-to-minibuffer nil)
+#   (setq auto-dim-other-buffers-dim-on-focus-out t))
+# #+END_SRC
 
 *** Better display for text
 #+BEGIN_SRC emacs-lisp
