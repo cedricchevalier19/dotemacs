@@ -868,16 +868,17 @@ And some preconfigured snippets:
       (add-to-list 'org-babel-load-languages (cons (intern language) t))
       (org-babel-do-load-languages 'org-babel-load-languages org-babel-load-languages))
     ad-do-it))
-  ;; (org-babel-do-load-languages 'org-babel-load-languages
-  ;;                              '(
-  ;;                                (C . t)
-  ;;                                (ditaa . t)
-  ;;                                (emacs-lisp . t)
-  ;;                                (gnuplot . t)
-  ;;                                (latex . t)
-  ;;                                (plantuml . t)
-  ;;                                (python . t)
-  ;;                                ))
+  (org-babel-do-load-languages 'org-babel-load-languages
+                               '(
+                                 (C . t)
+                                 (ditaa . t)
+                                 (emacs-lisp . t)
+                                 (gnuplot . t)
+                                 (latex . t)
+                                 (plantuml . t)
+                                 (python . t)
+				     (shell . t)
+                                 ))
   (setq org-ditaa-jar-path "/usr/bin/ditaa")
 
   (setq org-latex-logfiles-extensions
@@ -893,7 +894,7 @@ And some preconfigured snippets:
    '(("mathescape" "true")
      ("escapeinside" "@@")
      ("breaklines" "true")
-     ("fontsize" "\\footnotesize")))
+     ("fontsize" "\\tiny")))
   (org-latex-compiler "xelatex")
   (org-latex-classes
    '(("article"
