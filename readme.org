@@ -259,22 +259,12 @@ From https://www.bytedude.com/setting-up-rust-support-in-emacs/
 
 * Interface
 ** Theme
-#+BEGIN_SRC emacs-lips
-(use-package leuven-theme)
+#+BEGIN_SRC emacs-lisp
+(use-package leuven-theme
+  :ensure t
+  :config
+  (load-theme 'leuven t))
 #+END_SRC
-# #+BEGIN_SRC emacs-lisp
-# (use-package telephone-line
-#   :init (telephone-line-mode 1))
-
-# (use-package moe-theme
-#   :init (load-theme 'moe-dark t))
-# #+END_SRC
-
-# Use zoom to resize buffers
-# #+BEGIN_SRC emacs-lisp
-# (use-package zoom
-#    :init (zoom-mode))
-# #+END_SRC
 
 # Highlight changes:
 # #+BEGIN_SRC emacs-lisp
