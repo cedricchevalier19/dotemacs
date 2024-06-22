@@ -10,6 +10,11 @@ It is inspired by:
 - [[http://pragmaticemacs.com]]
 - [[https://protesilaos.com/dotemacs]]
 
+* Preconfiguration
+#+BEGIN_SRC emacs-lisp
+;; -*- lexical-binding: t -*-
+#+END_SRC
+
 * Startup profiling
 #+BEGIN_SRC emacs-lisp
 (use-package esup
