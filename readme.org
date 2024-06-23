@@ -1190,6 +1190,18 @@ From https://systemcrafters.net/build-a-second-brain-in-emacs/capturing-notes-ef
   :custom
   (org-roam-directory cc/roam-dir)
   (org-roam-completion-everywhere t)
+  (org-roam-capture-templates
+   '(
+     ("d" "default" plain "%?"
+      :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+date: %U\n")
+      :unnarrowed t)
+     ("p" "person" plain "%?"
+      :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
+					; I name these files after the persons work alias,
+					; then put their full name under "ROAM_ALIASES"
+                         ":PROPERTIES:\n:ROAM_ALIASES: \"${fullname}\"\n:END:\n#+title: ${title}\n#+date: %U\n")
+      :unnarrowed t)
+     ))
   :bind (("C-c n l" . org-roam-buffer-toggle)
          ("C-c n f" . org-roam-node-find)
          ("C-c n i" . org-roam-node-insert)
