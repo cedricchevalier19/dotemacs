@@ -11,10 +11,20 @@ It is inspired by:
 - [[https://protesilaos.com/dotemacs]]
 
 * Preconfiguration
-Necessary for some lambdas used to configure org-roam.
+** Header
+
+lexical-binding is Necessary for some lambdas used to configure org-roam.
 #+BEGIN_SRC emacs-lisp
 ;; -*- lexical-binding: t -*-
+;;; My emacs configuration
+;;; Commentary:
+;;; Generated from readme.org
+;;; Do not editorial
+
+;;; Code:
 #+END_SRC
+
+** Package management
 
 #+BEGIN_SRC emacs-lisp
 ;;; Code:
@@ -30,8 +40,11 @@ Necessary for some lambdas used to configure org-roam.
   (require 'use-package)
   (setq use-package-always-ensure t
         use-package-expand-minimally t))
+#+END_SRC
 
-(require 'bind-key)
+
+#+BEGIN_SRC emacs-lisp
+(use-package bind-key)
 #+END_SRC
 
 ** Customization
@@ -1279,7 +1292,7 @@ Requires:
 
 From https://systemcrafters.net/build-a-second-brain-in-emacs/capturing-notes-efficiently/
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :lexical t
 (use-package org-roam
   :ensure t
   :demand t  ;; Ensure org-roam is loaded by default
