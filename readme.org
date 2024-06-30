@@ -1015,7 +1015,7 @@ And some preconfigured snippets:
           ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
       :init
       ;; minted
-      (defcustom org-latex-minted-from-org-p nil
+      (defcustom org-latex-minted-from-org-p 't
         "If non-nil, then included minted in `org-latex-packages-alist'
       and get options from `org-latex-minted-options'."
         :type 'boolean
