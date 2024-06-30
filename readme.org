@@ -11,6 +11,7 @@ It is inspired by:
 - [[https://protesilaos.com/dotemacs]]
 
 * Preconfiguration
+Necessary for some lambdas used to configure org-roam.
 #+BEGIN_SRC emacs-lisp
 ;; -*- lexical-binding: t -*-
 #+END_SRC
