@@ -266,21 +266,8 @@ From https://www.bytedude.com/setting-up-rust-support-in-emacs/
   (load-theme 'leuven t))
 #+END_SRC
 
-# Highlight changes:
-# #+BEGIN_SRC emacs-lisp
-# (use-package volatile-highlights
-#   :config (volatile-highlights-mode t))
-# #+END_SRC
 
 
-# *** Auto-dim unfocused buffers
-# #+BEGIN_SRC emacs-lisp
-# (use-package auto-dim-other-buffers
-#   :commands auto-dim-other-buffers-mode
-#   :config
-#   (setq auto-dim-other-buffers-dim-on-switch-to-minibuffer nil)
-#   (setq auto-dim-other-buffers-dim-on-focus-out t))
-# #+END_SRC
 
 *** Better display for text
 #+BEGIN_SRC emacs-lisp
