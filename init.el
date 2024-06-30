@@ -41,61 +41,26 @@
         :init
         (auto-compile-on-load-mode))
 
-;;; Org
-;;;;; Org configuration
-      (use-package org
-;;;;;; customizations
-        :custom
-;;;;;;; Files
-        (org-directory (file-truename "~/.org/"))
-        ;; setup archive directory in current folder
-        (org-archive-location "archive/%s_archive::")
-;;;;;;; Org source
-	      (org-confirm-babel-evaluate nil)
-        (org-src-fontify-natively t)
-        (org-src-preserve-indentation t)
-        (org-src-persistent-message nil)
-        (org-src-window-setup 'current-window)
-        (org-ctrl-k-protect-subtree 'error)
-        (org-startup-indented t)
-        (org-catch-invisible-edits 'smart)
-;;;;;;; Structure and Appearance
-        (org-display-remote-inline-images 'cache)
-        (org-insert-heading-respect-content t)
-        (org-ellipsis "")
-        (org-list-allow-alphabetical t)
-        (org-hide-emphasis-markers t)
-        (org-hidden-keywords '(author title date))
-        (org-pretty-entities t)
-        (org-use-sub-superscripts '{})
-        (org-use-speed-commands t)
-        (org-yank-folded-subtrees t)
-        (org-yank-adjusted-subtrees t)
-        (org-blank-before-new-entry
-         '((heading . auto)
-           (plain-list-item . auto)))
-;;;;;; org keybindings
-        :bind
-        (("C-c a" . org-agenda)
-         ("C-c c" . org-capture)
-         ("C-c b" . org-switchb)
-         (:map org-mode-map
-               ("C-c C-x h" . org-toggle-link-display)
-               ("C-c C-s" . org-schedule))))
- (use-package diminish
+
+(use-package diminish
   :defer t)
 
- (require 'bind-key)
+(require 'bind-key)
 
 (defvar cc/roam-dir "~/org/roam")
-(defvar cc/bibfiles '("~/org/roam/biblio.bib"))
+(defvar cc/bibfiles '("~/org/roam/zotero.bib"))
 
-(org-babel-load-file
- (expand-file-name "readme.org"
-                   user-emacs-directory))
-;; (org-babel-load-file
-;;  (expand-file-name "email.org"
-;;                    user-emacs-directory))
+
+;; Don't attempt to find/apply special file handlers to files loaded during
+;; startup.
+(let ((file-name-handler-alist nil))
+  ;; If config is pre-compiled, then load that
+  (if (file-exists-p (expand-file-name "readme.elc" user-emacs-directory))
+      (load-file (expand-file-name "readme.elc" user-emacs-directory))
+    ;; Otherwise use org-babel to tangle and load the configuration
+    (require 'org)
+    (org-babel-load-file (expand-file-name "readme.org" user-emacs-directory))))
+
 (put 'dired-find-alternate-file 'disabled nil)
 
 (provide 'init)
