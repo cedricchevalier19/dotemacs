@@ -16,6 +16,30 @@ Necessary for some lambdas used to configure org-roam.
 ;; -*- lexical-binding: t -*-
 #+END_SRC
 
+#+BEGIN_SRC emacs-lisp
+;;; Code:
+(require 'package)
+(add-to-list 'package-archives '("gnu"   . "https://elpa.gnu.org/packages/"))
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+(package-initialize)
+
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+(eval-and-compile
+  (require 'use-package)
+  (setq use-package-always-ensure t
+        use-package-expand-minimally t))
+
+(require 'bind-key)
+#+END_SRC
+
+** Customization
+#+BEGIN_SRC emacs-lisp
+(defvar cc/roam-dir "~/org/roam")
+(defvar cc/bibfiles '("~/org/roam/zotero.bib"))
+#+END_SRC
+
 * Startup profiling
 #+BEGIN_SRC emacs-lisp
 (use-package esup
@@ -28,6 +52,35 @@ Necessary for some lambdas used to configure org-roam.
   :config
   ;; To disable collection of benchmark data after init is done.
   (add-hook 'after-init-hook 'benchmark-init/deactivate))
+#+END_SRC
+
+* Generic
+#+BEGIN_SRC emacs-lisp
+(use-package no-littering
+  :demand t
+  :commands (no-littering-expand-etc-file-name)
+  :init
+  (require 'recentf)
+
+  (setq no-littering-etc-directory (expand-file-name "etc" user-emacs-directory))
+  (setq no-littering-var-directory (expand-file-name "var" user-emacs-directory))
+  ;; exclude from recentf
+  (add-to-list 'recentf-exclude no-littering-var-directory)
+  (add-to-list 'recentf-exclude no-littering-etc-directory)
+  ;; store auto save files in the var directory.
+  :config
+  (setq auto-save-file-name-transforms
+        `((".*" ,(no-littering-expand-var-file-name "auto-save/") t))))
+
+(customize-set-variable 'load-prefer-newer t) ;; load newer bytecode
+;;;; auto compile
+(use-package auto-compile
+  :demand t
+  :init
+  (auto-compile-on-load-mode))
+
+(use-package diminish
+  :defer t)
 #+END_SRC
 
 * Programming
