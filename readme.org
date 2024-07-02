@@ -1296,7 +1296,6 @@ And some preconfigured snippets:
          ("M-b" . citar-insert-preset))
   :custom
   (org-cite-global-bibliography cc/bibfiles)
-  (citar-notes-paths '("~/org/roam/references"))
   (org-cite-insert-processor 'citar)
   (org-cite-follow-processor 'citar)
   (org-cite-activate-processor 'citar)
@@ -1312,8 +1311,11 @@ And some preconfigured snippets:
 (use-package citar-org-roam
   :after citar org-roam
   :no-require
+  :custom
+  (citar-org-roam-subdir "references")
   :config (citar-org-roam-mode))
 #+END_SRC
+
 ** Roam
 For =zettelkasten= notes.
 
@@ -1351,6 +1353,7 @@ From https://systemcrafters.net/build-a-second-brain-in-emacs/capturing-notes-ef
          ("C-c n p" . my/org-roam-find-project)
          ("C-c n t" . my/org-roam-capture-task)
          ("C-c n b" . my/org-roam-capture-inbox)
+	     ("C-c n T" . org-roam-dailies-capture-today)
          :map org-mode-map
          ("C-M-i" . completion-at-point)
          :map org-roam-dailies-map
