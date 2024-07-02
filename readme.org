@@ -155,14 +155,18 @@ lexical-binding is Necessary for some lambdas used to configure org-roam.
 
 *** gitlab support
 **** Forge
-# #+BEGIN_SRC emacs-lisp
-# (use-package forge
-#   :after magit
-#   ;;  :config (setq auth-sources '("~/.authinfo"))
-#   )
-# #+END_SRC
+#+BEGIN_SRC emacs-lisp
+(use-package forge
+  :after magit
+  ;;  :config (setq auth-sources '("~/.authinfo"))
+  )
+#+END_SRC
 
 From https://magit.vc/manual/ghub/Storing-a-Token.html#Storing-a-Token
+
+#+BEGIN_SRC bash
+git config --global github.user USERNAME
+#+END_SRC
 
 #+BEGIN_QUOTE
 The variable auth-sources controls how and where Auth-Source keeps its secrets. The default value is a list of three files: ("~/.authinfo" "~/.authinfo.gpg" "~/.netrc"), but to avoid confusion you should make sure that only one of these files exists and then you should also adjust the value of the variable to only ever use that file, for example:
