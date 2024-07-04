@@ -878,6 +878,24 @@ Use built-in =dired= with [[https://github.com/Fuco1/dired-hacks][=dired-hacks=]
 (use-package flycheck
   :init (global-flycheck-mode))
 #+END_SRC
+
+** Jinx
+https://github.com/minad/jinx
+
+Jinx a just-in-time spell-checker.
+It requires =enchant=.
+
+On mac:
+#+BEGIN_SRC shell
+ brew install enchant
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+(use-package jinx
+  :hook (emacs-startup . global-jinx-mode)
+  :bind (("M-$" . jinx-correct)
+         ("C-M-$" . jinx-languages)))
+         #+END_SRC
 ** Custom
 #+BEGIN_SRC emacs-lisp
 (setq-default
