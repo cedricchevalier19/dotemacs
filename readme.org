@@ -953,19 +953,76 @@ And some preconfigured snippets:
 #+END_SRC
 
 * Org
-** Export
+** Main config
 #+BEGIN_SRC emacs-lisp
-    (use-package org
-      :config
-      (add-to-list 'org-src-lang-modes '("plantuml" . plantuml))
-      (defadvice org-babel-execute-src-block (around load-language nil activate)
-      "Load language if needed"
-      (let ((language (org-element-property :language (org-element-at-point))))
-        (unless (cdr (assoc (intern language) org-babel-load-languages))
-          (add-to-list 'org-babel-load-languages (cons (intern language) t))
-          (org-babel-do-load-languages 'org-babel-load-languages org-babel-load-languages))
-        ad-do-it))
-      (org-babel-do-load-languages 'org-babel-load-languages
+  (use-package org
+    :config
+
+    (setq org-latex-logfiles-extensions
+          '("acn" "ind" "ilg" "ist" "glo" "tex" "synctex.gz"))
+
+    :custom
+  ;;;;;;; Files
+    (org-directory (file-truename "~/org/"))
+    ;; setup archive directory in current folder
+    (org-archive-location "archive/%s_archive::")
+    (org-agenda-files (list "inbox.org"))
+    (org-capture-templates
+     `(("i" "Inbox" entry  (file "inbox.org")
+        ,(concat "* TODO %?\n"
+                 "/Entered on/ %U"))))
+  ;;;;;;; Org source
+    (org-ctrl-k-protect-subtree 'error)
+    (org-startup-indented t)
+    (org-catch-invisible-edits 'smart)
+  ;;;;;;; Structure and Appearance
+    (org-display-remote-inline-images 'cache)
+    (org-insert-heading-respect-content t)
+    (org-ellipsis "")
+    (org-list-allow-alphabetical t)
+    (org-hide-emphasis-markers t)
+    (org-hidden-keywords '(author title date))
+    (org-pretty-entities t)
+    (org-use-sub-superscripts '{})
+    (org-use-speed-commands t)
+    (org-yank-folded-subtrees t)
+    (org-yank-adjusted-subtrees t)
+    (org-blank-before-new-entry
+     '((heading . auto)
+       (plain-list-item . auto)))
+
+    :bind
+    (("C-c a" . org-agenda)
+     ("C-c c" . org-capture)
+     ("C-c b" . org-switchb)
+     ("C-c i" . (lambda () "Open inbox capture window"
+                  (interactive)
+                  (org-capture nil "i")))
+     (:map org-mode-map
+           ("C-c C-x h" . org-toggle-link-display)
+           ("C-c C-s" . org-schedule))
+     )
+    )
+#+END_SRC
+
+*** Org-babel
+#+BEGIN_SRC emacs-lisp
+(with-eval-after-load 'org
+  (setq org-confirm-babel-evaluate nil)
+  (setq org-src-fontify-natively t)
+  (setq org-src-preserve-indentation t)
+  (setq org-src-persistent-message nil)
+  (setq org-src-window-setup 'current-window)
+
+  (add-to-list 'org-src-lang-modes '("plantuml" . plantuml))
+  (defadvice org-babel-execute-src-block (around load-language nil activate)
+    "Load language if needed"
+    (let ((language (org-element-property :language (org-element-at-point))))
+      (unless (cdr (assoc (intern language) org-babel-load-languages))
+        (add-to-list 'org-babel-load-languages (cons (intern language) t))
+        (org-babel-do-load-languages 'org-babel-load-languages org-babel-load-languages))
+      ad-do-it))
+  (org-babel-do-load-languages 'org-babel-load-languages
                                    '(
                                      (C . t)
                                      (ditaa . t)
@@ -976,62 +1033,8 @@ And some preconfigured snippets:
                                      (python . t)
                                      (shell . t)
                                      ))
-      (setq org-ditaa-jar-path "/usr/bin/ditaa")
-
-      (setq org-latex-logfiles-extensions
-            '("acn" "ind" "ilg" "ist" "glo" "tex" "synctex.gz"))
-
-      ;; (add-to-list 'org-beamer-environments-extra
-      ;;            '("onlyenv" "O" "\\begin{onlyenv}%a" "\\end{onlyenv}"))
-
-      :custom
-    ;;;;;;; Files
-      (org-directory (file-truename "~/org/"))
-      ;; setup archive directory in current folder
-      (org-archive-location "archive/%s_archive::")
-      (org-agenda-files (list "inbox.org"))
-      (org-capture-templates
-       `(("i" "Inbox" entry  (file "inbox.org")
-          ,(concat "* TODO %?\n"
-                   "/Entered on/ %U"))))
-    ;;;;;;; Org source
-      (org-confirm-babel-evaluate nil)
-      (org-src-fontify-natively t)
-      (org-src-preserve-indentation t)
-      (org-src-persistent-message nil)
-      (org-src-window-setup 'current-window)
-      (org-ctrl-k-protect-subtree 'error)
-      (org-startup-indented t)
-      (org-catch-invisible-edits 'smart)
-    ;;;;;;; Structure and Appearance
-      (org-display-remote-inline-images 'cache)
-      (org-insert-heading-respect-content t)
-      (org-ellipsis "")
-      (org-list-allow-alphabetical t)
-      (org-hide-emphasis-markers t)
-      (org-hidden-keywords '(author title date))
-      (org-pretty-entities t)
-      (org-use-sub-superscripts '{})
-      (org-use-speed-commands t)
-      (org-yank-folded-subtrees t)
-      (org-yank-adjusted-subtrees t)
-      (org-blank-before-new-entry
-       '((heading . auto)
-         (plain-list-item . auto)))
-
-      :config
-
-      :bind
-      (("C-c a" . org-agenda)
-       ("C-c c" . org-capture)
-       ("C-c b" . org-switchb)
-       ("C-c i" . (lambda () "Open inbox capture window"
-                    (interactive)
-                    (org-capture nil "i")))
-       (:map org-mode-map
-             ("C-c C-x h" . org-toggle-link-display)
-             ("C-c C-s" . org-schedule))
-      )
+  (setq org-ditaa-jar-path "/usr/bin/ditaa")
+)
 #+END_SRC
 
 *** Org-Latex
