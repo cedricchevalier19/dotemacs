@@ -1354,6 +1354,7 @@ From https://systemcrafters.net/build-a-second-brain-in-emacs/capturing-notes-ef
          ("C-c n t" . my/org-roam-capture-task)
          ("C-c n b" . my/org-roam-capture-inbox)
 	     ("C-c n T" . org-roam-dailies-capture-today)
+	     ("C-c n d" . org-roam-dailies-find-today)
          :map org-mode-map
          ("C-M-i" . completion-at-point)
          :map org-roam-dailies-map
