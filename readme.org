@@ -1,4 +1,4 @@
- #+TITLE: My Emacs configuration
+#+TITLE: My Emacs configuration
 #+AUTHOR: Cédric Chevalier
 # #+OPTIONS: toc:nil
 
@@ -559,46 +559,46 @@ https://github.com/minad/consult
   ;; (setq consult-project-function (lambda (_) (vc-root-dir)))
   ;;;; 4. locate-dominating-file
   ;; (setq consult-project-function (lambda (_) (locate-dominating-file "." ".git")))
-)
+  )
 
 (use-package consult-dir
-       :ensure t
-       :bind (("C-x C-d" . consult-dir)
-              :map minibuffer-local-completion-map
-              ("C-x C-d" . consult-dir)
-              ("C-x C-j" . consult-dir-jump-file)
-              :map selectrum-minibuffer-map
-              ("C-x C-d" . consult-dir)
-              ("C-x C-j" . consult-dir-jump-file)))
+  :ensure t
+  :bind (("C-x C-d" . consult-dir)
+         :map minibuffer-local-completion-map
+         ("C-x C-d" . consult-dir)
+         ("C-x C-j" . consult-dir-jump-file)
+         :map selectrum-minibuffer-map
+         ("C-x C-d" . consult-dir)
+         ("C-x C-j" . consult-dir-jump-file)))
 
 (use-package consult-eglot)
 
 (use-package consult-org-roam
-   :ensure t
-   :after org-roam
-   :init
-   (require 'consult-org-roam)
-   ;; Activate the minor mode
-   (consult-org-roam-mode 1)
-   :custom
-   ;; Use `ripgrep' for searching with `consult-org-roam-search'
-   (consult-org-roam-grep-func #'consult-ripgrep)
-   ;; Configure a custom narrow key for `consult-buffer'
-   (consult-org-roam-buffer-narrow-key ?r)
-   ;; Display org-roam buffers right after non-org-roam buffers
-   ;; in consult-buffer (and not down at the bottom)
-   (consult-org-roam-buffer-after-buffers t)
-   :config
-   ;; Eventually suppress previewing for certain functions
-   (consult-customize
-    consult-org-roam-forward-links
-    :preview-key (kbd "M-."))
-   :bind
-   ;; Define some convenient keybindings as an addition
-   ("C-c n e" . consult-org-roam-file-find)
-   ("C-c n b" . consult-org-roam-backlinks)
-   ("C-c n l" . consult-org-roam-forward-links)
-   ("C-c n r" . consult-org-roam-search))
+  :ensure t
+  :after org-roam
+  :init
+  (require 'consult-org-roam)
+  ;; Activate the minor mode
+  (consult-org-roam-mode 1)
+  :custom
+  ;; Use `ripgrep' for searching with `consult-org-roam-search'
+  (consult-org-roam-grep-func #'consult-ripgrep)
+  ;; Configure a custom narrow key for `consult-buffer'
+  (consult-org-roam-buffer-narrow-key ?r)
+  ;; Display org-roam buffers right after non-org-roam buffers
+  ;; in consult-buffer (and not down at the bottom)
+  (consult-org-roam-buffer-after-buffers t)
+  :config
+  ;; Eventually suppress previewing for certain functions
+  (consult-customize
+   consult-org-roam-forward-links
+   :preview-key (kbd "M-."))
+  :bind
+  ;; Define some convenient keybindings as an addition
+  ("C-c n e" . consult-org-roam-file-find)
+  ("C-c n b" . consult-org-roam-backlinks)
+  ("C-c n l" . consult-org-roam-forward-links)
+  ("C-c n r" . consult-org-roam-search))
 #+END_SRC
 
 *** Marginalia
@@ -824,10 +824,10 @@ Use built-in =dired= with [[https://github.com/Fuco1/dired-hacks][=dired-hacks=]
   ;;        (eshell-mode . corfu-mode))
 
   :bind (:map corfu-map
-         ("C-j" . corfu-next)
-         ("C-k" . corfu-previous)
-         ("TAB" . corfu-insert)
-         ("RET" . nil))
+              ("C-j" . corfu-next)
+              ("C-k" . corfu-previous)
+              ("TAB" . corfu-insert)
+              ("RET" . nil))
 
   ;; Recommended: Enable Corfu globally.
   ;; This is recommended since Dabbrev can be used globally (M-/).
@@ -836,13 +836,13 @@ Use built-in =dired= with [[https://github.com/Fuco1/dired-hacks][=dired-hacks=]
   (global-corfu-mode)
   (global-set-key (kbd "M-i") #'completion-at-point)
   )
-  #+END_SRC
+#+END_SRC
 
 ** Indent
 *** Indent
 #+BEGIN_SRC emacs-lisp
 (use-package indent-tools
-    :bind (("C-C >" .'indent-tools-hydra/body)))
+  :bind (("C-C >" .'indent-tools-hydra/body)))
 #+END_SRC
 
 *** editor config
@@ -872,7 +872,7 @@ Use built-in =dired= with [[https://github.com/Fuco1/dired-hacks][=dired-hacks=]
   (add-hook 'c-mode-hook 'eglot-ensure)
   (add-hook 'c++-mode-hook 'eglot-ensure)
   (setq completion-category-defaults nil)
-)
+  )
 #+END_SRC
 
 *** debugger
@@ -896,7 +896,7 @@ It requires =enchant=.
 
 On mac:
 #+BEGIN_SRC shell
- brew install enchant
+brew install enchant
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp
@@ -904,11 +904,11 @@ On mac:
   :hook (emacs-startup . global-jinx-mode)
   :custom
   (add-to-list 'vertico-multiform-categories
-             '(jinx grid (vertico-grid-annotate . 20)))
-(vertico-multiform-mode 1)
+               '(jinx grid (vertico-grid-annotate . 20)))
+  (vertico-multiform-mode 1)
   :bind (("M-$" . jinx-correct)
          ("C-M-$" . jinx-languages)))
-         #+END_SRC
+#+END_SRC
 ** Custom
 #+BEGIN_SRC emacs-lisp
 (setq-default
@@ -955,54 +955,54 @@ And some preconfigured snippets:
 * Org
 ** Main config
 #+BEGIN_SRC emacs-lisp
-  (use-package org
-    :config
+(use-package org
+  :config
 
-    (setq org-latex-logfiles-extensions
-          '("acn" "ind" "ilg" "ist" "glo" "tex" "synctex.gz"))
+  (setq org-latex-logfiles-extensions
+        '("acn" "ind" "ilg" "ist" "glo" "tex" "synctex.gz"))
 
-    :custom
+  :custom
   ;;;;;;; Files
-    (org-directory (file-truename "~/org/"))
-    ;; setup archive directory in current folder
-    (org-archive-location "archive/%s_archive::")
-    (org-agenda-files (list "inbox.org"))
-    (org-capture-templates
-     `(("i" "Inbox" entry  (file "inbox.org")
-        ,(concat "* TODO %?\n"
-                 "/Entered on/ %U"))))
+  (org-directory (file-truename "~/org/"))
+  ;; setup archive directory in current folder
+  (org-archive-location "archive/%s_archive::")
+  (org-agenda-files (list "inbox.org"))
+  (org-capture-templates
+   `(("i" "Inbox" entry  (file "inbox.org")
+      ,(concat "* TODO %?\n"
+               "/Entered on/ %U"))))
   ;;;;;;; Org source
-    (org-ctrl-k-protect-subtree 'error)
-    (org-startup-indented t)
-    (org-catch-invisible-edits 'smart)
+  (org-ctrl-k-protect-subtree 'error)
+  (org-startup-indented t)
+  (org-catch-invisible-edits 'smart)
   ;;;;;;; Structure and Appearance
-    (org-display-remote-inline-images 'cache)
-    (org-insert-heading-respect-content t)
-    (org-ellipsis "")
-    (org-list-allow-alphabetical t)
-    (org-hide-emphasis-markers t)
-    (org-hidden-keywords '(author title date))
-    (org-pretty-entities t)
-    (org-use-sub-superscripts '{})
-    (org-use-speed-commands t)
-    (org-yank-folded-subtrees t)
-    (org-yank-adjusted-subtrees t)
-    (org-blank-before-new-entry
-     '((heading . auto)
-       (plain-list-item . auto)))
+  (org-display-remote-inline-images 'cache)
+  (org-insert-heading-respect-content t)
+  (org-ellipsis "")
+  (org-list-allow-alphabetical t)
+  (org-hide-emphasis-markers t)
+  (org-hidden-keywords '(author title date))
+  (org-pretty-entities t)
+  (org-use-sub-superscripts '{})
+  (org-use-speed-commands t)
+  (org-yank-folded-subtrees t)
+  (org-yank-adjusted-subtrees t)
+  (org-blank-before-new-entry
+   '((heading . auto)
+     (plain-list-item . auto)))
 
-    :bind
-    (("C-c a" . org-agenda)
-     ("C-c c" . org-capture)
-     ("C-c b" . org-switchb)
-     ("C-c i" . (lambda () "Open inbox capture window"
-                  (interactive)
-                  (org-capture nil "i")))
-     (:map org-mode-map
-           ("C-c C-x h" . org-toggle-link-display)
-           ("C-c C-s" . org-schedule))
-     )
-    )
+  :bind
+  (("C-c a" . org-agenda)
+   ("C-c c" . org-capture)
+   ("C-c b" . org-switchb)
+   ("C-c i" . (lambda () "Open inbox capture window"
+                (interactive)
+                (org-capture nil "i")))
+   (:map org-mode-map
+         ("C-c C-x h" . org-toggle-link-display)
+         ("C-c C-s" . org-schedule))
+   )
+  )
 #+END_SRC
 
 *** Org-babel
@@ -1023,18 +1023,18 @@ And some preconfigured snippets:
         (org-babel-do-load-languages 'org-babel-load-languages org-babel-load-languages))
       ad-do-it))
   (org-babel-do-load-languages 'org-babel-load-languages
-                                   '(
-                                     (C . t)
-                                     (ditaa . t)
-                                     (emacs-lisp . t)
-                                     (gnuplot . t)
-                                     (latex . t)
-                                     (plantuml . t)
-                                     (python . t)
-                                     (shell . t)
-                                     ))
+                               '(
+                                 (C . t)
+                                 (ditaa . t)
+                                 (emacs-lisp . t)
+                                 (gnuplot . t)
+                                 (latex . t)
+                                 (plantuml . t)
+                                 (python . t)
+                                 (shell . t)
+                                 ))
   (setq org-ditaa-jar-path "/usr/bin/ditaa")
-)
+  )
 #+END_SRC
 
 *** Org-Latex
@@ -1110,8 +1110,8 @@ And some preconfigured snippets:
                 '("acn" "ind" "ilg" "ist" "glo" "tex" "synctex.gz")))
   )
 
-  (with-eval-after-load 'ox
-    (org-latex-pdf-process-set org-latex-compiler))
+(with-eval-after-load 'ox
+  (org-latex-pdf-process-set org-latex-compiler))
 #+END_SRC
 
 # #+BEGIN_SRC emacs-lisp
@@ -1164,7 +1164,7 @@ And some preconfigured snippets:
   (add-hook 'LaTeX-mode-hook 'reftex-mode)
   ;; Add standard Sweave file extensions to the list of files recognized  by AuCTeX.
   (add-hook 'TeX-mode-hook (lambda () (reftex-isearch-minor-mode)))
-)
+  )
 #+END_SRC
 
 *** Pandoc
@@ -1274,8 +1274,8 @@ From https://systemcrafters.net/build-a-second-brain-in-emacs/capturing-notes-ef
          ("C-c n p" . my/org-roam-find-project)
          ("C-c n t" . my/org-roam-capture-task)
          ("C-c n b" . my/org-roam-capture-inbox)
-	     ("C-c n T" . org-roam-dailies-capture-today)
-	     ("C-c n d" . org-roam-dailies-find-today)
+	 ("C-c n T" . org-roam-dailies-capture-today)
+	 ("C-c n d" . org-roam-dailies-find-today)
          :map org-mode-map
          ("C-M-i" . completion-at-point)
          :map org-roam-dailies-map
@@ -1341,7 +1341,7 @@ capture was not aborted."
   (interactive)
   (org-roam-capture- :node (org-roam-node-create)
                      :templates '(("i" "inbox" plain "* %?"
-                                  :if-new (file+head "Inbox.org" "#+title: Inbox\n")))))
+                                   :if-new (file+head "Inbox.org" "#+title: Inbox\n")))))
 
 (defun my/org-roam-capture-task ()
   (interactive)
@@ -1361,8 +1361,8 @@ capture was not aborted."
   (interactive)
   (let ((org-refile-keep t) ;; Set this to nil to delete the original!
         (org-roam-dailies-capture-templates
-          '(("t" "tasks" entry "%?"
-             :if-new (file+head+olp "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n" ("Tasks")))))
+         '(("t" "tasks" entry "%?"
+            :if-new (file+head+olp "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n" ("Tasks")))))
         (org-after-refile-insert-hook #'save-buffer)
         today-file
         pos)
