@@ -1260,6 +1260,19 @@ And some preconfigured snippets:
 #   )
 # #+END_SRC
 
+*** org links
+
+Store org-links from =magit=:
+#+BEGIN_SRC shell
+M-x org-link-store   # From a magit buffer
+M-x org-insert-link  # In the org file
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+(use-package orgit
+  :after org)
+#+END_SRC
+
 *** mermaid
 #+BEGIN_SRC emacs-lisp
 (use-package mermaid-mode)
