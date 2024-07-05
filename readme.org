@@ -59,8 +59,6 @@ lexical-binding is Necessary for some lambdas used to configure org-roam.
   "org-mode directory, where most of the org-mode file lives")
 (defconst org-projects-dir (expand-file-name "projects" org-directory)
   "Primary tasks directory.")
-(defconst org-notes-dir (expand-file-name "notes" org-directory)
-  "Directory of shareable, technical notes.")
 (defconst org-archive-dir (expand-file-name "archive" org-directory)
   "Directory of shareable, technical notes.")
 (defconst org-completed-dir (expand-file-name "projects" org-archive-dir)
@@ -69,8 +67,6 @@ lexical-binding is Necessary for some lambdas used to configure org-roam.
   "New stuff collected in this file.")
 (defconst org-incubate-file (expand-file-name "incubate.org" org-projects-dir)
   "Ideas simmering on back burner.")
-(defconst org-babel-library-file (expand-file-name "org_library_of_babel.org" org-notes-dir)
-  "Org babel library.")
 #+END_SRC
 
 * Startup profiling
