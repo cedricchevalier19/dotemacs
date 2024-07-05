@@ -11,6 +11,7 @@ It is inspired by:
 - [[https://protesilaos.com/dotemacs]]
 - https://vincent.demeester.fr/articles/my_organizational_workflow.html
 - https://gitlab.com/howardabrams/spacemacs.d/blob/master/elisp/boxes.el
+- http://doc.norang.ca/org-mode.html
 
 * Preconfiguration
 ** Header
@@ -66,8 +67,6 @@ lexical-binding is Necessary for some lambdas used to configure org-roam.
   "Directory of completed project files.")
 (defconst org-inbox-file (expand-file-name "inbox.org" org-projects-dir)
   "New stuff collected in this file.")
-(defconst org-next-file (expand-file-name "next.org" org-projects-dir)
-  "Todo *next* collected in this file.")
 (defconst org-incubate-file (expand-file-name "incubate.org" org-projects-dir)
   "Ideas simmering on back burner.")
 (defconst org-babel-library-file (expand-file-name "org_library_of_babel.org" org-notes-dir)
@@ -989,18 +988,21 @@ And some preconfigured snippets:
         '("acn" "ind" "ilg" "ist" "glo" "tex" "synctex.gz"))
 
   :custom
-      ;;;;;;; Files
+            ;;;;;;; Files
   ;; setup archive directory in current folder
   (org-capture-templates
    `(("t" "Task Entry"        entry
-     (file ,org-inbox-file)
-     "* %?\n:PROPERTIES:\n:CREATED:%U\n:END:\n\n%i\n\nFrom: %a"
-     :empty-lines 1)))
-      ;;;;;;; Org source
+      (file ,org-inbox-file)
+      "* %?\n:PROPERTIES:\n:CREATED:%U\n:END:\n\n%i\n\nFrom: %a"
+      :empty-lines 1)
+     ("m" "Meeting" entry (file ,org-inbox-file)
+      "* MEETING with %? :MEETING:\n%U" :clock-in t :clock-resume t)
+     ))
+            ;;;;;;; Org source
   (org-ctrl-k-protect-subtree 'error)
   (org-startup-indented t)
   (org-catch-invisible-edits 'smart)
-      ;;;;;;; Structure and Appearance
+            ;;;;;;; Structure and Appearance
   (org-display-remote-inline-images 'cache)
   (org-insert-heading-respect-content t)
   (org-list-allow-alphabetical t)
@@ -1013,7 +1015,6 @@ And some preconfigured snippets:
   (org-blank-before-new-entry
    '((heading . auto)
      (plain-list-item . auto)))
-
 
   :bind
   (("C-c a" . org-agenda)
@@ -1037,14 +1038,14 @@ And some preconfigured snippets:
 #+BEGIN_SRC emacs-lisp
 (with-eval-after-load 'org
   (dolist (agenda-file (directory-files org-projects-dir t "[a-z0-9-_]+\\.org$"))
-    (add-to-list 'org-agenda-files agenda-file))
+    (add-to-list 'org-agenda-files agenda-file org-inbox-file))
 
   (setq org-agenda-file-regexp "^[a-zA-Z0-9-_]+.org$"
         org-use-speed-commands t
         org-special-ctrl-a/e t
         org-special-ctrl-k t
         org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "STARTED(s)" "|" "DONE(d!)" "CANCELED(c@/!)")
-                            (sequence "WAITING(w@/!)" "SOMEDAY(s)" "|" "CANCELED(c@/!)")
+                            (sequence "WAITING(w@/!)" "SOMEDAY(s)" "|" "CANCELED(c@/!)" "MEETING")
                             (sequence "IDEA(i)" "|" "CANCELED(c@/!)"))
         org-todo-state-tags-triggers '(("CANCELLED" ("CANCELLED" . t))
                                        ("WAITING" ("WAITING" . t))
@@ -1084,7 +1085,7 @@ And some preconfigured snippets:
         org-blank-before-new-entry '((heading . t)
                                      (plain-list-item . nil)))
   (setq org-refile-use-outline-path 'file
-	org-outline-path-complete-in-steps nil)
+  	org-outline-path-complete-in-steps nil)
 
   (setq org-refile-targets (append '((org-notes-file :level . 0))
                                    (->>
@@ -1100,9 +1101,9 @@ And some preconfigured snippets:
 
   (defun org-refile-directly (file-dest)
     "Move the current subtree to the end of FILE-DEST.
-If SHOW-AFTER is non-nil, show the destination window,
-otherwise, this destination buffer is not shown."
-    (interactive "fDestination: ")
+  If SHOW-AFTER is non-nil, show the destination window,
+  otherwise, this destination buffer is not shown."
+    (interactive "Destination: ")
 
     (defun dump-it (file contents)
       (find-file-other-window file-dest)
@@ -1112,8 +1113,8 @@ otherwise, this destination buffer is not shown."
     (save-excursion
       (let* ((region (org-subtree-region))
              (contents (buffer-substring (first region) (second region))))
-	(apply 'kill-region region)
-	(if org-refile-directly-show-after
+  	(apply 'kill-region region)
+  	(if org-refile-directly-show-after
             (save-current-buffer (dump-it file-dest contents))
           (save-window-excursion (dump-it file-dest contents))))))
   )
