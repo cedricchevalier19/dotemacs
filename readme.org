@@ -992,10 +992,10 @@ And some preconfigured snippets:
       ;;;;;;; Files
   ;; setup archive directory in current folder
   (org-capture-templates
-   `("t" "Task Entry"        entry
+   `(("t" "Task Entry"        entry
      (file ,org-inbox-file)
      "* %?\n:PROPERTIES:\n:CREATED:%U\n:END:\n\n%i\n\nFrom: %a"
-     :empty-lines 1))
+     :empty-lines 1)))
       ;;;;;;; Org source
   (org-ctrl-k-protect-subtree 'error)
   (org-startup-indented t)
