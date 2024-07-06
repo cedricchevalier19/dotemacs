@@ -1003,7 +1003,6 @@ And some preconfigured snippets:
   (org-insert-heading-respect-content t)
   (org-list-allow-alphabetical t)
   (org-hide-emphasis-markers t)
-  (org-hidden-keywords '(author title date))
   (org-use-sub-superscripts '{})
   (org-use-speed-commands t)
   (org-yank-folded-subtrees t)
