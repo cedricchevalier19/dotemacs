@@ -1273,6 +1273,18 @@ M-x org-insert-link  # In the org file
   :after org)
 #+END_SRC
 
+*** Org-modern
+#+BEGIN_SRC emacs-lisp
+(use-package org-modern
+  :custom
+  ;; Choose some fonts
+  (set-face-attribute 'default nil :family "Iosevka")
+  (set-face-attribute 'variable-pitch nil :family "Iosevka Aile")
+  (set-face-attribute 'org-modern-symbol nil :family "Iosevka")
+  ;; :if window-system
+  :hook (org-mode . org-modern-mode))
+  #+END_SRC
+
 *** mermaid
 #+BEGIN_SRC emacs-lisp
 (use-package mermaid-mode)
