@@ -1285,6 +1285,13 @@ M-x org-insert-link  # In the org file
   :hook (org-mode . org-modern-mode))
   #+END_SRC
 
+*** Org-sidebar
+For a nice org-mode outline.
+x
+#+BEGIN_SRC emacs-lisp
+(use-package org-sidebar)
+#+END_SRC
+
 *** mermaid
 #+BEGIN_SRC emacs-lisp
 (use-package mermaid-mode)
