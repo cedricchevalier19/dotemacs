@@ -23,7 +23,7 @@ jobs:
 
     - name: Creating external directories
       run: |
-        mkdir -p ~/org/roam ~/org/projects
+        mkdir -p ~/org/roam ~/org/projects ~/.emacs.d
 
     - name: Test startup
       run: emacs --batch --debug-init --init-directory . --script init.el
