@@ -51,22 +51,36 @@ lexical-binding is Necessary for some lambdas used to configure org-roam.
 #+END_SRC
 
 ** Customization
-#+BEGIN_SRC emacs-lisp
-(defvar cc/roam-dir "~/org/roam")
-(defvar cc/bibfiles '("~/org/roam/zotero.bib"))
 
+Follow PARA method with org-roam:
+- Project: Short-term efforts
+- Area: Long-term responsibilities
+- Resource: interests
+- Archive: Inactive items
+
+#+BEGIN_SRC emacs-lisp
 (defconst org-directory "~/org/"
   "org-mode directory, where most of the org-mode file lives")
-(defconst org-projects-dir (expand-file-name "projects" org-directory)
+(defconst org-roam-dir (expand-file-name "roam" org-directory)
+  "Org-roam base directory")
+
+(defconst org-projects-dir (expand-file-name "projects" org-roam-dir)
   "Primary tasks directory.")
-(defconst org-archive-dir (expand-file-name "archive" org-directory)
+(defconst org-inbox-file (expand-file-name "inbox.org" org-projects-dir)
+  "New stuff collected in this file.")
+
+(defconst org-area-dir (expand-file-name "area" org-roam-dir)
+  "Primary Area directory.")
+
+(defconst org-resource-dir (expand-file-name "resource" org-roam-dir)
+  "Primary Area directory.")
+(defconst org-roam-bibfile (expand-file-name "zotero.bib" org-resource-dir)
+  "Main bibfile")
+
+(defconst org-archive-dir (expand-file-name "archive" org-roam-dir)
   "Directory of shareable, technical notes.")
 (defconst org-completed-dir (expand-file-name "projects" org-archive-dir)
   "Directory of completed project files.")
-(defconst org-inbox-file (expand-file-name "inbox.org" org-projects-dir)
-  "New stuff collected in this file.")
-(defconst org-incubate-file (expand-file-name "incubate.org" org-projects-dir)
-  "Ideas simmering on back burner.")
 #+END_SRC
 
 * Startup profiling
@@ -116,8 +130,8 @@ lexical-binding is Necessary for some lambdas used to configure org-roam.
 ** Formatting
 #+BEGIN_SRC emacs-lisp
 (use-package apheleia
-:config
-(apheleia-global-mode +1))
+  :config
+  (apheleia-global-mode +1))
 #+END_SRC
 ** Documentation
 #+BEGIN_SRC emacs-lisp
@@ -986,14 +1000,6 @@ And some preconfigured snippets:
   :custom
             ;;;;;;; Files
   ;; setup archive directory in current folder
-  (org-capture-templates
-   `(("t" "Task Entry"        entry
-      (file ,org-inbox-file)
-      "* %?\n:PROPERTIES:\n:CREATED:%U\n:END:\n\n%i\n\nFrom: %a"
-      :empty-lines 1)
-     ("m" "Meeting" entry (file ,org-inbox-file)
-      "* MEETING with %? :MEETING:\n%U" :clock-in t :clock-resume t)
-     ))
             ;;;;;;; Org source
   (org-ctrl-k-protect-subtree 'error)
   (org-startup-indented t)
@@ -1032,11 +1038,7 @@ And some preconfigured snippets:
 
 #+BEGIN_SRC emacs-lisp
 (with-eval-after-load 'org
-  (dolist (agenda-file (directory-files org-projects-dir t "[a-z0-9-_]+\\.org$"))
-    (add-to-list 'org-agenda-files agenda-file org-inbox-file))
-
-  (setq org-agenda-file-regexp "^[a-zA-Z0-9-_]+.org$"
-        org-use-speed-commands t
+  (setq org-use-speed-commands t
         org-special-ctrl-a/e t
         org-special-ctrl-k t
         org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "STARTED(s)" "|" "DONE(d!)" "CANCELED(c@/!)")
@@ -1080,7 +1082,7 @@ And some preconfigured snippets:
         org-blank-before-new-entry '((heading . t)
                                      (plain-list-item . nil)))
   (setq org-refile-use-outline-path 'file
-  	org-outline-path-complete-in-steps nil)
+    	org-outline-path-complete-in-steps nil)
 
   (setq org-refile-targets (append '((org-notes-file :level . 0))
                                    (->>
@@ -1096,8 +1098,8 @@ And some preconfigured snippets:
 
   (defun org-refile-directly (file-dest)
     "Move the current subtree to the end of FILE-DEST.
-  If SHOW-AFTER is non-nil, show the destination window,
-  otherwise, this destination buffer is not shown."
+    If SHOW-AFTER is non-nil, show the destination window,
+    otherwise, this destination buffer is not shown."
     (interactive "Destination: ")
 
     (defun dump-it (file contents)
@@ -1108,8 +1110,8 @@ And some preconfigured snippets:
     (save-excursion
       (let* ((region (org-subtree-region))
              (contents (buffer-substring (first region) (second region))))
-  	(apply 'kill-region region)
-  	(if org-refile-directly-show-after
+    	(apply 'kill-region region)
+    	(if org-refile-directly-show-after
             (save-current-buffer (dump-it file-dest contents))
           (save-window-excursion (dump-it file-dest contents))))))
   )
@@ -1274,7 +1276,7 @@ M-x org-insert-link  # In the org file
   (set-face-attribute 'org-modern-symbol nil :family "Iosevka")
   ;; :if window-system
   :hook (org-mode . org-modern-mode))
-  #+END_SRC
+#+END_SRC
 
 *** Org-sidebar
 For a nice org-mode outline.
@@ -1375,7 +1377,7 @@ x
          :map minibuffer-local-map
          ("M-b" . citar-insert-preset))
   :custom
-  (org-cite-global-bibliography cc/bibfiles)
+  (org-cite-global-bibliography org-roam-bibfile)
   (org-cite-insert-processor 'citar)
   (org-cite-follow-processor 'citar)
   (org-cite-activate-processor 'citar)
@@ -1392,7 +1394,7 @@ x
   :after citar org-roam
   :no-require
   :custom
-  (citar-org-roam-subdir "references")
+  (citar-org-roam-subdir "resource/references")
   :config (citar-org-roam-mode))
 #+END_SRC
 
@@ -1412,29 +1414,27 @@ From https://systemcrafters.net/build-a-second-brain-in-emacs/capturing-notes-ef
   :init
   (setq org-roam-v2-ack t)
   :custom
-  (org-roam-directory cc/roam-dir)
+  (org-roam-directory org-roam-dir)
   (org-roam-completion-everywhere t)
   (org-roam-capture-templates
-   '(
-     ("d" "default" plain "%?"
+   '(("d" "default" plain "%?"
       :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+date: %U\n")
       :unnarrowed t)
      ("p" "person" plain "%?"
-      :target (file+head "people/%<%Y%m%d%H%M%S>-${slug}.org"
-					; I name these files after the persons work alias,
-					; then put their full name under "ROAM_ALIASES"
-                         ":PROPERTIES:\n:ROAM_ALIASES: \"${fullname}\"\n:END:\n#+title: ${title}\n#+date: %U\n")
-      :unnarrowed t)
-     ))
+      :target (file+head ("resource/people/%<%Y%m%d%H%M%S>-${slug}.org"
+  					; I name these files after the persons work alias,
+  					; then put their full name under "ROAM_ALIASES"
+                          ":PROPERTIES:\n:ROAM_ALIASES: \"${fullname}\"\n:END:\n#+title: ${title}\n#+date: %U#+filetags: people\n")
+  			 :unnarrowed t)
+      )))
   :bind (("C-c n l" . org-roam-buffer-toggle)
          ("C-c n f" . org-roam-node-find)
          ("C-c n i" . org-roam-node-insert)
          ("C-c n I" . org-roam-node-insert-immediate)
          ("C-c n p" . my/org-roam-find-project)
-         ("C-c n t" . my/org-roam-capture-task)
-         ("C-c n b" . my/org-roam-capture-inbox)
-	 ("C-c n T" . org-roam-dailies-capture-today)
-	 ("C-c n d" . org-roam-dailies-find-today)
+         ("C-c n t" . my/org-roam-capture-inbox)
+  	 ("C-c n T" . org-roam-dailies-capture-today)
+  	 ("C-c n d" . org-roam-dailies-find-today)
          :map org-mode-map
          ("C-M-i" . completion-at-point)
          :map org-roam-dailies-map
@@ -1472,7 +1472,7 @@ From https://systemcrafters.net/build-a-second-brain-in-emacs/capturing-notes-ef
 
 (defun my/org-roam-project-finalize-hook ()
   "Adds the captured project file to `org-agenda-files' if the
-capture was not aborted."
+  capture was not aborted."
   ;; Remove the hook since it was added temporarily
   (remove-hook 'org-capture-after-finalize-hook #'my/org-roam-project-finalize-hook)
 
@@ -1499,22 +1499,8 @@ capture was not aborted."
 (defun my/org-roam-capture-inbox ()
   (interactive)
   (org-roam-capture- :node (org-roam-node-create)
-                     :templates '(("i" "inbox" plain "* %?"
+                     :templates '(("i" "inbox" plain "* %?\n:PROPERTIES:\n:CREATED:%U\n:END:\n\n%i\n\nFrom: %a"
                                    :if-new (file+head "Inbox.org" "#+title: Inbox\n")))))
-
-(defun my/org-roam-capture-task ()
-  (interactive)
-  ;; Add the project file to the agenda after capture is finished
-  (add-hook 'org-capture-after-finalize-hook #'my/org-roam-project-finalize-hook)
-
-  ;; Capture the new task, creating the project file if necessary
-  (org-roam-capture- :node (org-roam-node-read
-                            nil
-                            (my/org-roam-filter-by-tag "Project"))
-                     :templates '(("p" "project" plain "** TODO %?"
-                                   :if-new (file+head+olp "%<%Y%m%d%H%M%S>-${slug}.org"
-                                                          "#+title: ${title}\n#+category: ${title}\n#+filetags: Project"
-                                                          ("Tasks"))))))
 
 (defun my/org-roam-copy-todo-to-today ()
   (interactive)
