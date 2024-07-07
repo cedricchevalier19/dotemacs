@@ -23,8 +23,10 @@ jobs:
 
     - name: Creating external directories
       run: |
+        mkdir -p local
         mkdir -p ~/org/roam ~/org/projects ~/.emacs.d
-        cp -r * ~/.emacs.d/
 
     - name: Test startup
-      run: emacs --batch --debug-init -u root
+      run: |
+        ls -l
+        emacs --batch --debug-init --init-directory . --load $(pwd)/init.el
