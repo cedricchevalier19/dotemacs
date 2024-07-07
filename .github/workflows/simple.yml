@@ -49,4 +49,4 @@ jobs:
     - uses: actions/checkout@v4
 
     - name: Test startup
-      run: emacs --batch --debug-init -u `whoami` --init-directory .
+      run: emacs --batch --debug-init --init-directory . --script init.el
