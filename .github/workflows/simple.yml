@@ -1,0 +1,57 @@
+name: Simple
+# From https://github.com/jcs-emacs/jcs-emacs/blob/master/.github/workflows/startup.yml
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - '**.yml'
+      - '**.el'
+      - lisp/**
+      - modules/**
+      - site-lisp/**
+  pull_request:
+    branches:
+      - master
+    paths-ignore:
+      - '**.md'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    continue-on-error: ${{ matrix.experimental }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        emacs-version:
+          - 29.4
+        experimental: [false]
+        include:
+        - os: ubuntu-latest
+          emacs-version: snapshot
+          experimental: true
+        - os: macos-latest
+          emacs-version: snapshot
+          experimental: true
+
+    steps:
+    - uses: jcs090218/setup-emacs@master
+      with:
+        version: ${{ matrix.emacs-version }}
+
+    - uses: actions/checkout@v4
+
+    - name: Copy configuration files
+      run: |
+        chmod -R 777 ./
+        mv dotemacs .emacs.d
+
+    - name: Test startup
+      run: emacs --batch --debug-init -u `whoami`
