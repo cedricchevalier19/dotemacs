@@ -9,6 +9,9 @@ It is inspired by:
 - [[https://github.com/jchaffin/.emacs.d]]
 - [[http://pragmaticemacs.com]]
 - [[https://protesilaos.com/dotemacs]]
+- https://vincent.demeester.fr/articles/my_organizational_workflow.html
+- https://gitlab.com/howardabrams/spacemacs.d/blob/master/elisp/boxes.el
+- http://doc.norang.ca/org-mode.html
 
 * Preconfiguration
 ** Header
@@ -48,9 +51,36 @@ lexical-binding is Necessary for some lambdas used to configure org-roam.
 #+END_SRC
 
 ** Customization
+
+Follow PARA method with org-roam:
+- Project: Short-term efforts
+- Area: Long-term responsibilities
+- Resource: interests
+- Archive: Inactive items
+
 #+BEGIN_SRC emacs-lisp
-(defvar cc/roam-dir "~/org/roam")
-(defvar cc/bibfiles '("~/org/roam/zotero.bib"))
+(defconst org-directory "~/org/"
+  "org-mode directory, where most of the org-mode file lives")
+(defconst org-roam-dir (expand-file-name "roam" org-directory)
+  "Org-roam base directory")
+
+(defconst org-projects-dir (expand-file-name "projects" org-roam-dir)
+  "Primary tasks directory.")
+(defconst org-inbox-file (expand-file-name "inbox.org" org-projects-dir)
+  "New stuff collected in this file.")
+
+(defconst org-area-dir (expand-file-name "area" org-roam-dir)
+  "Primary Area directory.")
+
+(defconst org-resource-dir (expand-file-name "resource" org-roam-dir)
+  "Primary Area directory.")
+(defconst org-roam-bibfile (expand-file-name "zotero.bib" org-resource-dir)
+  "Main bibfile")
+
+(defconst org-archive-dir (expand-file-name "archive" org-roam-dir)
+  "Directory of shareable, technical notes.")
+(defconst org-completed-dir (expand-file-name "projects" org-archive-dir)
+  "Directory of completed project files.")
 #+END_SRC
 
 * Startup profiling
@@ -100,8 +130,8 @@ lexical-binding is Necessary for some lambdas used to configure org-roam.
 ** Formatting
 #+BEGIN_SRC emacs-lisp
 (use-package apheleia
-:config
-(apheleia-global-mode +1))
+  :config
+  (apheleia-global-mode +1))
 #+END_SRC
 ** Documentation
 #+BEGIN_SRC emacs-lisp
@@ -960,33 +990,25 @@ And some preconfigured snippets:
 ** Main config
 #+BEGIN_SRC emacs-lisp
 (use-package org
-  :config
+  :mode (("\\.org$" . org-mode)
+         ("\\.org.draft$" . org-mode))
 
+  :config
   (setq org-latex-logfiles-extensions
         '("acn" "ind" "ilg" "ist" "glo" "tex" "synctex.gz"))
 
   :custom
-  ;;;;;;; Files
-  (org-directory (file-truename "~/org/"))
+            ;;;;;;; Files
   ;; setup archive directory in current folder
-  (org-archive-location "archive/%s_archive::")
-  (org-agenda-files (list "inbox.org"))
-  (org-capture-templates
-   `(("i" "Inbox" entry  (file "inbox.org")
-      ,(concat "* TODO %?\n"
-               "/Entered on/ %U"))))
-  ;;;;;;; Org source
+            ;;;;;;; Org source
   (org-ctrl-k-protect-subtree 'error)
   (org-startup-indented t)
   (org-catch-invisible-edits 'smart)
-  ;;;;;;; Structure and Appearance
+            ;;;;;;; Structure and Appearance
   (org-display-remote-inline-images 'cache)
   (org-insert-heading-respect-content t)
-  (org-ellipsis "")
   (org-list-allow-alphabetical t)
   (org-hide-emphasis-markers t)
-  (org-hidden-keywords '(author title date))
-  (org-pretty-entities t)
   (org-use-sub-superscripts '{})
   (org-use-speed-commands t)
   (org-yank-folded-subtrees t)
@@ -1002,11 +1024,122 @@ And some preconfigured snippets:
    ("C-c i" . (lambda () "Open inbox capture window"
                 (interactive)
                 (org-capture nil "i")))
+   ("C-c l" . org-store-link)
+   ("C-c r" . org-refile)
+   ;; Skeletons
    (:map org-mode-map
          ("C-c C-x h" . org-toggle-link-display)
          ("C-c C-s" . org-schedule))
    )
   )
+#+END_SRC
+
+*** Org-agenda
+
+#+BEGIN_SRC emacs-lisp
+(with-eval-after-load 'org
+  (setq org-use-speed-commands t
+        org-special-ctrl-a/e t
+        org-special-ctrl-k t
+        org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "STARTED(s)" "|" "DONE(d!)" "CANCELED(c@/!)")
+                            (sequence "WAITING(w@/!)" "SOMEDAY(s)" "|" "CANCELED(c@/!)" "MEETING")
+                            (sequence "IDEA(i)" "|" "CANCELED(c@/!)"))
+        org-todo-state-tags-triggers '(("CANCELLED" ("CANCELLED" . t))
+                                       ("WAITING" ("WAITING" . t))
+                                       (done ("WAITING"))
+                                       ("TODO" ("WAITING") ("CANCELLED"))
+                                       ("NEXT" ("WAITING") ("CANCELLED"))
+                                       ("DONE" ("WAITING") ("CANCELLED")))
+        org-use-tag-inheritance t
+        org-tag-alist '(("linux") ("nixos") ("emacs") ("org")
+                        ("openshift") ("redhat") ("tektoncd") ("kubernetes") ("knative" ) ("docker")
+                        ("docs") ("code") ("review")
+                        (:startgroup . nil)
+                        ("#home" . ?h) ("#work" . ?w) ("#errand" . ?e) ("#health" . ?l)
+                        (:endgroup . nil)
+                        (:startgroup . nil)
+                        ("#link" . ?i) ("#read" . ?r) ("#project" . ?p)
+                        (:endgroup . nil))
+        org-log-done 'time
+        org-log-redeadline 'time
+        org-log-reschedule 'time
+        org-log-into-drawer t
+        org-enforce-todo-dependencies t
+        org-refile-allow-creating-parent-nodes 'confirm
+        org-columns-default-format "%80ITEM(Task) %TODO %3PRIORITY %10Effort(Effort){:} %10CLOCKSUM"
+        org-fontify-whole-heading-line t
+        org-pretty-entities t
+        org-ellipsis " ⤵"
+        org-archive-location (concat org-completed-dir "/%s::datetree/")
+        org-use-property-inheritance t
+        org-priority 67
+        org-priority-faces '((?A . "#ff2600")
+                             (?B . "#ff5900")
+                             (?C . "#ff9200")
+                             (?D . "#747474"))
+        org-global-properties (quote (("EFFORT_ALL" . "0:15 0:30 0:45 1:00 2:00 3:00 4:00 5:00 6:00 0:00")
+                                      ("STYLE_ALL" . "habit")))
+        org-blank-before-new-entry '((heading . t)
+                                     (plain-list-item . nil)))
+  (setq org-refile-use-outline-path 'file
+    	org-outline-path-complete-in-steps nil)
+
+  (setq org-refile-targets (append '((org-notes-file :level . 0))
+                                   (->>
+                                    (directory-files org-projects-dir nil ".org$")
+                                    (--remove (s-starts-with? "." it))
+                                    (--map (format "%s/%s" org-projects-dir it))
+                                    (--map (cons it (cons :level 0))))))
+  (defun org-subtree-region ()
+    "Return a list of the start and end of a subtree."
+    (save-excursion
+      (list (progn (org-back-to-heading) (point))
+            (progn (org-end-of-subtree)  (point)))))
+
+  (defun org-refile-directly (file-dest)
+    "Move the current subtree to the end of FILE-DEST.
+    If SHOW-AFTER is non-nil, show the destination window,
+    otherwise, this destination buffer is not shown."
+    (interactive "Destination: ")
+
+    (defun dump-it (file contents)
+      (find-file-other-window file-dest)
+      (goto-char (point-max))
+      (insert "\n" contents))
+
+    (save-excursion
+      (let* ((region (org-subtree-region))
+             (contents (buffer-substring (first region) (second region))))
+    	(apply 'kill-region region)
+    	(if org-refile-directly-show-after
+            (save-current-buffer (dump-it file-dest contents))
+          (save-window-excursion (dump-it file-dest contents))))))
+  )
+
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+(with-eval-after-load 'org
+  (setq org-agenda-span 'day
+        org-agenda-start-on-weekday 1
+        org-agenda-include-diary t
+        org-agenda-window-setup 'current-window
+        org-agenda-skip-scheduled-if-done nil
+        org-agenda-compact-blocks t
+        org-agenda-sticky t
+        org-super-agenda-header-separator ""
+        org-agenda-custom-commands
+        `(("w" "Agenda"
+           ((agenda "")
+            (tags-todo "-goals-incubate-inbox+TODO=\"STARTED\""
+                       ((org-agenda-overriding-header "Ongoing")))
+            (tags-todo "-goals-incubate-inbox+TODO=\"NEXT\""
+                       ((org-agenda-overriding-header "Next"))))
+           ((org-super-agenda-groups
+             '((:name "Important" :priority "A")
+               (:name "Scheduled" :time-grid t)
+               (:habit t))))
+           (org-agenda-list)))))
 #+END_SRC
 
 *** Org-babel
@@ -1018,14 +1151,6 @@ And some preconfigured snippets:
   (setq org-src-persistent-message nil)
   (setq org-src-window-setup 'current-window)
 
-  (add-to-list 'org-src-lang-modes '("plantuml" . plantuml))
-  (defadvice org-babel-execute-src-block (around load-language nil activate)
-    "Load language if needed"
-    (let ((language (org-element-property :language (org-element-at-point))))
-      (unless (cdr (assoc (intern language) org-babel-load-languages))
-        (add-to-list 'org-babel-load-languages (cons (intern language) t))
-        (org-babel-do-load-languages 'org-babel-load-languages org-babel-load-languages))
-      ad-do-it))
   (org-babel-do-load-languages 'org-babel-load-languages
                                '(
                                  (C . t)
@@ -1128,6 +1253,38 @@ And some preconfigured snippets:
 #   )
 # #+END_SRC
 
+*** org links
+
+Store org-links from =magit=:
+#+BEGIN_SRC shell
+M-x org-link-store   # From a magit buffer
+M-x org-insert-link  # In the org file
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+(use-package orgit
+  :after org)
+#+END_SRC
+
+*** Org-modern
+#+BEGIN_SRC emacs-lisp
+(use-package org-modern
+  :custom
+  ;; Choose some fonts
+  (set-face-attribute 'default nil :family "Iosevka")
+  (set-face-attribute 'variable-pitch nil :family "Iosevka Aile")
+  (set-face-attribute 'org-modern-symbol nil :family "Iosevka")
+  ;; :if window-system
+  :hook (org-mode . org-modern-mode))
+#+END_SRC
+
+*** Org-sidebar
+For a nice org-mode outline.
+x
+#+BEGIN_SRC emacs-lisp
+(use-package org-sidebar)
+#+END_SRC
+
 *** mermaid
 #+BEGIN_SRC emacs-lisp
 (use-package mermaid-mode)
@@ -1220,7 +1377,7 @@ And some preconfigured snippets:
          :map minibuffer-local-map
          ("M-b" . citar-insert-preset))
   :custom
-  (org-cite-global-bibliography cc/bibfiles)
+  (org-cite-global-bibliography org-roam-bibfile)
   (org-cite-insert-processor 'citar)
   (org-cite-follow-processor 'citar)
   (org-cite-activate-processor 'citar)
@@ -1237,7 +1394,7 @@ And some preconfigured snippets:
   :after citar org-roam
   :no-require
   :custom
-  (citar-org-roam-subdir "references")
+  (citar-org-roam-subdir "resource/references")
   :config (citar-org-roam-mode))
 #+END_SRC
 
@@ -1257,29 +1414,27 @@ From https://systemcrafters.net/build-a-second-brain-in-emacs/capturing-notes-ef
   :init
   (setq org-roam-v2-ack t)
   :custom
-  (org-roam-directory cc/roam-dir)
+  (org-roam-directory org-roam-dir)
   (org-roam-completion-everywhere t)
   (org-roam-capture-templates
-   '(
-     ("d" "default" plain "%?"
+   '(("d" "default" plain "%?"
       :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+date: %U\n")
       :unnarrowed t)
      ("p" "person" plain "%?"
-      :target (file+head "people/%<%Y%m%d%H%M%S>-${slug}.org"
-					; I name these files after the persons work alias,
-					; then put their full name under "ROAM_ALIASES"
-                         ":PROPERTIES:\n:ROAM_ALIASES: \"${fullname}\"\n:END:\n#+title: ${title}\n#+date: %U\n")
-      :unnarrowed t)
-     ))
+      :target (file+head ("resource/people/%<%Y%m%d%H%M%S>-${slug}.org"
+  					; I name these files after the persons work alias,
+  					; then put their full name under "ROAM_ALIASES"
+                          ":PROPERTIES:\n:ROAM_ALIASES: \"${fullname}\"\n:END:\n#+title: ${title}\n#+date: %U#+filetags: people\n")
+  			 :unnarrowed t)
+      )))
   :bind (("C-c n l" . org-roam-buffer-toggle)
          ("C-c n f" . org-roam-node-find)
          ("C-c n i" . org-roam-node-insert)
          ("C-c n I" . org-roam-node-insert-immediate)
          ("C-c n p" . my/org-roam-find-project)
-         ("C-c n t" . my/org-roam-capture-task)
-         ("C-c n b" . my/org-roam-capture-inbox)
-	 ("C-c n T" . org-roam-dailies-capture-today)
-	 ("C-c n d" . org-roam-dailies-find-today)
+         ("C-c n t" . my/org-roam-capture-inbox)
+  	 ("C-c n T" . org-roam-dailies-capture-today)
+  	 ("C-c n d" . org-roam-dailies-find-today)
          :map org-mode-map
          ("C-M-i" . completion-at-point)
          :map org-roam-dailies-map
@@ -1317,7 +1472,7 @@ From https://systemcrafters.net/build-a-second-brain-in-emacs/capturing-notes-ef
 
 (defun my/org-roam-project-finalize-hook ()
   "Adds the captured project file to `org-agenda-files' if the
-capture was not aborted."
+  capture was not aborted."
   ;; Remove the hook since it was added temporarily
   (remove-hook 'org-capture-after-finalize-hook #'my/org-roam-project-finalize-hook)
 
@@ -1344,22 +1499,8 @@ capture was not aborted."
 (defun my/org-roam-capture-inbox ()
   (interactive)
   (org-roam-capture- :node (org-roam-node-create)
-                     :templates '(("i" "inbox" plain "* %?"
+                     :templates '(("i" "inbox" plain "* %?\n:PROPERTIES:\n:CREATED:%U\n:END:\n\n%i\n\nFrom: %a"
                                    :if-new (file+head "Inbox.org" "#+title: Inbox\n")))))
-
-(defun my/org-roam-capture-task ()
-  (interactive)
-  ;; Add the project file to the agenda after capture is finished
-  (add-hook 'org-capture-after-finalize-hook #'my/org-roam-project-finalize-hook)
-
-  ;; Capture the new task, creating the project file if necessary
-  (org-roam-capture- :node (org-roam-node-read
-                            nil
-                            (my/org-roam-filter-by-tag "Project"))
-                     :templates '(("p" "project" plain "** TODO %?"
-                                   :if-new (file+head+olp "%<%Y%m%d%H%M%S>-${slug}.org"
-                                                          "#+title: ${title}\n#+category: ${title}\n#+filetags: Project"
-                                                          ("Tasks"))))))
 
 (defun my/org-roam-copy-todo-to-today ()
   (interactive)

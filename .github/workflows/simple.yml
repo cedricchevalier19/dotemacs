@@ -24,7 +24,7 @@ jobs:
     - name: Creating external directories
       run: |
         mkdir -p local
-        mkdir -p ~/org/roam ~/org/projects ~/.emacs.d ~/org-roam
+        mkdir -p ~/org/roam/projects ~/.emacs.d ~/org-roam
 
     - name: Test startup
       run: |
