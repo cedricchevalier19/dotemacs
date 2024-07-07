@@ -857,7 +857,10 @@ Use built-in =dired= with [[https://github.com/Fuco1/dired-hacks][=dired-hacks=]
 (use-package highlight-indent-guides
   :defer 0.3
   :hook (prog-mode . highlight-indent-guides-mode)
-  :custom (highlight-indent-guides-method 'character))
+  :custom
+  (highlight-indent-guides-method 'character)
+  (highlight-indent-guides-suppress-auto-error t)
+  )
 #+END_SRC
 
 ** eglot
