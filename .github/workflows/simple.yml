@@ -26,4 +26,4 @@ jobs:
         mkdir -p ~/org/roam ~/org/projects ~/.emacs.d
 
     - name: Test startup
-      run: emacs --batch --debug-init --init-directory . --script init.el
+      run: emacs --batch --debug-init --init-directory . -u root
