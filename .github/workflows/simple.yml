@@ -17,14 +17,14 @@ jobs:
     steps:
     - name: Install dependencies
       run: |
-        apk add emacs-nox ripgrep git
+        apk add emacs-nox ripgrep git sqlite
 
     - uses: actions/checkout@v4
 
     - name: Creating external directories
       run: |
         mkdir -p local
-        mkdir -p ~/org/roam ~/org/projects ~/.emacs.d
+        mkdir -p ~/org/roam ~/org/projects ~/.emacs.d ~/org-roam
 
     - name: Test startup
       run: |
