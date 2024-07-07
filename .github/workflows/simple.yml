@@ -13,11 +13,11 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    container: alpine:latest
     steps:
-    - uses: awalsh128/cache-apt-pkgs-action@latest
-      with:
-        packages: emacs enchant ripgrep
-        version: 1.0
+    - name: Install dependencies
+      run: |
+        apk add emacs-nox ripgrep
 
     - uses: actions/checkout@v4
 
