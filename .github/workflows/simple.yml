@@ -48,10 +48,5 @@ jobs:
 
     - uses: actions/checkout@v4
 
-    - name: Copy configuration files
-      run: |
-        chmod -R 777 ./
-        mv dotemacs .emacs.d
-
     - name: Test startup
-      run: emacs --batch --debug-init -u `whoami`
+      run: emacs --batch --debug-init -u `whoami` --init-directory .
