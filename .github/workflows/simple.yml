@@ -5,46 +5,19 @@ on:
   push:
     branches:
       - master
-    paths:
-      - '**.yml'
-      - '**.el'
-      - lisp/**
-      - modules/**
-      - site-lisp/**
   pull_request:
     branches:
       - master
-    paths-ignore:
-      - '**.md'
   workflow_dispatch:
-
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
 
 jobs:
   test:
-    runs-on: ${{ matrix.os }}
-    continue-on-error: ${{ matrix.experimental }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest, macos-latest]
-        emacs-version:
-          - 29.4
-        experimental: [false]
-        include:
-        - os: ubuntu-latest
-          emacs-version: snapshot
-          experimental: true
-        - os: macos-latest
-          emacs-version: snapshot
-          experimental: true
-
+    runs-on: ubuntu-latest
     steps:
-    - uses: jcs090218/setup-emacs@master
+    - uses: awalsh128/cache-apt-pkgs-action@latest
       with:
-        version: ${{ matrix.emacs-version }}
+        packages: emacs enchant ripgrep
+        version: 1.0
 
     - uses: actions/checkout@v4
 
