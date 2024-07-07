@@ -102,6 +102,7 @@ lexical-binding is Necessary for some lambdas used to configure org-roam.
 (use-package apheleia
 :config
 (apheleia-global-mode +1))
+#+END_SRC
 ** Documentation
 #+BEGIN_SRC emacs-lisp
 (use-package devdocs
