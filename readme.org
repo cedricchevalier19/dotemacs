@@ -72,9 +72,9 @@ Follow PARA method with org-roam:
 (defconst org-area-dir (expand-file-name "area" org-roam-dir)
   "Primary Area directory.")
 
-(defconst org-resource-dir (expand-file-name "resource" org-roam-dir)
+(defconst org-references-dir (expand-file-name "references" org-roam-dir)
   "Primary Area directory.")
-(defconst org-roam-bibfile (expand-file-name "zotero.bib" org-resource-dir)
+(defconst org-roam-bibfile (expand-file-name "zotero.bib" org-references-dir)
   "Main bibfile")
 
 (defconst org-archive-dir (expand-file-name "archive" org-roam-dir)
@@ -1084,7 +1084,7 @@ And some preconfigured snippets:
   (setq org-refile-use-outline-path 'file
     	org-outline-path-complete-in-steps nil)
 
-  (setq org-refile-targets (append '((org-notes-file :level . 0))
+  (setq org-refile-targets (append '((org-inbox-file :level . 0))
                                    (->>
                                     (directory-files org-projects-dir nil ".org$")
                                     (--remove (s-starts-with? "." it))
@@ -1421,17 +1421,17 @@ From https://systemcrafters.net/build-a-second-brain-in-emacs/capturing-notes-ef
       :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+date: %U\n")
       :unnarrowed t)
      ("p" "person" plain "%?"
-      :target (file+head ("resource/people/%<%Y%m%d%H%M%S>-${slug}.org"
-  					; I name these files after the persons work alias,
-  					; then put their full name under "ROAM_ALIASES"
-                          ":PROPERTIES:\n:ROAM_ALIASES: \"${fullname}\"\n:END:\n#+title: ${title}\n#+date: %U#+filetags: people\n")
-  			 :unnarrowed t)
-      )))
+      :if-new (file+head "people/%<%Y%m%d%H%M%S>-${slug}.org"
+                         "#+title: ${title}\n#+date: %U\n#+filetags: people\n")
+      :unnarrowed t)
+     ("P" "project" plain "* Goals\n\n%?\n\n* Tasks\n\n** TODO Add initial tasks\n\n* Dates\n\n"
+      :if-new (file+head "projects/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+category: ${title}\n#+filetags: Project")
+      :unnarrowed t)
+     ))
   :bind (("C-c n l" . org-roam-buffer-toggle)
          ("C-c n f" . org-roam-node-find)
          ("C-c n i" . org-roam-node-insert)
          ("C-c n I" . org-roam-node-insert-immediate)
-         ("C-c n p" . my/org-roam-find-project)
          ("C-c n t" . my/org-roam-capture-inbox)
   	 ("C-c n T" . org-roam-dailies-capture-today)
   	 ("C-c n d" . org-roam-dailies-find-today)
@@ -1480,21 +1480,6 @@ From https://systemcrafters.net/build-a-second-brain-in-emacs/capturing-notes-ef
   (unless org-note-abort
     (with-current-buffer (org-capture-get :buffer)
       (add-to-list 'org-agenda-files (buffer-file-name)))))
-
-(defun my/org-roam-find-project ()
-  (interactive)
-  ;; Add the project file to the agenda after capture is finished
-  (add-hook 'org-capture-after-finalize-hook #'my/org-roam-project-finalize-hook)
-
-  ;; Select a project file to open, creating it if necessary
-  (org-roam-node-find
-   nil
-   nil
-   (my/org-roam-filter-by-tag "Project")
-   :templates
-   '(("p" "project" plain "* Goals\n\n%?\n\n* Tasks\n\n** TODO Add initial tasks\n\n* Dates\n\n"
-      :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+category: ${title}\n#+filetags: Project")
-      :unnarrowed t))))
 
 (defun my/org-roam-capture-inbox ()
   (interactive)
