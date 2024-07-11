@@ -408,9 +408,12 @@ From https://www.bytedude.com/setting-up-rust-support-in-emacs/
   :commands vr/replace)
 #+end_src
 
-** Hydra
+** Casual
 #+BEGIN_SRC emacs-lisp
-(use-package hydra)
+(use-package casual-dired
+  :bind (:map dired-mode-map
+              ("C-o" . #'casual-dired-tmenu)
+              ("s" . #'casual-dired-sort-by-tmenu)))
 #+END_SRC
 
 ** Multiple-cursors
