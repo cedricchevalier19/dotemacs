@@ -83,21 +83,8 @@ Follow PARA method with org-roam:
   "Directory of completed project files.")
 #+END_SRC
 
-* Startup profiling
-#+BEGIN_SRC emacs-lisp
-(use-package esup
-  :ensure t)
-#+END_SRC
-
-#+BEGIN_SRC emacs-lisp
-(use-package benchmark-init
-  :ensure t
-  :config
-  ;; To disable collection of benchmark data after init is done.
-  (add-hook 'after-init-hook 'benchmark-init/deactivate))
-#+END_SRC
-
 * Generic
+
 #+BEGIN_SRC emacs-lisp
 (use-package no-littering
   :demand t
