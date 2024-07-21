@@ -61,23 +61,23 @@ Follow PARA method with org-roam:
 #+BEGIN_SRC emacs-lisp
 (defconst org-directory "~/org/"
   "org-mode directory, where most of the org-mode file lives")
-(defconst org-roam-dir (expand-file-name "roam" org-directory)
+(defconst org-roam-directory (expand-file-name "roam" org-directory)
   "Org-roam base directory")
 
-(defconst org-projects-dir (expand-file-name "projects" org-roam-dir)
+(defconst org-projects-dir (expand-file-name "projects" org-roam-directory)
   "Primary tasks directory.")
 (defconst org-inbox-file (expand-file-name "inbox.org" org-projects-dir)
   "New stuff collected in this file.")
 
-(defconst org-area-dir (expand-file-name "area" org-roam-dir)
+(defconst org-area-dir (expand-file-name "area" org-roam-directory)
   "Primary Area directory.")
 
-(defconst org-references-dir (expand-file-name "references" org-roam-dir)
+(defconst org-references-dir (expand-file-name "references" org-roam-directory)
   "Primary Area directory.")
 (defconst org-roam-bibfile (expand-file-name "zotero.bib" org-references-dir)
   "Main bibfile")
 
-(defconst org-archive-dir (expand-file-name "archive" org-roam-dir)
+(defconst org-archive-dir (expand-file-name "archive" org-roam-directory)
   "Directory of shareable, technical notes.")
 (defconst org-completed-dir (expand-file-name "projects" org-archive-dir)
   "Directory of completed project files.")
@@ -1305,7 +1305,6 @@ From https://systemcrafters.net/build-a-second-brain-in-emacs/capturing-notes-ef
   :init
   (setq org-roam-v2-ack t)
   :custom
-  (org-roam-directory org-roam-dir)
   (org-roam-completion-everywhere t)
   (org-roam-capture-templates
    '(("d" "default" plain "%?"
