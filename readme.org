@@ -364,18 +364,9 @@ From https://www.bytedude.com/setting-up-rust-support-in-emacs/
 * Interface
 ** Theme
 #+BEGIN_SRC emacs-lisp
-;; (use-package leuven-theme
-;;   :ensure t
-;;   :config
-;;   (load-theme 'leuven t))
-
-;; (use-package twilight-bright-theme
-;;   :config
-;;   (load-theme 'twilight-bright t))
-(use-package nano-theme
-  :vc (:url "https://github.com/rougier/nano-theme" :branch "main")
+(use-package twilight-bright-theme
   :config
-  (load-theme 'nano t))
+  (load-theme 'twilight-bright t))
 #+END_SRC
 
 ** Better display for text
