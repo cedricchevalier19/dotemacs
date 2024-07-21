@@ -364,18 +364,9 @@ From https://www.bytedude.com/setting-up-rust-support-in-emacs/
 * Interface
 ** Theme
 #+BEGIN_SRC emacs-lisp
-;; (use-package leuven-theme
-;;   :ensure t
-;;   :config
-;;   (load-theme 'leuven t))
-
-;; (use-package twilight-bright-theme
-;;   :config
-;;   (load-theme 'twilight-bright t))
-(use-package nano-theme
-  :vc (:url "https://github.com/rougier/nano-theme" :branch "main")
+(use-package twilight-bright-theme
   :config
-  (load-theme 'nano t))
+  (load-theme 'twilight-bright t))
 #+END_SRC
 
 ** Better display for text
@@ -412,6 +403,18 @@ From https://www.bytedude.com/setting-up-rust-support-in-emacs/
 #+BEGIN_SRC emacs-lisp
 (use-package multiple-cursors
   :bind (("C-C m c" . mc/edit-lines)))
+#+END_SRC
+
+** Dimmer
+#+BEGIN_SRC emacs-lisp
+(use-package dimmer
+  :custom
+  (dimmer-fraction 0.5)
+  (dimmer-configure-company-box)
+  (dimmer-configure-which-key)
+  (dimmer-configure-magit)
+  :config
+  (dimmer-mode))
 #+END_SRC
 
 * Dashboard
