@@ -1422,3 +1422,28 @@ Follow http://www.mkbehr.com/posts/a-research-workflow-with-zotero-and-org-mode/
 #   (add-to-list 'flycheck-grammalecte-enabled-modes 'fountain-mode)
 #   (flycheck-grammalecte-setup))
 # #+END_SRC
+
+* Save
+
+From https://github.com/KaratasFurkan/.emacs.d/blob/emacs-29/README.org#synchronizing-changes
+
+#+BEGIN_SRC emacs-lisp
+(defun cc/tangle-config ()
+  "Export code blocks from the literate config file asynchronously."
+  (interactive)
+  (make-process
+   :command `("emacs" ,config-org "--batch" "--eval"
+              ,(format "(org-babel-tangle nil \"%s\" \"emacs-lisp\")" config-el))
+   :name "tangle-process"
+   :filter (lambda (process output) (message (string-trim output)))))
+
+;; prevent emacs from killing itself until the tangle-process finished
+(add-to-list 'kill-emacs-query-functions
+             (lambda ()
+               (or (not (process-live-p (get-process "tangle-process")))
+                   (y-or-n-p "\"fk/tangle-config\" is running; kill it? "))))
+#+END_SRC
+
+# Local Variables:
+# eval: (add-hook 'after-save-hook 'cc/tangle-config :local t)
+# End:
