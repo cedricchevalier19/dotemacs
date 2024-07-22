@@ -312,6 +312,7 @@ rustup component add rust-analyzer
 From https://www.bytedude.com/setting-up-rust-support-in-emacs/
 #+BEGIN_SRC emacs-lisp
 (use-package rustic
+  :defer t
   :config
   (setq
    ;; eglot seems to be the best option right now.
@@ -605,6 +606,7 @@ https://github.com/minad/consult
 (use-package consult-org-roam
   :ensure t
   :after org-roam
+  :defer t
   :init
   (require 'consult-org-roam)
   ;; Activate the minor mode
@@ -1028,6 +1030,8 @@ And some preconfigured snippets:
 
 #+BEGIN_SRC emacs-lisp
   (use-package org-super-agenda
+    :after org
+    :defer t
     :custom
     (org-super-agenda-groups
        '((:auto-group t)))
@@ -1155,14 +1159,18 @@ M-x org-link-store   # From a magit buffer
 M-x org-insert-link  # In the org file
 #+END_SRC
 
+This package is quite slow to load, force defer.
 #+BEGIN_SRC emacs-lisp
 (use-package orgit
-  :after org)
+  :after org magit
+  :defer t)
 #+END_SRC
 
 *** Org-modern
 #+BEGIN_SRC emacs-lisp
 (use-package org-modern
+  :after org
+  :defer t
   :custom
   ;; Choose some fonts
   (set-face-attribute 'default nil :family "Iosevka")
@@ -1174,14 +1182,17 @@ M-x org-insert-link  # In the org file
 
 *** Org-sidebar
 For a nice org-mode outline.
-x
+
 #+BEGIN_SRC emacs-lisp
-(use-package org-sidebar)
+(use-package org-sidebar
+  :after org
+  :defer t)
 #+END_SRC
 
 *** mermaid
 #+BEGIN_SRC emacs-lisp
-(use-package mermaid-mode)
+(use-package mermaid-mode
+  :defer t)
 (use-package ob-mermaid
   :after org
   :defer t
@@ -1266,6 +1277,7 @@ x
 #+BEGIN_SRC emacs-lisp
 (use-package citar
   :no-require
+  :defer t
   :bind (("C-c n o" . citar-open)
          ("C-c r" . citar-insert-citation)
          :map minibuffer-local-map
