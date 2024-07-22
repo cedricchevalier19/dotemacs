@@ -6,15 +6,15 @@
 
 ;; Don't attempt to find/apply special file handlers to files loaded during
 ;; startup.
-(let ((file-name-handler-alist nil))
-  ;; If config is pre-compiled, then load that
-  (if (file-exists-p (expand-file-name "readme.elc" user-emacs-directory))
-      (load-file (expand-file-name "readme.elc" user-emacs-directory))
-    ;; Otherwise use org-babel to tangle and load the configuration
-    (require 'org)
-    (org-babel-load-file (expand-file-name "readme.org" user-emacs-directory))))
 
-(put 'dired-find-alternate-file 'disabled nil)
 
+(defconst config-org (locate-user-emacs-file "readme.org"))
+(defconst config-el (locate-user-emacs-file "config.el"))
+
+(unless (file-exists-p config-el)
+  (require 'org)
+  (org-babel-tangle-file config-org config-el "emacs-lisp"))
+
+(load-file config-el)
 (provide 'init)
 ;;; init.el ends here
