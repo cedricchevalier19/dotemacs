@@ -1539,6 +1539,25 @@ From https://github.com/KaratasFurkan/.emacs.d/blob/emacs-29/README.org#synchron
                    (y-or-n-p "\"fk/tangle-config\" is running; kill it? "))))
 #+END_SRC
 
+
+* New packages to look
+
+** From https://github.com/jwiegley/dot-emacs/blob/master/init.org
+- https://github.com/sshaw/copy-as-format
+- ediff and ediff-keep
+- magit-todos
+- https://orgmode.org/worg/org-contrib/org-contacts.html
+- org-inlinetask
+- org-ql
+- https://github.com/nobiot/org-remark
+- https://github.com/unhammer/org-rich-yank
+- https://orgmode.org/worg/org-contrib/gsoc2012/student-projects/org-sync/tutorial/index.html
+- https://github.com/nobiot/org-transclusion
+- orgit-forge
+- ox-md
+- org-config
+
+
 # Local Variables:
 # eval: (add-hook 'after-save-hook 'cc/tangle-config :local t)
 # End:
