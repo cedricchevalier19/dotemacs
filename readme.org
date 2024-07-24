@@ -68,6 +68,8 @@ Follow PARA method with org-roam:
   "Primary tasks directory.")
 (defconst org-inbox-file (expand-file-name "inbox.org" org-projects-dir)
   "New stuff collected in this file.")
+(defconst org-icalendar-file (expand-file-name "calendar.org" org-roam-directory)
+  "Synchronize with office calendar")
 
 (defconst org-area-dir (expand-file-name "area" org-roam-directory)
   "Primary Area directory.")
@@ -1527,7 +1529,8 @@ From https://systemcrafters.net/build-a-second-brain-in-emacs/capturing-notes-ef
 
 (defun my/org-roam-refresh-agenda-list ()
   (interactive)
-  (setq org-agenda-files (my/org-roam-list-notes-by-tag "Project")))
+  (setq org-agenda-files (my/org-roam-list-notes-by-tag "Project"))
+  (add-to-list 'org-agenda-files org-icalendar-file))
 
 ;; Build the agenda list the first time for the session
 (my/org-roam-refresh-agenda-list)
