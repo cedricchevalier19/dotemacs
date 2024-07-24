@@ -1051,6 +1051,7 @@ And some preconfigured snippets:
     :after org
     :defer t
     :custom
+    (org-agenda-include-diary t)
     (org-agenda-custom-commands
      '(("z" "Zall"
         ((agenda "" ((org-agenda-span 'day)
@@ -1090,7 +1091,7 @@ And some preconfigured snippets:
 			    (org-super-agenda-groups
 			     '((:auto-group t)))))))
        ("b" "Best"
-	       ((agenda "" ((org-agenda-span 'day)
+	       ((agenda "" ((org-agenda-span 'week)
 			    (org-super-agenda-groups
 			     '((:log t)  ; Automatically named "Log"
 			       (:name "Schedule"
