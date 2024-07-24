@@ -977,11 +977,11 @@ And some preconfigured snippets:
                                        ("NEXT" ("WAITING") ("CANCELLED"))
                                        ("DONE" ("WAITING") ("CANCELLED")))
         org-use-tag-inheritance t
-        org-tag-alist '(("linux") ("nixos") ("emacs") ("org")
-                        ("openshift") ("redhat") ("tektoncd") ("kubernetes") ("knative" ) ("docker")
+        org-tag-alist '(("Research") ("Collab") ("Teaching") ("Codesign")
+                        ("Kokkos") ("C++") ("Rust") ("Arcane")
                         ("docs") ("code") ("review")
                         (:startgroup . nil)
-                        ("#home" . ?h) ("#work" . ?w) ("#errand" . ?e) ("#health" . ?l)
+                        ("#home" . ?h) ("#work" . ?w)
                         (:endgroup . nil)
                         (:startgroup . nil)
                         ("#link" . ?i) ("#read" . ?r) ("#project" . ?p)
@@ -1041,7 +1041,6 @@ And some preconfigured snippets:
             (save-current-buffer (dump-it file-dest contents))
           (save-window-excursion (dump-it file-dest contents))))))
   )
-
 #+END_SRC
 
 *** Org-agenda
