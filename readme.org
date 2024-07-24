@@ -1100,7 +1100,7 @@ Nice graphical calendar
   :defer 1
   :bind ("C-c t" . cfw-here)
   :init
-  (require 'calfw-org)
+  (use-package calfw-org)
   (setq cfw:org-overwrite-default-keybinding t)
   ;;(toggle-frame-maximized)
   ;;(set-frame-parameter nil 'fullscreen 'maximized)
