@@ -1023,39 +1023,6 @@ And some preconfigured snippets:
                                       ("STYLE_ALL" . "habit")))
         org-blank-before-new-entry '((heading . t)
                                      (plain-list-item . nil)))
-  (setq org-refile-use-outline-path 'file
-    	org-outline-path-complete-in-steps nil)
-
-  (setq org-refile-targets (append '((org-inbox-file :level . 0))
-                                   (->>
-                                    (directory-files org-projects-dir nil ".org$")
-                                    (--remove (s-starts-with? "." it))
-                                    (--map (format "%s/%s" org-projects-dir it))
-                                    (--map (cons it (cons :level 0))))))
-  (defun org-subtree-region ()
-    "Return a list of the start and end of a subtree."
-    (save-excursion
-      (list (progn (org-back-to-heading) (point))
-            (progn (org-end-of-subtree)  (point)))))
-
-  (defun org-refile-directly (file-dest)
-    "Move the current subtree to the end of FILE-DEST.
-    If SHOW-AFTER is non-nil, show the destination window,
-    otherwise, this destination buffer is not shown."
-    (interactive "Destination: ")
-
-    (defun dump-it (file contents)
-      (find-file-other-window file-dest)
-      (goto-char (point-max))
-      (insert "\n" contents))
-
-    (save-excursion
-      (let* ((region (org-subtree-region))
-             (contents (buffer-substring (first region) (second region))))
-    	(apply 'kill-region region)
-    	(if org-refile-directly-show-after
-            (save-current-buffer (dump-it file-dest contents))
-          (save-window-excursion (dump-it file-dest contents))))))
   )
 
 #+END_SRC
