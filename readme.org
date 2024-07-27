@@ -1557,6 +1557,8 @@ From https://github.com/KaratasFurkan/.emacs.d/blob/emacs-29/README.org#synchron
 - ox-md
 - org-config
 - https://github.com/jacktasia/dumb-jump
+- https://github.com/charignon/github-review
+- https://github.com/wandersoncferreira/code-review
 
 # Local Variables:
 # eval: (add-hook 'after-save-hook 'cc/tangle-config :local t)
