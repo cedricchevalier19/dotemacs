@@ -1292,6 +1292,11 @@ This package is quite slow to load, force defer.
   :defer t)
 #+END_SRC
 
+#+BEGIN_SRC emacs-lisp
+(use-package orgit-forge
+  :after org forge)
+#+END_SRC
+
 *** Org-modern
 #+BEGIN_SRC emacs-lisp
 (use-package org-modern
