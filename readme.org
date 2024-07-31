@@ -909,8 +909,8 @@ brew install enchant
   (setq org-use-speed-commands t
         org-special-ctrl-a/e t
         org-special-ctrl-k t
-        org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "STARTED(s)" "|" "DONE(d!)" "CANCELED(c@/!)")
-                            (sequence "WAITING(w@/!)" "SOMEDAY(s)" "|" "CANCELED(c@/!)" "MEETING")
+        org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "INPROGRESS(p)" "|" "DONE(d!)" "CANCELED(c@/!)")
+                            (sequence "WAITING(w@/!)" "SOMEDAY(s)" "|" "CANCELED(c@/!)" "MEETING(m)")
                             (sequence "IDEA(i)" "|" "CANCELED(c@/!)"))
         org-todo-state-tags-triggers '(("CANCELLED" ("CANCELLED" . t))
                                        ("WAITING" ("WAITING" . t))
