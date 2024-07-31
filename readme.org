@@ -910,6 +910,7 @@ And some preconfigured snippets:
   )
 #+END_SRC
 
+
 * Org
 ** Main config
 #+BEGIN_SRC emacs-lisp
@@ -922,6 +923,7 @@ And some preconfigured snippets:
         '("acn" "ind" "ilg" "ist" "glo" "tex" "synctex.gz"))
 
   :custom
+  (require 'org-inlinetask)
             ;;;;;;; Files
   ;; setup archive directory in current folder
             ;;;;;;; Org source
