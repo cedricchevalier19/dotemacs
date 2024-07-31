@@ -130,6 +130,20 @@ Follow PARA method with org-roam:
   )
 #+END_SRC
 
+** Dumb-jump
+https://github.com/jacktasia/dumb-jump
+
+#+BEGIN_SRC emacs-lisp
+(use-package dumb-jump
+  :custom
+  (dump-jump-force-searcher 'rg)
+  (xref-show-definitions-function #'xref-show-definitions-completing-read)
+  :config
+  (add-hook 'xref-backend-functions #'dumb-jump-xref-activate)
+  )
+#+END_SRC
+
+
 ** CMake
 *** Edit
 #+BEGIN_SRC emacs-lisp
