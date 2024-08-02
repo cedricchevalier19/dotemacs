@@ -411,6 +411,7 @@ From https://www.bytedude.com/setting-up-rust-support-in-emacs/
 ** Casual
 #+BEGIN_SRC emacs-lisp
 (use-package casual-dired
+  :after dired
   :bind (:map dired-mode-map
               ("C-o" . #'casual-dired-tmenu)
               ("s" . #'casual-dired-sort-by-tmenu)))
@@ -423,15 +424,30 @@ From https://www.bytedude.com/setting-up-rust-support-in-emacs/
 #+END_SRC
 
 ** Dimmer
+https://github.com/gonewest818/dimmer.el
+
 #+BEGIN_SRC emacs-lisp
 (use-package dimmer
   :custom
-  (dimmer-fraction 0.5)
+  (dimmer-adjustment-mode :background)
+  (dimmer-fraction 0.1)
   (dimmer-configure-company-box)
   (dimmer-configure-which-key)
   (dimmer-configure-magit)
   :config
   (dimmer-mode))
+#+END_SRC
+
+Note:
+=dimmer-adjustment-mode= is set to =:background= to avoid a =Wrong type argument: stringp, reset= with emacs 29, see https://github.com/gonewest818/dimmer.el/issues/69
+
+** Dired
+#+BEGIN_SRC emacs-lisp
+(use-package dired
+  :ensure nil
+  :config
+  (when (string= system-type "darwin")
+  (setq dired-use-ls-dired nil)))
 #+END_SRC
 
 * Dashboard
@@ -1531,7 +1547,8 @@ From https://systemcrafters.net/build-a-second-brain-in-emacs/capturing-notes-ef
 (defun my/org-roam-refresh-agenda-list ()
   (interactive)
   (setq org-agenda-files (my/org-roam-list-notes-by-tag "Project"))
-  (add-to-list 'org-agenda-files org-icalendar-file))
+  (if (file-exists-p org-icalendar-file)
+      (add-to-list 'org-agenda-files org-icalendar-file)))
 
 ;; Build the agenda list the first time for the session
 (my/org-roam-refresh-agenda-list)
