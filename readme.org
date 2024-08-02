@@ -411,6 +411,7 @@ From https://www.bytedude.com/setting-up-rust-support-in-emacs/
 ** Casual
 #+BEGIN_SRC emacs-lisp
 (use-package casual-dired
+  :after dired
   :bind (:map dired-mode-map
               ("C-o" . #'casual-dired-tmenu)
               ("s" . #'casual-dired-sort-by-tmenu)))
@@ -440,6 +441,14 @@ https://github.com/gonewest818/dimmer.el
 Note:
 =dimmer-adjustment-mode= is set to =:background= to avoid a =Wrong type argument: stringp, reset= with emacs 29, see https://github.com/gonewest818/dimmer.el/issues/69
 
+** Dired
+#+BEGIN_SRC emacs-lisp
+(use-package dired
+  :ensure nil
+  :config
+  (when (string= system-type "darwin")
+  (setq dired-use-ls-dired nil)))
+#+END_SRC
 
 * Dashboard
 #+BEGIN_SRC emacs-lisp
