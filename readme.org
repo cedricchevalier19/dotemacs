@@ -131,6 +131,11 @@ Follow PARA method with org-roam:
   :config
   (apheleia-global-mode +1))
 #+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+(use-package clang-format)
+#+END_SRC
+
 ** Documentation
 #+BEGIN_SRC emacs-lisp
 (use-package devdocs
