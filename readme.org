@@ -1547,7 +1547,8 @@ From https://systemcrafters.net/build-a-second-brain-in-emacs/capturing-notes-ef
 (defun my/org-roam-refresh-agenda-list ()
   (interactive)
   (setq org-agenda-files (my/org-roam-list-notes-by-tag "Project"))
-  (add-to-list 'org-agenda-files org-icalendar-file))
+  (if (file-exists-p org-icalendar-file)
+      (add-to-list 'org-agenda-files org-icalendar-file)))
 
 ;; Build the agenda list the first time for the session
 (my/org-roam-refresh-agenda-list)
