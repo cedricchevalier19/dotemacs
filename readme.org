@@ -423,16 +423,23 @@ From https://www.bytedude.com/setting-up-rust-support-in-emacs/
 #+END_SRC
 
 ** Dimmer
+https://github.com/gonewest818/dimmer.el
+
 #+BEGIN_SRC emacs-lisp
 (use-package dimmer
   :custom
-  (dimmer-fraction 0.5)
+  (dimmer-adjustment-mode :background)
+  (dimmer-fraction 0.1)
   (dimmer-configure-company-box)
   (dimmer-configure-which-key)
   (dimmer-configure-magit)
   :config
   (dimmer-mode))
 #+END_SRC
+
+Note:
+=dimmer-adjustment-mode= is set to =:background= to avoid a =Wrong type argument: stringp, reset= with emacs 29, see https://github.com/gonewest818/dimmer.el/issues/69
+
 
 * Dashboard
 #+BEGIN_SRC emacs-lisp
