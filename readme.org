@@ -30,7 +30,6 @@ lexical-binding is Necessary for some lambdas used to configure org-roam.
 ** Package management
 
 #+BEGIN_SRC emacs-lisp
-;;; Code:
 (require 'package)
 (add-to-list 'package-archives '("gnu"   . "https://elpa.gnu.org/packages/"))
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
@@ -374,8 +373,7 @@ From https://www.bytedude.com/setting-up-rust-support-in-emacs/
 
 ** Project
 #+BEGIN_SRC emacs-lisp
-(use-package project
-  :ensure t)
+(use-package project)
 #+END_SRC
 
 * Interface
@@ -389,7 +387,6 @@ From https://www.bytedude.com/setting-up-rust-support-in-emacs/
 ** Better display for text
 #+BEGIN_SRC emacs-lisp
 (use-package olivetti
-  :ensure
   :diminish
   :config
   (setq olivetti-body-width 0.7)
@@ -444,7 +441,6 @@ Note:
 ** Dired
 #+BEGIN_SRC emacs-lisp
 (use-package dired
-  :ensure nil
   :config
   (when (string= system-type "darwin")
   (setq dired-use-ls-dired nil)))
@@ -624,7 +620,6 @@ https://github.com/minad/consult
   )
 
 (use-package consult-dir
-  :ensure t
   :bind (("C-x C-d" . consult-dir)
          :map minibuffer-local-completion-map
          ("C-x C-d" . consult-dir)
@@ -636,7 +631,6 @@ https://github.com/minad/consult
 (use-package consult-eglot)
 
 (use-package consult-org-roam
-  :ensure t
   :after org-roam
   :defer t
   :init
@@ -683,7 +677,6 @@ https://github.com/minad/marginalia
   (marginalia-mode))
 
 (use-package embark
-  :ensure t
 
   :bind
   (("C-." . embark-act)         ;; pick some comfortable binding
@@ -705,7 +698,6 @@ https://github.com/minad/marginalia
 
 ;; Consult users will also want the embark-consult package.
 (use-package embark-consult
-  :ensure t ; only need to install it, embark loads it after consult if found
   :hook
   (embark-collect-mode . consult-preview-at-point-mode))
 #+END_SRC
@@ -1458,7 +1450,6 @@ From https://systemcrafters.net/build-a-second-brain-in-emacs/capturing-notes-ef
 
 #+BEGIN_SRC emacs-lisp :lexical t
 (use-package org-roam
-  :ensure t
   :init
   (setq org-roam-v2-ack t)
   :custom
