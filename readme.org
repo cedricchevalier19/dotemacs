@@ -441,6 +441,7 @@ Note:
 ** Dired
 #+BEGIN_SRC emacs-lisp
 (use-package dired
+  :ensure nil
   :config
   (when (string= system-type "darwin")
   (setq dired-use-ls-dired nil)))
