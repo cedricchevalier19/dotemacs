@@ -1413,6 +1413,7 @@ For a nice org-mode outline.
 #+BEGIN_SRC emacs-lisp
 (use-package citar
   :no-require
+  :if (file-exists-p org-roam-bibfile)
   :defer t
   :bind (("C-c n o" . citar-open)
          ("C-c r" . citar-insert-citation)
@@ -1434,10 +1435,12 @@ For a nice org-mode outline.
 
 (use-package citar-org-roam
   :after citar org-roam
+  :if (file-exists-p org-roam-bibfile)
   :no-require
   :custom
   (citar-org-roam-subdir "resource/references")
-  :config (citar-org-roam-mode))
+  :config
+  (citar-org-roam-mode))
 #+END_SRC
 
 ** Roam
