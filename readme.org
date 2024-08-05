@@ -1454,6 +1454,7 @@ From https://systemcrafters.net/build-a-second-brain-in-emacs/capturing-notes-ef
 
 #+BEGIN_SRC emacs-lisp :lexical t
 (use-package org-roam
+  :if (file-directory-p org-roam-directory)
   :init
   (setq org-roam-v2-ack t)
   :custom
