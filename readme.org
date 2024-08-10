@@ -1325,6 +1325,14 @@ For a nice org-mode outline.
   :defer t)
 #+END_SRC
 
+*** Org-plugins
+Useful for =org-collector=
+
+#+BEGIN_SRC emacs-lisp
+(use-package org-contrib
+  :after org)
+#+END_SRC
+
 *** mermaid
 #+BEGIN_SRC emacs-lisp
 (use-package mermaid-mode
@@ -1467,10 +1475,21 @@ From https://systemcrafters.net/build-a-second-brain-in-emacs/capturing-notes-ef
       :if-new (file+head "people/%<%Y%m%d%H%M%S>-${slug}.org"
                          "#+title: ${title}\n#+date: %U\n#+filetags: people\n")
       :unnarrowed t)
-     ("P" "project" plain "* Goals\n\n%?\n\n* Tasks\n\n** TODO Add initial tasks\n\n* Dates\n\n"
-      :if-new (file+head "projects/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+category: ${title}\n#+filetags: Project")
+     ("w" "Work project" plain "* Goals\n\n%?\n\n* Tasks\n\n** TODO Add initial tasks\n\n* Dates\n\n"
+      :if-new (file+head "projects/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+category: ${title}\n#+filetags: :Project:\n")
       :unnarrowed t)
-     ))
+     ("f" "friend" plain "%?"
+      :if-new (file+head "home/people/${slug}.org"
+                         "#+title: ${title}\n#+date: %U\n#+filetags: :people:@home:\n")
+      :unnarrowed t)
+     ("home" "home" plain "%?"
+      :if-new (file+head "home/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+date: %U\n")
+      :unnarrowed t)
+     ("P" "Home project" plain "* Goals\n\n%?\n\n* Tasks\n\n** TODO Add initial tasks\n\n* Dates\n\n"
+      :if-new (file+head "home/projects/${slug}.org" "#+title: ${title}\n#+category: ${title}\n#+filetags: :Project:@home:\n")
+      :unnarrowed t)
+     )
+   )
   :bind (("C-c n l" . org-roam-buffer-toggle)
          ("C-c n f" . org-roam-node-find)
          ("C-c n i" . org-roam-node-insert)
