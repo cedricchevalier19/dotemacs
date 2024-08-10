@@ -1467,15 +1467,18 @@ From https://systemcrafters.net/build-a-second-brain-in-emacs/capturing-notes-ef
       :if-new (file+head "people/%<%Y%m%d%H%M%S>-${slug}.org"
                          "#+title: ${title}\n#+date: %U\n#+filetags: people\n")
       :unnarrowed t)
-     ("w" "project" plain "* Goals\n\n%?\n\n* Tasks\n\n** TODO Add initial tasks\n\n* Dates\n\n"
+     ("w" "Work project" plain "* Goals\n\n%?\n\n* Tasks\n\n** TODO Add initial tasks\n\n* Dates\n\n"
       :if-new (file+head "projects/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+category: ${title}\n#+filetags: :Project:\n")
       :unnarrowed t)
-     ("f" "home person" plain "%?"
-      :if-new (file+head "home/people/%<%Y%m%d%H%M%S>-${slug}.org"
+     ("f" "friend" plain "%?"
+      :if-new (file+head "home/people/${slug}.org"
                          "#+title: ${title}\n#+date: %U\n#+filetags: :people:@home:\n")
       :unnarrowed t)
-     ("P" "home project" plain "* Goals\n\n%?\n\n* Tasks\n\n** TODO Add initial tasks\n\n* Dates\n\n"
-      :if-new (file+head "home/projects/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+category: ${title}\n#+filetags: :Project:@home:\n")
+     ("home" "home" plain "%?"
+      :if-new (file+head "home/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+date: %U\n")
+      :unnarrowed t)
+     ("P" "Home project" plain "* Goals\n\n%?\n\n* Tasks\n\n** TODO Add initial tasks\n\n* Dates\n\n"
+      :if-new (file+head "home/projects/${slug}.org" "#+title: ${title}\n#+category: ${title}\n#+filetags: :Project:@home:\n")
       :unnarrowed t)
      )
    )
