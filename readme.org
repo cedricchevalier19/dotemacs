@@ -1325,6 +1325,14 @@ For a nice org-mode outline.
   :defer t)
 #+END_SRC
 
+*** Org-plugins
+Useful for =org-collector=
+
+#+BEGIN_SRC emacs-lisp
+(use-package org-contrib
+  :after org)
+#+END_SRC
+
 *** mermaid
 #+BEGIN_SRC emacs-lisp
 (use-package mermaid-mode
