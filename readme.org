@@ -818,17 +818,6 @@ https://github.com/minad/marginalia
   :config (editorconfig-mode 1))
 #+END_SRC
 
-*** highlight
-#+BEGIN_SRC emacs-lisp
-(use-package highlight-indent-guides
-  :defer 0.3
-  :hook (prog-mode . highlight-indent-guides-mode)
-  :custom
-  (highlight-indent-guides-method 'character)
-  (highlight-indent-guides-suppress-auto-error t)
-  )
-#+END_SRC
-
 ** eglot
 *** Core
 #+BEGIN_SRC emacs-lisp
