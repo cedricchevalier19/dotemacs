@@ -854,13 +854,6 @@ brew install enchant
   (load custom-file t))
 #+END_SRC
 
-** Undo
-#+BEGIN_SRC emacs-lisp
-(use-package vundo
-  :config
-  (setq vundo-glyph-alist vundo-unicode-symbols)
-  )
-#+END_SRC
 
 
 * Org
