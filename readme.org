@@ -877,29 +877,10 @@ brew install enchant
 (when (file-exists-p custom-file)
   (load custom-file t))
 #+END_SRC
-** Search
-*** Fuzzy
-#+BEGIN_SRC emacs-lisp
-(use-package fzf)
-#+END_SRC
+
 *** ripgrep
 #+BEGIN_SRC emacs-lisp
 (use-package deadgrep)
-#+END_SRC
-** Snippets
-#+BEGIN_SRC emacs-lisp
-(use-package yasnippet
-  :disabled
-  :config
-  (add-to-list 'yas-snippet-dirs (expand-file-name "snippets"
-                                                   user-emacs-directory))
-  (yas-global-mode 1))
-#+END_SRC
-
-And some preconfigured snippets:
-#+BEGIN_SRC emacs-lisp
-(use-package yasnippet-snippets
-  :disabled)
 #+END_SRC
 
 ** Undo
