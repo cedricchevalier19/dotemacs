@@ -114,6 +114,16 @@ Follow PARA method with org-roam:
   :defer t)
 #+END_SRC
 
+#+BEGIN_SRC emacs-lisp
+(setq-default
+ auto-save-list-file-name  (expand-file-name "local/auto-save-list"
+                                             user-emacs-directory)
+ custom-file  (expand-file-name "local/custom.el"
+                                user-emacs-directory))
+(when (file-exists-p custom-file)
+  (load custom-file t))
+#+END_SRC
+
 * Programming
 ** Formatting
 #+BEGIN_SRC emacs-lisp
@@ -228,21 +238,6 @@ Assuming your Gitlab username is "ziggy", the package is named "forge", and you 
 machine gitlab.com/api/v4 login ziggy^forge password 012345abcdef..
 #+END_QUOTE
 
-**** Gitlab ci
-
-# #+BEGIN_SRC emacs-lisp
-# (use-package gitlab-ci-mode)
-
-# (use-package gitlab-ci-mode-flycheck
-#   :after gitlab-ci-mode
-#   :init (gitlab-ci-mode-flycheck-enable))
-# #+END_SRC
-
-** LUA
-#+BEGIN_SRC emacs-lisp
-(use-package lua-mode)
-#+END_SRC
-
 ** Python
 #+BEGIN_SRC emacs-lisp
 (use-package python-black
@@ -265,15 +260,6 @@ machine gitlab.com/api/v4 login ziggy^forge password 012345abcdef..
 
 (use-package dockerfile-mode
   :mode ("Dockerfile\\'" "\\.dockerfile$"))
-#+END_SRC
-** Golang
-#+BEGIN_SRC emacs-lisp
-(use-package go-mode
-  :config
-  (use-package go-eldoc
-    :after (go-mode)
-    :hook (go-mode . go-eldoc-setup))
-  :mode ("\\.go$"))
 #+END_SRC
 ** Markdown
 Needs =pandoc=
@@ -818,17 +804,6 @@ https://github.com/minad/marginalia
   :config (editorconfig-mode 1))
 #+END_SRC
 
-*** highlight
-#+BEGIN_SRC emacs-lisp
-(use-package highlight-indent-guides
-  :defer 0.3
-  :hook (prog-mode . highlight-indent-guides-mode)
-  :custom
-  (highlight-indent-guides-method 'character)
-  (highlight-indent-guides-suppress-auto-error t)
-  )
-#+END_SRC
-
 ** eglot
 *** Core
 #+BEGIN_SRC emacs-lisp
@@ -877,48 +852,6 @@ brew install enchant
   (vertico-multiform-mode 1)
   :bind (("M-$" . jinx-correct)
          ("C-M-$" . jinx-languages)))
-#+END_SRC
-** Custom
-#+BEGIN_SRC emacs-lisp
-(setq-default
- auto-save-list-file-name  (expand-file-name "local/auto-save-list"
-                                             user-emacs-directory)
- custom-file  (expand-file-name "local/custom.el"
-                                user-emacs-directory))
-(when (file-exists-p custom-file)
-  (load custom-file t))
-#+END_SRC
-** Search
-*** Fuzzy
-#+BEGIN_SRC emacs-lisp
-(use-package fzf)
-#+END_SRC
-*** ripgrep
-#+BEGIN_SRC emacs-lisp
-(use-package deadgrep)
-#+END_SRC
-** Snippets
-#+BEGIN_SRC emacs-lisp
-(use-package yasnippet
-  :disabled
-  :config
-  (add-to-list 'yas-snippet-dirs (expand-file-name "snippets"
-                                                   user-emacs-directory))
-  (yas-global-mode 1))
-#+END_SRC
-
-And some preconfigured snippets:
-#+BEGIN_SRC emacs-lisp
-(use-package yasnippet-snippets
-  :disabled)
-#+END_SRC
-
-** Undo
-#+BEGIN_SRC emacs-lisp
-(use-package vundo
-  :config
-  (setq vundo-glyph-alist vundo-unicode-symbols)
-  )
 #+END_SRC
 
 
@@ -1145,37 +1078,6 @@ French holidays, from https://irfu.cea.fr/Pisp/vianney.lebouteiller/emacs.html
       calendar-mark-diary-entries-flag nil) ;calendar-mark-holidays-flag t
 #+END_SRC
 
-**** Calfw
-Nice graphical calendar
-
-#+BEGIN_SRC emacs-lisp
-(use-package calfw
-  :defer 1
-  :bind ("C-c t" . cfw-here)
-  :init
-  (use-package calfw-org)
-  (setq cfw:org-overwrite-default-keybinding t)
-  ;;(toggle-frame-maximized)
-  ;;(set-frame-parameter nil 'fullscreen 'maximized)
-
-  :config
-
-  (defun cfw-here ()
-    (interactive)
-    (let ((buf (get-buffer "*cfw-calendar*")))
-      (if buf
-          (pop-to-buffer buf nil)
-	(cfw:open-calendar-buffer
-	 :contents-sources
-	 (list
-          (cfw:org-create-source "Green")
-          )
-	 :view 'two-weeks)
-	))
-    )
-  )
-#+END_SRC
-
 *** Org-babel
 #+BEGIN_SRC emacs-lisp
 (with-eval-after-load 'org
@@ -1190,7 +1092,6 @@ Nice graphical calendar
                                  (C . t)
                                  (ditaa . t)
                                  (emacs-lisp . t)
-                                 (gnuplot . t)
                                  (latex . t)
                                  (plantuml . t)
                                  (python . t)
