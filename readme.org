@@ -114,6 +114,16 @@ Follow PARA method with org-roam:
   :defer t)
 #+END_SRC
 
+#+BEGIN_SRC emacs-lisp
+(setq-default
+ auto-save-list-file-name  (expand-file-name "local/auto-save-list"
+                                             user-emacs-directory)
+ custom-file  (expand-file-name "local/custom.el"
+                                user-emacs-directory))
+(when (file-exists-p custom-file)
+  (load custom-file t))
+#+END_SRC
+
 * Programming
 ** Formatting
 #+BEGIN_SRC emacs-lisp
@@ -843,17 +853,6 @@ brew install enchant
   :bind (("M-$" . jinx-correct)
          ("C-M-$" . jinx-languages)))
 #+END_SRC
-** Custom
-#+BEGIN_SRC emacs-lisp
-(setq-default
- auto-save-list-file-name  (expand-file-name "local/auto-save-list"
-                                             user-emacs-directory)
- custom-file  (expand-file-name "local/custom.el"
-                                user-emacs-directory))
-(when (file-exists-p custom-file)
-  (load custom-file t))
-#+END_SRC
-
 
 
 * Org
