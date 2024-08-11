@@ -1145,37 +1145,6 @@ French holidays, from https://irfu.cea.fr/Pisp/vianney.lebouteiller/emacs.html
       calendar-mark-diary-entries-flag nil) ;calendar-mark-holidays-flag t
 #+END_SRC
 
-**** Calfw
-Nice graphical calendar
-
-#+BEGIN_SRC emacs-lisp
-(use-package calfw
-  :defer 1
-  :bind ("C-c t" . cfw-here)
-  :init
-  (use-package calfw-org)
-  (setq cfw:org-overwrite-default-keybinding t)
-  ;;(toggle-frame-maximized)
-  ;;(set-frame-parameter nil 'fullscreen 'maximized)
-
-  :config
-
-  (defun cfw-here ()
-    (interactive)
-    (let ((buf (get-buffer "*cfw-calendar*")))
-      (if buf
-          (pop-to-buffer buf nil)
-	(cfw:open-calendar-buffer
-	 :contents-sources
-	 (list
-          (cfw:org-create-source "Green")
-          )
-	 :view 'two-weeks)
-	))
-    )
-  )
-#+END_SRC
-
 *** Org-babel
 #+BEGIN_SRC emacs-lisp
 (with-eval-after-load 'org
