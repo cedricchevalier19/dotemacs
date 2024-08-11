@@ -1159,7 +1159,6 @@ French holidays, from https://irfu.cea.fr/Pisp/vianney.lebouteiller/emacs.html
                                  (C . t)
                                  (ditaa . t)
                                  (emacs-lisp . t)
-                                 (gnuplot . t)
                                  (latex . t)
                                  (plantuml . t)
                                  (python . t)
