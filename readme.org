@@ -228,11 +228,6 @@ Assuming your Gitlab username is "ziggy", the package is named "forge", and you 
 machine gitlab.com/api/v4 login ziggy^forge password 012345abcdef..
 #+END_QUOTE
 
-** LUA
-#+BEGIN_SRC emacs-lisp
-(use-package lua-mode)
-#+END_SRC
-
 ** Python
 #+BEGIN_SRC emacs-lisp
 (use-package python-black
