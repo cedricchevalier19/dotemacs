@@ -1390,13 +1390,13 @@ From https://systemcrafters.net/build-a-second-brain-in-emacs/capturing-notes-ef
       :unnarrowed t)
      ("f" "friend" plain "%?"
       :if-new (file+head "home/people/${slug}.org"
-                         "#+title: ${title}\n#+date: %U\n#+filetags: :people:@home:\n")
+                         "#+title: ${title}\n#+date: %U\n#+filetags: :people:#home:\n")
       :unnarrowed t)
      ("home" "home" plain "%?"
       :if-new (file+head "home/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+date: %U\n")
       :unnarrowed t)
      ("P" "Home project" plain "* Goals\n\n%?\n\n* Tasks\n\n** TODO Add initial tasks\n\n* Dates\n\n"
-      :if-new (file+head "home/projects/${slug}.org" "#+title: ${title}\n#+category: ${title}\n#+filetags: :Project:@home:\n")
+      :if-new (file+head "home/projects/${slug}.org" "#+title: ${title}\n#+category: ${title}\n#+filetags: :Project:#home:\n")
       :unnarrowed t)
      )
    )
