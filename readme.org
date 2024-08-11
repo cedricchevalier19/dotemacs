@@ -868,11 +868,6 @@ brew install enchant
   (load custom-file t))
 #+END_SRC
 
-*** ripgrep
-#+BEGIN_SRC emacs-lisp
-(use-package deadgrep)
-#+END_SRC
-
 ** Undo
 #+BEGIN_SRC emacs-lisp
 (use-package vundo
