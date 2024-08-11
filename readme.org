@@ -1381,16 +1381,16 @@ From https://systemcrafters.net/build-a-second-brain-in-emacs/capturing-notes-ef
    '(("d" "default" plain "%?"
       :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+date: %U\n")
       :unnarrowed t)
-     ("p" "person" plain "%?"
-      :if-new (file+head "people/%<%Y%m%d%H%M%S>-${slug}.org"
-                         "#+title: ${title}\n#+date: %U\n#+filetags: people\n")
+     ("p" "person" plain "* %?\n:PROPERTIES:\n:POSITION:\n:EMAIL:\n:END:"
+      :if-new (file+head "people.org"
+                         "#+title: ${title}\n#+date: %U\n#+filetags: :people:\n# -*- mode: Org; org-use-property-inheritance: (\"Company\") -*-\n* To Sort")
       :unnarrowed t)
      ("w" "Work project" plain "* Goals\n\n%?\n\n* Tasks\n\n** TODO Add initial tasks\n\n* Dates\n\n"
       :if-new (file+head "projects/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+category: ${title}\n#+filetags: :Project:\n")
       :unnarrowed t)
-     ("f" "friend" plain "%?"
-      :if-new (file+head "home/people/${slug}.org"
-                         "#+title: ${title}\n#+date: %U\n#+filetags: :people:#home:\n")
+     ("f" "friend" entry "* %?\n:PROPERTIES:\n:BIRTHDAY: YYYY-MM-DD\n:EMAIL:\n:ADDRESS:\n:END:"
+      :target (file+head "home/friend.org"
+                         "#+title: Friends and family\n#+date: %U\n#+filetags: :people:#home:\n")
       :unnarrowed t)
      ("home" "home" plain "%?"
       :if-new (file+head "home/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+date: %U\n")
