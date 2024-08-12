@@ -69,6 +69,13 @@ Follow PARA method with org-roam:
   "New stuff collected in this file.")
 (defconst org-icalendar-file (expand-file-name "calendar.org" org-roam-directory)
   "Synchronize with office calendar")
+(defconst org-people-file (expand-file-name "people.org" org-roam-directory)
+  "org-contacts for colleagues")
+
+(defconst org-home-dir (expand-file-name "home" org-roam-directory)
+  "Home/personal roam directory")
+(defconst org-friends-file (expand-file-name "friends.org" org-home-dir)
+  "org-contacts for friends")
 
 (defconst org-area-dir (expand-file-name "area" org-roam-directory)
   "Primary Area directory.")
@@ -131,6 +138,11 @@ Follow PARA method with org-roam:
   :config
   (apheleia-global-mode +1))
 #+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+(use-package clang-format)
+#+END_SRC
+
 ** Documentation
 #+BEGIN_SRC emacs-lisp
 (use-package devdocs
@@ -909,8 +921,8 @@ brew install enchant
   (setq org-use-speed-commands t
         org-special-ctrl-a/e t
         org-special-ctrl-k t
-        org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "STARTED(s)" "|" "DONE(d!)" "CANCELED(c@/!)")
-                            (sequence "WAITING(w@/!)" "SOMEDAY(s)" "|" "CANCELED(c@/!)" "MEETING")
+        org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "INPROGRESS(p)" "|" "DONE(d!)" "CANCELED(c@/!)")
+                            (sequence "WAITING(w@/!)" "SOMEDAY(s)" "|" "CANCELED(c@/!)" "MEETING(m)")
                             (sequence "IDEA(i)" "|" "CANCELED(c@/!)"))
         org-todo-state-tags-triggers '(("CANCELLED" ("CANCELLED" . t))
                                        ("WAITING" ("WAITING" . t))
@@ -919,11 +931,11 @@ brew install enchant
                                        ("NEXT" ("WAITING") ("CANCELLED"))
                                        ("DONE" ("WAITING") ("CANCELLED")))
         org-use-tag-inheritance t
-        org-tag-alist '(("linux") ("nixos") ("emacs") ("org")
-                        ("openshift") ("redhat") ("tektoncd") ("kubernetes") ("knative" ) ("docker")
+        org-tag-alist '(("Research") ("Collab") ("Teaching") ("Codesign")
+                        ("Kokkos") ("C++") ("Rust") ("Arcane")
                         ("docs") ("code") ("review")
                         (:startgroup . nil)
-                        ("#home" . ?h) ("#work" . ?w) ("#errand" . ?e) ("#health" . ?l)
+                        ("#home" . ?h) ("#work" . ?w)
                         (:endgroup . nil)
                         (:startgroup . nil)
                         ("#link" . ?i) ("#read" . ?r) ("#project" . ?p)
@@ -950,7 +962,6 @@ brew install enchant
         org-blank-before-new-entry '((heading . t)
                                      (plain-list-item . nil)))
   )
-
 #+END_SRC
 
 *** Org-agenda
@@ -1023,14 +1034,33 @@ brew install enchant
 		      (:name "Scheduled earlier"
 			     :scheduled past)))))))))
   :config
+  (setq org-agenda-files (directory-files-recursively org-projects-dir "\\.org$"))
+  (if (file-exists-p org-icalendar-file)
+      (add-to-list 'org-agenda-files org-icalendar-file))
   (org-super-agenda-mode))
+#+END_SRC
+
+*** Contacts
+https://www.reddit.com/r/emacs/comments/8toivy/tip_how_to_manage_your_contacts_with_orgcontacts/
+
+#+BEGIN_SRC emacs-lisp
+(use-package org-contacts
+  :after org
+  :config
+  (if (file-exists-p org-friends-file)
+      (add-to-list 'org-contacts-files org-friends-file))
+  (if (file-exists-p org-people-file)
+      (add-to-list 'org-contacts-files org-people-file))
+  )
 #+END_SRC
 
 *** Calendar and holidays
 #+BEGIN_SRC emacs-lisp
 (use-package calendar
   :custom
+  (diary-file (expand-file-name "diary" user-emacs-directory))
   (calendar-mark-holidays-flag t)
+  (calendar-mark-diary-entries-flag t)
   (calendar-date-style 'iso))
 #+END_SRC
 
@@ -1203,6 +1233,11 @@ This package is quite slow to load, force defer.
   :defer t)
 #+END_SRC
 
+#+BEGIN_SRC emacs-lisp
+(use-package orgit-forge
+  :after org forge)
+#+END_SRC
+
 *** Org-modern
 #+BEGIN_SRC emacs-lisp
 (use-package org-modern
@@ -1372,22 +1407,26 @@ From https://systemcrafters.net/build-a-second-brain-in-emacs/capturing-notes-ef
    '(("d" "default" plain "%?"
       :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+date: %U\n")
       :unnarrowed t)
-     ("p" "person" plain "%?"
-      :if-new (file+head "people/%<%Y%m%d%H%M%S>-${slug}.org"
-                         "#+title: ${title}\n#+date: %U\n#+filetags: people\n")
+     ("p" "person" plain "* ${title}%?\n:PROPERTIES:\n:POSITION:\n:EMAIL:\n:ID: %(shell-command-to-string \"uuidgen\")\n:END:"
+      :if-new (file+head "people.org"
+                         "#+title: Contacts\n#+date: %U\n#+filetags: :people:\n# -*- mode: Org; org-use-property-inheritance: (\"Company\") -*-\n* To Sort")
       :unnarrowed t)
      ("w" "Work project" plain "* Goals\n\n%?\n\n* Tasks\n\n** TODO Add initial tasks\n\n* Dates\n\n"
       :if-new (file+head "projects/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+category: ${title}\n#+filetags: :Project:\n")
       :unnarrowed t)
-     ("f" "friend" plain "%?"
-      :if-new (file+head "home/people/${slug}.org"
-                         "#+title: ${title}\n#+date: %U\n#+filetags: :people:@home:\n")
+     ("i" "inbox" plain "* %?\n:PROPERTIES:\n:CREATED:%U\n:END:\n\n%i\n\nFrom: %a"
+      :if-new (file+head "Inbox.org" "#+title: Inbox\n")
+      :immediate-finish t)
+
+     ("f" "friend" entry "* ${title}%?\n:PROPERTIES:\n:BIRTHDAY: %^{YYYY-MM-DD}t\n:NICKNAME:\n:GROUP:\n:EMAIL:\n:ADDRESS:\n:END:"
+      :target (file+head "home/friends.org"
+                         "#+title: Friends and Family\n#+date: %U\n#+filetags: :people:#home:\n")
       :unnarrowed t)
-     ("home" "home" plain "%?"
+     ("h" "home" plain "%?"
       :if-new (file+head "home/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+date: %U\n")
       :unnarrowed t)
      ("P" "Home project" plain "* Goals\n\n%?\n\n* Tasks\n\n** TODO Add initial tasks\n\n* Dates\n\n"
-      :if-new (file+head "home/projects/${slug}.org" "#+title: ${title}\n#+category: ${title}\n#+filetags: :Project:@home:\n")
+      :if-new (file+head "home/projects/${slug}.org" "#+title: ${title}\n#+category: ${title}\n#+filetags: :Project:#home:\n")
       :unnarrowed t)
      )
    )
@@ -1395,9 +1434,11 @@ From https://systemcrafters.net/build-a-second-brain-in-emacs/capturing-notes-ef
          ("C-c n f" . org-roam-node-find)
          ("C-c n i" . org-roam-node-insert)
          ("C-c n I" . org-roam-node-insert-immediate)
-         ("C-c n t" . my/org-roam-capture-inbox)
-  	 ("C-c n T" . org-roam-dailies-capture-today)
-  	 ("C-c n d" . org-roam-dailies-goto-today)
+         ("C-c n t" . (lambda () "Populate inbox"
+			(interactive)
+			(org-roam-capture nil "i")))
+         ("C-c n T" . org-roam-dailies-capture-today)
+         ("C-c n d" . org-roam-dailies-goto-today)
          :map org-mode-map
          ("C-M-i" . completion-at-point)
          :map org-roam-dailies-map
@@ -1406,76 +1447,33 @@ From https://systemcrafters.net/build-a-second-brain-in-emacs/capturing-notes-ef
   :bind-keymap
   ("C-c n d" . org-roam-dailies-map)
   :config
-  (require 'org-roam-node)
-  (defun org-roam-node-insert-immediate (arg &rest args)
-    (interactive "P")
-    (let ((args (push arg args))
-          (org-roam-capture-templates (list (append (car org-roam-capture-templates)
-                                                    '(:immediate-finish t)))))
-      (apply #'org-roam-node-insert args)))
-
-  (defun my/org-roam-filter-by-tag (tag-name)
-    (lambda (node)
-      (member tag-name (org-roam-node-tags node))))
-
-  (defun my/org-roam-list-notes-by-tag (tag-name)
-    (mapcar #'org-roam-node-file
-            (seq-filter
-             (my/org-roam-filter-by-tag tag-name)
-             (org-roam-node-list))))
-
-  (defun my/org-roam-refresh-agenda-list ()
-    (interactive)
-    (setq org-agenda-files (my/org-roam-list-notes-by-tag "Project"))
-    (if (file-exists-p org-icalendar-file)
-	(add-to-list 'org-agenda-files org-icalendar-file)))
-
-  ;; Build the agenda list the first time for the session
-  (my/org-roam-refresh-agenda-list)
-
-  (defun my/org-roam-project-finalize-hook ()
-    "Adds the captured project file to `org-agenda-files' if the
-  capture was not aborted."
-    ;; Remove the hook since it was added temporarily
-    (remove-hook 'org-capture-after-finalize-hook #'my/org-roam-project-finalize-hook)
-
-    ;; Add project file to the agenda list if the capture was confirmed
-    (unless org-note-abort
-      (with-current-buffer (org-capture-get :buffer)
-	(add-to-list 'org-agenda-files (buffer-file-name)))))
-
-  (defun my/org-roam-capture-inbox ()
-    (interactive)
-    (org-roam-capture- :node (org-roam-node-create)
-                       :templates '(("i" "inbox" plain "* %?\n:PROPERTIES:\n:CREATED:%U\n:END:\n\n%i\n\nFrom: %a"
-                                     :if-new (file+head "Inbox.org" "#+title: Inbox\n")))))
-
-  (defun my/org-roam-copy-todo-to-today ()
-    (interactive)
-    (let ((org-refile-keep t) ;; Set this to nil to delete the original!
-          (org-roam-dailies-capture-templates
-           '(("t" "tasks" entry "%?"
-              :if-new (file+head+olp "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n" ("Tasks")))))
-          (org-after-refile-insert-hook #'save-buffer)
-          today-file
-          pos)
-      (save-window-excursion
-	(org-roam-dailies--capture (current-time) t)
-	(setq today-file (buffer-file-name))
-	(setq pos (point)))
-
-      ;; Only refile if the target file is different than the current file
-      (unless (equal (file-truename today-file)
-                     (file-truename (buffer-file-name)))
-	(org-refile nil nil (list "Tasks" today-file nil pos)))))
-
-  (add-to-list 'org-after-todo-state-change-hook
-               (lambda ()
-		 (when (equal org-state "DONE")
-                   (my/org-roam-copy-todo-to-today))))
 
   (require 'org-roam-dailies) ;; Ensure the keymap is available
   (org-roam-db-autosync-mode)
+
+   (defun my/org-roam-copy-todo-to-today ()
+     (interactive)
+     (let ((org-refile-keep t) ;; Set this to nil to delete the original!
+           (org-roam-dailies-capture-templates
+            '(("t" "tasks" entry "%?"
+               :if-new (file+head+olp "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n" ("Tasks")))))
+           (org-after-refile-insert-hook #'save-buffer)
+           today-file
+           pos)
+       (save-window-excursion
+	 (org-roam-dailies--capture (current-time) t)
+	 (setq today-file (buffer-file-name))
+	 (setq pos (point)))
+
+       ;; Only refile if the target file is different than the current file
+       (unless (equal (file-truename today-file)
+                      (file-truename (buffer-file-name)))
+	 (org-refile nil nil (list "Tasks" today-file nil pos)))))
+
+   (add-to-list 'org-after-todo-state-change-hook
+		(lambda ()
+		  (when (equal org-state "DONE")
+                    (my/org-roam-copy-todo-to-today))))
   )
 #+END_SRC
 
