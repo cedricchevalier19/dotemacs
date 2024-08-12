@@ -1058,7 +1058,9 @@ https://www.reddit.com/r/emacs/comments/8toivy/tip_how_to_manage_your_contacts_w
 #+BEGIN_SRC emacs-lisp
 (use-package calendar
   :custom
+  (diary-file (expand-file-name "diary" user-emacs-directory))
   (calendar-mark-holidays-flag t)
+  (calendar-mark-diary-entries-flag t)
   (calendar-date-style 'iso))
 #+END_SRC
 
