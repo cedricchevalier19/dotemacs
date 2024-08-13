@@ -1398,6 +1398,7 @@ From https://systemcrafters.net/build-a-second-brain-in-emacs/capturing-notes-ef
 
 #+BEGIN_SRC emacs-lisp :lexical t
 (use-package org-roam
+  :after org
   :if (file-directory-p org-roam-directory)
   :init
   (setq org-roam-v2-ack t)
@@ -1475,6 +1476,17 @@ From https://systemcrafters.net/build-a-second-brain-in-emacs/capturing-notes-ef
 		  (when (equal org-state "DONE")
                     (my/org-roam-copy-todo-to-today))))
   )
+#+END_SRC
+
+** Org-rich-yank
+copy and paste with style
+#+BEGIN_SRC emacs-lisp
+(use-package org-rich-yank
+  :after org
+  :ensure t
+  :demand t
+  :bind (:map org-mode-map
+              ("C-M-y" . org-rich-yank)))
 #+END_SRC
 
 ** Zotero
