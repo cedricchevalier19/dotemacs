@@ -1410,7 +1410,6 @@ From https://systemcrafters.net/build-a-second-brain-in-emacs/capturing-notes-ef
   :init
   (setq org-roam-v2-ack t)
   :custom
-  (org-roam-completion-everywhere t)
   (org-roam-capture-templates
    '(("d" "default" plain "%?"
       :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+date: %U\n")
