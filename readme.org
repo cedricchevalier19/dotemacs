@@ -1271,7 +1271,9 @@ Useful for =org-collector=
 
 #+BEGIN_SRC emacs-lisp
 (use-package org-contrib
-  :after org)
+  :after org
+  :custom
+  (require 'org-collector))
 #+END_SRC
 
 *** mermaid
