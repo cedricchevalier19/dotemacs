@@ -74,6 +74,8 @@ Follow PARA method with org-roam:
 
 (defconst org-home-dir (expand-file-name "home" org-roam-directory)
   "Home/personal roam directory")
+(defconst org-home-projects-dir (expand-file-name "projects" org-home-dir)
+  "Home projects directory")
 (defconst org-friends-file (expand-file-name "friends.org" org-home-dir)
   "org-contacts for friends")
 
@@ -1037,6 +1039,9 @@ brew install enchant
   (setq org-agenda-files (directory-files-recursively org-projects-dir "\\.org$"))
   (if (file-exists-p org-icalendar-file)
       (add-to-list 'org-agenda-files org-icalendar-file))
+  (if (file-directory-p org-home-projects-dir)
+      (dolist (item (directory-files-recursively org-home-projects-dir "\\.org$"))
+           (add-to-list 'org-agenda-files item)))
   (org-super-agenda-mode))
 #+END_SRC
 
