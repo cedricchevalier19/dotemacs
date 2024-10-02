@@ -65,7 +65,7 @@ Follow PARA method with org-roam:
 
 (defconst org-projects-dir (expand-file-name "projects" org-roam-directory)
   "Primary tasks directory.")
-(defconst org-inbox-file (expand-file-name "inbox.org" org-projects-dir)
+(defconst org-inbox-file (expand-file-name "Inbox.org" org-roam-directory)
   "New stuff collected in this file.")
 (defconst org-icalendar-file (expand-file-name "calendar.org" org-roam-directory)
   "Synchronize with office calendar")
@@ -971,7 +971,6 @@ brew install enchant
 #+BEGIN_SRC emacs-lisp
 (use-package org-super-agenda
   :after org
-  :defer t
   :custom
   (org-agenda-include-diary t)
   (org-agenda-custom-commands
@@ -1036,12 +1035,13 @@ brew install enchant
 		      (:name "Scheduled earlier"
 			     :scheduled past)))))))))
   :config
-  (setq org-agenda-files (directory-files-recursively org-projects-dir "\\.org$"))
+  (setq org-agenda-files (cons org-projects-dir '()))
+  (if (file-exists-p org-inbox-file)
+      (add-to-list 'org-agenda-files org-inbox-file))
   (if (file-exists-p org-icalendar-file)
       (add-to-list 'org-agenda-files org-icalendar-file))
   (if (file-directory-p org-home-projects-dir)
-      (dolist (item (directory-files-recursively org-home-projects-dir "\\.org$"))
-           (add-to-list 'org-agenda-files item)))
+      (add-to-list 'org-agenda-files org-home-projects-dir))
   (org-super-agenda-mode))
 #+END_SRC
 
