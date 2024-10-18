@@ -84,7 +84,7 @@ Follow PARA method with org-roam:
 
 (defconst org-references-dir (expand-file-name "references" org-roam-directory)
   "Primary Area directory.")
-(defconst org-roam-bibfile (expand-file-name "zotero.bib" org-references-dir)
+(defconst org-roam-bibfile (expand-file-name "zotero.bib" org-roam-directory)
   "Main bibfile")
 
 (defconst org-archive-dir (expand-file-name "archive" org-roam-directory)
@@ -1363,15 +1363,13 @@ Useful for =org-collector=
 ** ref
 #+BEGIN_SRC emacs-lisp
 (use-package citar
-  :no-require
   :if (file-exists-p org-roam-bibfile)
-  :defer t
   :bind (("C-c n o" . citar-open)
          ("C-c r" . citar-insert-citation)
          :map minibuffer-local-map
          ("M-b" . citar-insert-preset))
   :custom
-  (org-cite-global-bibliography org-roam-bibfile)
+  (org-cite-global-bibliography (list org-roam-bibfile))
   (org-cite-insert-processor 'citar)
   (org-cite-follow-processor 'citar)
   (org-cite-activate-processor 'citar)
@@ -1387,7 +1385,6 @@ Useful for =org-collector=
 (use-package citar-org-roam
   :after citar org-roam
   :if (file-exists-p org-roam-bibfile)
-  :no-require
   :custom
   (citar-org-roam-subdir "resource/references")
   :config
