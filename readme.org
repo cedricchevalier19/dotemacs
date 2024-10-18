@@ -65,7 +65,7 @@ Follow PARA method with org-roam:
 
 (defconst org-projects-dir (expand-file-name "projects" org-roam-directory)
   "Primary tasks directory.")
-(defconst org-inbox-file (expand-file-name "inbox.org" org-projects-dir)
+(defconst org-inbox-file (expand-file-name "Inbox.org" org-roam-directory)
   "New stuff collected in this file.")
 (defconst org-icalendar-file (expand-file-name "calendar.org" org-roam-directory)
   "Synchronize with office calendar")
@@ -74,6 +74,8 @@ Follow PARA method with org-roam:
 
 (defconst org-home-dir (expand-file-name "home" org-roam-directory)
   "Home/personal roam directory")
+(defconst org-home-projects-dir (expand-file-name "projects" org-home-dir)
+  "Home projects directory")
 (defconst org-friends-file (expand-file-name "friends.org" org-home-dir)
   "org-contacts for friends")
 
@@ -82,7 +84,7 @@ Follow PARA method with org-roam:
 
 (defconst org-references-dir (expand-file-name "references" org-roam-directory)
   "Primary Area directory.")
-(defconst org-roam-bibfile (expand-file-name "zotero.bib" org-references-dir)
+(defconst org-roam-bibfile (expand-file-name "zotero.bib" org-roam-directory)
   "Main bibfile")
 
 (defconst org-archive-dir (expand-file-name "archive" org-roam-directory)
@@ -969,7 +971,6 @@ brew install enchant
 #+BEGIN_SRC emacs-lisp
 (use-package org-super-agenda
   :after org
-  :defer t
   :custom
   (org-agenda-include-diary t)
   (org-agenda-custom-commands
@@ -1034,9 +1035,13 @@ brew install enchant
 		      (:name "Scheduled earlier"
 			     :scheduled past)))))))))
   :config
-  (setq org-agenda-files (directory-files-recursively org-projects-dir "\\.org$"))
+  (setq org-agenda-files (cons org-projects-dir '()))
+  (if (file-exists-p org-inbox-file)
+      (add-to-list 'org-agenda-files org-inbox-file))
   (if (file-exists-p org-icalendar-file)
       (add-to-list 'org-agenda-files org-icalendar-file))
+  (if (file-directory-p org-home-projects-dir)
+      (add-to-list 'org-agenda-files org-home-projects-dir))
   (org-super-agenda-mode))
 #+END_SRC
 
@@ -1266,7 +1271,9 @@ Useful for =org-collector=
 
 #+BEGIN_SRC emacs-lisp
 (use-package org-contrib
-  :after org)
+  :after org
+  :custom
+  (require 'org-collector))
 #+END_SRC
 
 *** mermaid
@@ -1356,15 +1363,13 @@ Useful for =org-collector=
 ** ref
 #+BEGIN_SRC emacs-lisp
 (use-package citar
-  :no-require
   :if (file-exists-p org-roam-bibfile)
-  :defer t
   :bind (("C-c n o" . citar-open)
          ("C-c r" . citar-insert-citation)
          :map minibuffer-local-map
          ("M-b" . citar-insert-preset))
   :custom
-  (org-cite-global-bibliography org-roam-bibfile)
+  (org-cite-global-bibliography (list org-roam-bibfile))
   (org-cite-insert-processor 'citar)
   (org-cite-follow-processor 'citar)
   (org-cite-activate-processor 'citar)
@@ -1380,7 +1385,6 @@ Useful for =org-collector=
 (use-package citar-org-roam
   :after citar org-roam
   :if (file-exists-p org-roam-bibfile)
-  :no-require
   :custom
   (citar-org-roam-subdir "resource/references")
   :config
@@ -1398,11 +1402,11 @@ From https://systemcrafters.net/build-a-second-brain-in-emacs/capturing-notes-ef
 
 #+BEGIN_SRC emacs-lisp :lexical t
 (use-package org-roam
+  :after org
   :if (file-directory-p org-roam-directory)
   :init
   (setq org-roam-v2-ack t)
   :custom
-  (org-roam-completion-everywhere t)
   (org-roam-capture-templates
    '(("d" "default" plain "%?"
       :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+date: %U\n")
@@ -1475,6 +1479,17 @@ From https://systemcrafters.net/build-a-second-brain-in-emacs/capturing-notes-ef
 		  (when (equal org-state "DONE")
                     (my/org-roam-copy-todo-to-today))))
   )
+#+END_SRC
+
+** Org-rich-yank
+copy and paste with style
+#+BEGIN_SRC emacs-lisp
+(use-package org-rich-yank
+  :after org
+  :ensure t
+  :demand t
+  :bind (:map org-mode-map
+              ("C-M-y" . org-rich-yank)))
 #+END_SRC
 
 ** Zotero
