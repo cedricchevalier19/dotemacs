@@ -22,7 +22,7 @@ lexical-binding is Necessary for some lambdas used to configure org-roam.
 ;;; My emacs configuration
 ;;; Commentary:
 ;;; Generated from readme.org
-;;; Do not editorial
+;;; Do not edit
 
 ;;; Code:
 #+END_SRC
