@@ -407,11 +407,17 @@ From https://www.bytedude.com/setting-up-rust-support-in-emacs/
 
 ** Casual
 #+BEGIN_SRC emacs-lisp
-(use-package casual-dired
-  :after dired
+(use-package casual
+  :after (dired agenda)
+  :config
+  (require 'casual-dired)
+  (require 'casual-agenda)
   :bind (:map dired-mode-map
               ("C-o" . #'casual-dired-tmenu)
-              ("s" . #'casual-dired-sort-by-tmenu)))
+              ("s" . #'casual-dired-sort-by-tmenu))
+  (:map org-agenda-mode-map
+	("C-o" . #'casual-agenda-tmenu)
+	("M-J" . #'org-agenda-clock-goto)))
 #+END_SRC
 
 ** Multiple-cursors
