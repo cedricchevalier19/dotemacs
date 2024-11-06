@@ -1,6 +1,6 @@
 #+TITLE: My Emacs configuration
 #+AUTHOR: Cédric Chevalier
-#+PROPERTY: header-args:emacs-lisp :tangle ~/.emacs.d/config.el
+#+PROPERTY: header-args:emacs-lisp :tangle (print config-el)
 # #+OPTIONS: toc:nil
 
 * My Emacs configuration
