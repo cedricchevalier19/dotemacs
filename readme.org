@@ -407,11 +407,17 @@ From https://www.bytedude.com/setting-up-rust-support-in-emacs/
 
 ** Casual
 #+BEGIN_SRC emacs-lisp
-(use-package casual-dired
-  :after dired
+(use-package casual
+  :after (dired agenda)
+  :config
+  (require 'casual-dired)
+  (require 'casual-agenda)
   :bind (:map dired-mode-map
               ("C-o" . #'casual-dired-tmenu)
-              ("s" . #'casual-dired-sort-by-tmenu)))
+              ("s" . #'casual-dired-sort-by-tmenu))
+  (:map org-agenda-mode-map
+	("C-o" . #'casual-agenda-tmenu)
+	("M-J" . #'org-agenda-clock-goto)))
 #+END_SRC
 
 ** Multiple-cursors
@@ -1479,6 +1485,21 @@ From https://systemcrafters.net/build-a-second-brain-in-emacs/capturing-notes-ef
 		  (when (equal org-state "DONE")
                     (my/org-roam-copy-todo-to-today))))
   )
+#+END_SRC
+
+
+#+BEGIN_SRC emacs-lisp
+(use-package org-roam-ui
+  :after org-roam
+;;         normally we'd recommend hooking orui after org-roam, but since org-roam does not have
+;;         a hookable mode anymore, you're advised to pick something yourself
+;;         if you don't care about startup time, use
+;;  :hook (after-init . org-roam-ui-mode)
+  :config
+  (setq org-roam-ui-sync-theme t
+        org-roam-ui-follow t
+        org-roam-ui-update-on-save t
+        org-roam-ui-open-on-start t))
 #+END_SRC
 
 ** Org-rich-yank
