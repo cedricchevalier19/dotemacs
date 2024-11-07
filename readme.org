@@ -1,5 +1,6 @@
 #+TITLE: My Emacs configuration
 #+AUTHOR: Cédric Chevalier
+#+PROPERTY: header-args:emacs-lisp :tangle (print config-el)
 # #+OPTIONS: toc:nil
 
 * My Emacs configuration
@@ -412,12 +413,13 @@ From https://www.bytedude.com/setting-up-rust-support-in-emacs/
   :config
   (require 'casual-dired)
   (require 'casual-agenda)
-  :bind (:map dired-mode-map
-              ("C-o" . #'casual-dired-tmenu)
-              ("s" . #'casual-dired-sort-by-tmenu))
-  (:map org-agenda-mode-map
-	("C-o" . #'casual-agenda-tmenu)
-	("M-J" . #'org-agenda-clock-goto)))
+  :bind (
+	 :map dired-mode-map
+         ("C-o" . #'casual-dired-tmenu)
+         ("s" . #'casual-dired-sort-by-tmenu)
+	 :map org-agenda-mode-map
+	 ("C-o" . #'casual-agenda-tmenu)
+	 ("M-J" . #'org-agenda-clock-goto)))
 #+END_SRC
 
 ** Multiple-cursors
@@ -1461,29 +1463,29 @@ From https://systemcrafters.net/build-a-second-brain-in-emacs/capturing-notes-ef
   (require 'org-roam-dailies) ;; Ensure the keymap is available
   (org-roam-db-autosync-mode)
 
-   (defun my/org-roam-copy-todo-to-today ()
-     (interactive)
-     (let ((org-refile-keep t) ;; Set this to nil to delete the original!
-           (org-roam-dailies-capture-templates
-            '(("t" "tasks" entry "%?"
-               :if-new (file+head+olp "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n" ("Tasks")))))
-           (org-after-refile-insert-hook #'save-buffer)
-           today-file
-           pos)
-       (save-window-excursion
-	 (org-roam-dailies--capture (current-time) t)
-	 (setq today-file (buffer-file-name))
-	 (setq pos (point)))
+  (defun my/org-roam-copy-todo-to-today ()
+    (interactive)
+    (let ((org-refile-keep t) ;; Set this to nil to delete the original!
+          (org-roam-dailies-capture-templates
+           '(("t" "tasks" entry "%?"
+              :if-new (file+head+olp "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n" ("Tasks")))))
+          (org-after-refile-insert-hook #'save-buffer)
+          today-file
+          pos)
+      (save-window-excursion
+	(org-roam-dailies--capture (current-time) t)
+	(setq today-file (buffer-file-name))
+	(setq pos (point)))
 
-       ;; Only refile if the target file is different than the current file
-       (unless (equal (file-truename today-file)
-                      (file-truename (buffer-file-name)))
-	 (org-refile nil nil (list "Tasks" today-file nil pos)))))
+      ;; Only refile if the target file is different than the current file
+      (unless (equal (file-truename today-file)
+                     (file-truename (buffer-file-name)))
+	(org-refile nil nil (list "Tasks" today-file nil pos)))))
 
-   (add-to-list 'org-after-todo-state-change-hook
-		(lambda ()
-		  (when (equal org-state "DONE")
-                    (my/org-roam-copy-todo-to-today))))
+  (add-to-list 'org-after-todo-state-change-hook
+	       (lambda ()
+		 (when (equal org-state "DONE")
+                   (my/org-roam-copy-todo-to-today))))
   )
 #+END_SRC
 
@@ -1491,10 +1493,10 @@ From https://systemcrafters.net/build-a-second-brain-in-emacs/capturing-notes-ef
 #+BEGIN_SRC emacs-lisp
 (use-package org-roam-ui
   :after org-roam
-;;         normally we'd recommend hooking orui after org-roam, but since org-roam does not have
-;;         a hookable mode anymore, you're advised to pick something yourself
-;;         if you don't care about startup time, use
-;;  :hook (after-init . org-roam-ui-mode)
+  ;;         normally we'd recommend hooking orui after org-roam, but since org-roam does not have
+  ;;         a hookable mode anymore, you're advised to pick something yourself
+  ;;         if you don't care about startup time, use
+  ;;  :hook (after-init . org-roam-ui-mode)
   :config
   (setq org-roam-ui-sync-theme t
         org-roam-ui-follow t
@@ -1531,27 +1533,6 @@ Follow http://www.mkbehr.com/posts/a-research-workflow-with-zotero-and-org-mode/
 #   (flycheck-grammalecte-setup))
 # #+END_SRC
 
-* Save
-
-From https://github.com/KaratasFurkan/.emacs.d/blob/emacs-29/README.org#synchronizing-changes
-
-#+BEGIN_SRC emacs-lisp
-(defun cc/tangle-config ()
-  "Export code blocks from the literate config file asynchronously."
-  (interactive)
-  (make-process
-   :command `("emacs" ,config-org "--batch" "--eval"
-              ,(format "(org-babel-tangle nil \"%s\" \"emacs-lisp\")" config-el))
-   :name "tangle-process"
-   :filter (lambda (process output) (message (string-trim output)))))
-
-;; prevent emacs from killing itself until the tangle-process finished
-(add-to-list 'kill-emacs-query-functions
-             (lambda ()
-               (or (not (process-live-p (get-process "tangle-process")))
-                   (y-or-n-p "\"fk/tangle-config\" is running; kill it? "))))
-#+END_SRC
-
 
 * New packages to look
 
@@ -1574,5 +1555,5 @@ From https://github.com/KaratasFurkan/.emacs.d/blob/emacs-29/README.org#synchron
 - https://github.com/wandersoncferreira/code-review
 
 # Local Variables:
-# eval: (add-hook 'after-save-hook 'cc/tangle-config :local t)
+# eval: (add-hook 'after-save-hook 'org-babel-tangle :local t)
 # End:
