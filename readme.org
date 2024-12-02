@@ -1147,6 +1147,7 @@ French holidays, from https://irfu.cea.fr/Pisp/vianney.lebouteiller/emacs.html
 *** Org-Latex
 #+BEGIN_SRC emacs-lisp
 (with-eval-after-load 'ox-latex
+  (require 'ox-beamer)
   (setq org-latex-hyperref-template nil)
   (setq org-latex-listings 'minted)
   (setq org-latex-minted-options
@@ -1197,9 +1198,6 @@ French holidays, from https://irfu.cea.fr/Pisp/vianney.lebouteiller/emacs.html
     :group 'org-export-latex
     :version "26.1")
 
-  (defvar org-latex-pdf-process-hook nil
-    "Hook to run after setting pdf process.")
-
   (defun org-latex-pdf-process-set (compiler)
     (interactive
      (list (completing-read "Compiler: " org-latex-pdf-engines)))
@@ -1209,16 +1207,12 @@ French holidays, from https://irfu.cea.fr/Pisp/vianney.lebouteiller/emacs.html
                                        (if (listp process)
                                            (intern (completing-read "Process:" process))
                                          process))
-                org-latex-compiler compiler)
-          (run-hooks org-latex-pdf-process-hook))
+                org-latex-compiler compiler))
       (error "%s not in `org-latex-compilers'" compiler)))
   (setq org-latex-logfiles-extensions
         (append org-latex-logfiles-extensions
                 '("acn" "ind" "ilg" "ist" "glo" "tex" "synctex.gz")))
   )
-
-(with-eval-after-load 'ox
-  (org-latex-pdf-process-set org-latex-compiler))
 #+END_SRC
 
 # #+BEGIN_SRC emacs-lisp
@@ -1258,9 +1252,9 @@ This package is quite slow to load, force defer.
   :defer t
   :custom
   ;; Choose some fonts
-  (set-face-attribute 'default nil :family "Iosevka")
-  (set-face-attribute 'variable-pitch nil :family "Iosevka Aile")
-  (set-face-attribute 'org-modern-symbol nil :family "Iosevka")
+  (set-face-attribute 'default nil :family "JuliaMono")
+  (set-face-attribute 'variable-pitch nil :family "JuliaMono Aile")
+  (set-face-attribute 'org-modern-symbol nil :family "JuliaMono")
   ;; :if window-system
   :hook (org-mode . org-modern-mode))
 #+END_SRC
