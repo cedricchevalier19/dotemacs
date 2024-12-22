@@ -92,6 +92,10 @@ Follow PARA method with org-roam:
   "Directory of shareable, technical notes.")
 (defconst org-completed-dir (expand-file-name "projects" org-archive-dir)
   "Directory of completed project files.")
+
+(when (string= system-type "darwin")
+  (setq mac-command-modifier 'meta
+	mac-option-modifier nil))
 #+END_SRC
 
 * Generic
