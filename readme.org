@@ -1528,6 +1528,22 @@ Follow http://www.mkbehr.com/posts/a-research-workflow-with-zotero-and-org-mode/
 # #+END_SRC
 
 
+* AI
+** gptel
+#+BEGIN_SRC emacs-lisp
+(use-package gptel
+  :config
+  ;; OPTIONAL configuration
+  (setq
+   gptel-model   'test
+   gptel-backend (gptel-make-openai "llama-cpp"
+                   :stream t
+                   :protocol "http"
+                   :host "localhost:1234"
+                   :models '(test)))
+  )
+  #+END_SRC
+
 * New packages to look
 
 ** From https://github.com/jwiegley/dot-emacs/blob/master/init.org
