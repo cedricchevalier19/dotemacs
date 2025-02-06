@@ -10,7 +10,7 @@
 
 (defconst config-org (locate-user-emacs-file "readme.org"))
 (defconst config-el (locate-user-emacs-file "config.el"))
-(defconst config-email-el (locate-user-emacs-file "local/email.el"))
+(defconst config-email-el (expand-file-name  ".config/mbsync/email.el" (getenv "HOME")))
 
 (unless (file-exists-p config-el)
   (require 'org)
